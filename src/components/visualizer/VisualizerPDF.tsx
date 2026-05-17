@@ -10,14 +10,151 @@ interface VisualizerPDFProps {
   concernText: string;
 }
 
-async function urlToBase64(url: string): Promise<string> {
-  const res = await fetch(url);
-  const blob = await res.blob();
+interface PdfImage {
+  dataUrl: string;
+  width: number;
+  height: number;
+}
+
+function resolveImageUrl(url: string): string {
+  if (url.startsWith("http") || url.startsWith("blob:") || url.startsWith("data:")) {
+    return url;
+  }
+
+  return new URL(url, window.location.origin).toString();
+}
+
+function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Image failed to load"));
+    image.src = src;
+  });
+}
+
+async function imageUrlToJpeg(url: string): Promise<PdfImage> {
+  const source = resolveImageUrl(url);
+  let objectUrl: string | null = null;
+
+  try {
+    const response = await fetch(source);
+    const blob = await response.blob();
+    objectUrl = URL.createObjectURL(blob);
+  } catch {
+    objectUrl = null;
+  }
+
+  const image = await loadImage(objectUrl ?? source);
+  const canvas = document.createElement("canvas");
+  canvas.width = image.naturalWidth || image.width;
+  canvas.height = image.naturalHeight || image.height;
+
+  const context = canvas.getContext("2d");
+  if (!context) {
+    throw new Error("Canvas is unavailable");
+  }
+
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  if (objectUrl) {
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  return {
+    dataUrl: canvas.toDataURL("image/jpeg", 0.88),
+    width: canvas.width,
+    height: canvas.height,
+  };
+}
+
+function drawContainedImage(
+  doc: jsPDF,
+  image: PdfImage,
+  x: number,
+  y: number,
+  boxWidth: number,
+  boxHeight: number,
+) {
+  const imageRatio = image.width / image.height;
+  const boxRatio = boxWidth / boxHeight;
+  const drawWidth = imageRatio > boxRatio ? boxWidth : boxHeight * imageRatio;
+  const drawHeight = imageRatio > boxRatio ? boxWidth / imageRatio : boxHeight;
+  const drawX = x + (boxWidth - drawWidth) / 2;
+  const drawY = y + (boxHeight - drawHeight) / 2;
+
+  doc.addImage(image.dataUrl, "JPEG", drawX, drawY, drawWidth, drawHeight);
+}
+
+function ensureSpace(doc: jsPDF, cursorY: number, requiredHeight: number, margin: number): number {
+  const pageHeight = doc.internal.pageSize.getHeight();
+
+  if (cursorY + requiredHeight <= pageHeight - margin) {
+    return cursorY;
+  }
+
+  doc.addPage();
+  return margin;
+}
+
+function drawPhotoPlaceholder(
+  doc: jsPDF,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  doc.setFillColor(249, 250, 251);
+  doc.setDrawColor(229, 231, 235);
+  doc.roundedRect(x, y, width, height, 3, 3, "FD");
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(8);
+  doc.setTextColor(107, 114, 128);
+  doc.text("[photo unavailable]", x + width / 2, y + height / 2, { align: "center" });
+}
+
+function drawPhotoFrame(
+  doc: jsPDF,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  doc.setFillColor(255, 255, 255);
+  doc.setDrawColor(229, 231, 235);
+  doc.roundedRect(x, y, width, height, 3, 3, "FD");
+}
+
+function filenameSafe(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function drawLinkButton(doc: jsPDF, label: string, url: string, x: number, y: number, width: number, height: number) {
+  doc.setFillColor(13, 148, 136);
+  doc.roundedRect(x, y, width, height, 4, 4, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(255, 255, 255);
+  doc.text(label, x + width / 2, y + 9, { align: "center" });
+  doc.link(x, y, width, height, { url });
+}
+
+function drawDownloadError(message: string) {
+  window.alert(message);
+}
+
+function formatReportDate() {
+  return new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 }
 
@@ -75,12 +212,7 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       cursorY += 6;
       doc.text(`Prepared for: ${patientName}`, pageWidth / 2, cursorY, { align: "center" });
       cursorY += 6;
-      doc.text(
-        `Date: ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
-        pageWidth / 2,
-        cursorY,
-        { align: "center" },
-      );
+      doc.text(`Date: ${formatReportDate()}`, pageWidth / 2, cursorY, { align: "center" });
       cursorY += 14;
 
       // Horizontal rule
@@ -91,37 +223,42 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
 
       // Photos section
       if (photoUrls.length > 0) {
+        const photos = photoUrls.slice(0, 6);
+        const photoGap = 6;
+        const columns = Math.min(3, photos.length);
+        const photoWidth = (contentWidth - photoGap * (columns - 1)) / columns;
+        const photoHeight = photoWidth * 0.75;
+        const rows = Math.ceil(photos.length / columns);
+        const sectionHeight = 6 + rows * photoHeight + (rows - 1) * (photoGap + 6) + 12;
+
+        cursorY = ensureSpace(doc, cursorY, sectionHeight, margin);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(12);
         doc.setTextColor(...darkColor);
         doc.text("Uploaded Photos", margin, cursorY);
         cursorY += 6;
 
-        const photoY = cursorY;
-        const photoWidth = 50;
-        const photoHeight = 38;
-        const photoGap = 6;
-        const totalPhotoWidth = photoUrls.length * photoWidth + (photoUrls.length - 1) * photoGap;
-        const photoStartX = (pageWidth - totalPhotoWidth) / 2;
+        for (let i = 0; i < photos.length; i++) {
+          const column = i % columns;
+          const row = Math.floor(i / columns);
+          const photoX = margin + column * (photoWidth + photoGap);
+          const photoY = cursorY + row * (photoHeight + photoGap + 6);
 
-        for (let i = 0; i < photoUrls.length; i++) {
+          drawPhotoFrame(doc, photoX, photoY, photoWidth, photoHeight);
           try {
-            const imgData = await urlToBase64(photoUrls[i]);
-            doc.addImage(imgData, "JPEG", photoStartX + i * (photoWidth + photoGap), photoY, photoWidth, photoHeight);
+            const image = await imageUrlToJpeg(photos[i]);
+            drawContainedImage(doc, image, photoX + 2, photoY + 2, photoWidth - 4, photoHeight - 4);
           } catch {
-            doc.setFont("helvetica", "italic");
-            doc.setFontSize(8);
-            doc.setTextColor(...grayColor);
-            doc.text(
-              "[photo unavailable]",
-              photoStartX + i * (photoWidth + photoGap) + photoWidth / 2,
-              photoY + photoHeight / 2,
-              { align: "center" },
-            );
+            drawPhotoPlaceholder(doc, photoX, photoY, photoWidth, photoHeight);
           }
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8);
+          doc.setTextColor(...grayColor);
+          doc.text(`Photo ${i + 1}`, photoX + photoWidth / 2, photoY + photoHeight + 4, { align: "center" });
         }
 
-        cursorY = photoY + photoHeight + 12;
+        cursorY += rows * photoHeight + (rows - 1) * (photoGap + 6) + 14;
       }
 
       // Concern section
@@ -152,7 +289,6 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       const tableX = margin + 4;
       const tableY = cursorY;
       const labelWidth = 55;
-      const valueWidth = 30;
 
       doc.setFillColor(240, 253, 244);
       doc.roundedRect(margin, tableY - 4, contentWidth, tableRows.length * 10 + 8, 3, 3, "F");
@@ -218,7 +354,6 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       const noteStartY = cursorY;
       doc.roundedRect(margin, noteStartY - 4, contentWidth, 30, 3, 3, "F");
       cursorY = wrapText(doc, report.educationalNote, margin + 4, cursorY, contentWidth - 8, 5);
-      const noteEndY = cursorY + 4;
       // Redraw rect with correct height
       doc.setFillColor(245, 240, 232); // brand-cream
       doc.roundedRect(margin, noteStartY - 4, contentWidth, cursorY - noteStartY + 8, 3, 3, "F");
@@ -230,17 +365,17 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       cursorY = noteStartY + (cursorY - noteStartY) + 12;
 
       // CTA
-      if (cursorY + 30 > pageHeight - margin) {
-        doc.addPage();
-        cursorY = margin;
-      }
+      cursorY = ensureSpace(doc, cursorY, 30, margin);
 
-      doc.setFillColor(...primaryColor);
-      doc.roundedRect(margin, cursorY, contentWidth, 14, 4, 4, "F");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(11);
-      doc.setTextColor(245, 240, 232); // brand-cream text on teal
-      doc.text("Schedule Your Specialist Consultation", pageWidth / 2, cursorY + 9, { align: "center" });
+      drawLinkButton(
+        doc,
+        "Schedule Your Specialist Consultation",
+        `${window.location.origin}/teleconsultation`,
+        margin,
+        cursorY,
+        contentWidth,
+        14,
+      );
       cursorY += 24;
 
       // Disclaimer
@@ -252,7 +387,7 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       doc.setFont("helvetica", "italic");
       doc.setFontSize(8);
       doc.setTextColor(...grayColor);
-      const disclaimerY = wrapText(doc, report.disclaimer, margin, cursorY, contentWidth, 4);
+      wrapText(doc, report.disclaimer, margin, cursorY, contentWidth, 4);
 
       // Footer
       doc.setFont("helvetica", "normal");
@@ -265,9 +400,10 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
         { align: "center" },
       );
 
-      doc.save("global-smile-preliminary-analysis.pdf");
+      const patientSlug = filenameSafe(patientName) || "patient";
+      doc.save(`global-smile-value-added-report-${patientSlug}.pdf`);
     } catch {
-      // Silently fail
+      drawDownloadError("Unable to download the PDF report. Please try again.");
     }
   };
 
