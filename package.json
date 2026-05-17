@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "dotenv -e .env -- npx tsx src/lib/seed.ts",
-    "seed-milestones": "dotenv -e .env -- npx tsx src/lib/seed-milestones.ts"
+    "seed-milestones": "dotenv -e .env -- npx tsx src/lib/seed-milestones.ts",
+    "seed-all": "dotenv -e .env -- npx tsx src/lib/seed-all.ts",
+    "postdeploy": "curl -s https://globalsmile.vercel.app/api/seed || echo 'Update URL or run seed-all locally'"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.2",
@@ -16,18 +18,24 @@
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.1.0",
     "@phosphor-icons/react": "^2.1.10",
+    "@radix-ui/react-slot": "^1.2.4",
     "@vercel/blob": "^2.3.3",
     "bcryptjs": "^3.0.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^12.38.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
+    "lucide-react": "^1.16.0",
     "next": "16.2.6",
     "next-auth": "^5.0.0-beta.31",
+    "razorpay": "^2.9.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.76.0",
     "resend": "^6.12.3",
+    "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

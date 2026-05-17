@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0fdfa"/>
+      <stop offset="100%" stop-color="#e2f0ea"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d1d5db"/>
+      <stop offset="100%" stop-color="#9ca3af"/>
+    </linearGradient>
+  </defs>
+  <!-- Wall -->
+  <rect x="0" y="0" width="800" height="320" fill="url(#wall)"/>
+  <!-- Floor -->
+  <rect x="0" y="320" width="800" height="130" fill="url(#floor)"/>
+  <!-- Floor line -->
+  <line x1="0" y1="320" x2="800" y2="320" stroke="#b0b8c1" stroke-width="2"/>
+  <!-- Reception desk -->
+  <rect x="250" y="180" width="300" height="100" rx="12" fill="#0d9488" opacity="0.9"/>
+  <rect x="250" y="180" width="300" height="20" rx="12" fill="#0f766e"/>
+  <!-- Desk counter top -->
+  <rect x="240" y="175" width="320" height="12" rx="6" fill="#14b8a6"/>
+  <!-- Computer on desk -->
+  <rect x="380" y="150" width="40" height="30" rx="4" fill="#1e293b"/>
+  <rect x="385" y="155" width="30" height="20" rx="2" fill="#38bdf8"/>
+  <rect x="395" y="180" width="10" height="8" fill="#475569"/>
+  <!-- Person behind desk -->
+  <circle cx="430" cy="150" r="15" fill="#fbbf24"/>
+  <rect x="420" y="165" width="20" height="30" rx="5" fill="#0ea5e9"/>
+  <!-- Plant left -->
+  <rect x="120" y="220" width="8" height="60" rx="4" fill="#78350f"/>
+  <circle cx="124" cy="210" r="25" fill="#059669"/>
+  <circle cx="110" cy="225" r="18" fill="#10b981"/>
+  <circle cx="138" cy="222" r="15" fill="#34d399"/>
+  <!-- Plant right -->
+  <rect x="670" y="220" width="8" height="60" rx="4" fill="#78350f"/>
+  <circle cx="674" cy="210" r="25" fill="#059669"/>
+  <circle cx="660" cy="225" r="18" fill="#10b981"/>
+  <circle cx="688" cy="222" r="15" fill="#34d399"/>
+  <!-- Signage -->
+  <rect x="340" y="60" width="120" height="40" rx="20" fill="#0d9488"/>
+  <text x="400" y="86" text-anchor="middle" fill="white" font-family="Arial" font-size="14" font-weight="bold">GLOBAL SMILE</text>
+  <!-- Lamp on ceiling -->
+  <rect x="360" y="80" width="80" height="4" rx="2" fill="#fbbf24"/>
+  <rect x="370" y="70" width="60" height="10" rx="6" fill="#eab308"/>
+  <!-- Sofa in waiting -->
+  <rect x="560" y="250" width="120" height="40" rx="8" fill="#475569"/>
+  <rect x="560" y="245" width="120" height="10" rx="6" fill="#64748b"/>
+  <rect x="560" y="290" width="120" height="8" rx="4" fill="#334155"/>
+  <!-- Small table beside sofa -->
+  <rect x="540" y="260" width="15" height="15" rx="2" fill="#78350f"/>
+  <circle cx="547" cy="258" r="10" fill="#0d9488"/>
+  <!-- Clock on wall -->
+  <circle cx="400" cy="130" r="18" fill="white" stroke="#0d9488" stroke-width="2"/>
+  <line x1="400" y1="130" x2="400" y2="120" stroke="#0d9488" stroke-width="2"/>
+  <line x1="400" y1="130" x2="408" y2="130" stroke="#0d9488" stroke-width="2"/>
+  <!-- Label -->
+  <text x="400" y="420" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="13">Clinic Reception — Warm Welcome Area</text>
+</svg>

@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const links = [
   { href: "/visualizer", label: "Visualizer" },
   { href: "/calculator", label: "Calculator" },
+  { href: "/teleconsultation", label: "Consult" },
   { href: "/trust", label: "Trust" },
   { href: "/auth/signin", label: "GP Portal" },
 ];

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ede9fe"/>
+    </linearGradient>
+    <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="800" height="310" fill="url(#bg)"/>
+  <rect x="0" y="310" width="800" height="140" fill="url(#fl)"/>
+  <line x1="0" y1="310" x2="800" y2="310" stroke="#a0aec0" stroke-width="2"/>
+  
+  <!-- Large window with natural light -->
+  <rect x="250" y="60" width="300" height="180" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="3"/>
+  <rect x="250" y="60" width="300" height="180" rx="8" fill="#bae6fd" opacity="0.3"/>
+  <!-- Window cross bars -->
+  <line x1="400" y1="60" x2="400" y2="240" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="250" y1="150" x2="550" y2="150" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Curtains -->
+  <rect x="248" y="55" width="20" height="190" rx="4" fill="#0d9488" opacity="0.4"/>
+  <rect x="532" y="55" width="20" height="190" rx="4" fill="#0d9488" opacity="0.4"/>
+  <!-- Sun through window -->
+  <rect x="300" y="90" width="200" height="130" fill="#fef9c3" opacity="0.1"/>
+  
+  <!-- Plants in window -->
+  <rect x="300" y="220" width="6" height="20" rx="3" fill="#78350f"/>
+  <circle cx="303" cy="212" r="12" fill="#059669"/>
+  <circle cx="293" cy="218" r="8" fill="#10b981"/>
+  <rect x="530" y="220" width="6" height="20" rx="3" fill="#78350f"/>
+  <circle cx="533" cy="212" r="12" fill="#059669"/>
+  <circle cx="543" cy="218" r="8" fill="#10b981"/>
+  
+  <!-- Sofa set - left -->
+  <rect x="100" y="225" width="140" height="45" rx="8" fill="#6366f1"/>
+  <rect x="100" y="220" width="140" height="10" rx="6" fill="#818cf8"/>
+  <rect x="100" y="270" width="140" height="8" rx="4" fill="#4f46e5"/>
+  <!-- Cushions -->
+  <rect x="108" y="228" width="55" height="35" rx="6" fill="#818cf8"/>
+  <rect x="175" y="228" width="55" height="35" rx="6" fill="#818cf8"/>
+  <!-- Throw pillow -->
+  <rect x="220" y="235" width="15" height="25" rx="5" fill="#a5b4fc"/>
+  
+  <!-- Sofa set - right -->
+  <rect x="560" y="225" width="140" height="45" rx="8" fill="#6366f1"/>
+  <rect x="560" y="220" width="140" height="10" rx="6" fill="#818cf8"/>
+  <rect x="560" y="270" width="140" height="8" rx="4" fill="#4f46e5"/>
+  <rect x="568" y="228" width="55" height="35" rx="6" fill="#818cf8"/>
+  <rect x="635" y="228" width="55" height="35" rx="6" fill="#818cf8"/>
+  
+  <!-- Coffee table center -->
+  <rect x="350" y="270" width="100" height="8" rx="4" fill="#78350f"/>
+  <rect x="380" y="278" width="8" height="32" fill="#78350f"/>
+  <rect x="412" y="278" width="8" height="32" fill="#78350f"/>
+  <!-- Items on table -->
+  <rect x="370" y="260" width="20" height="12" rx="3" fill="#fef3c7"/>  <!-- magazine -->
+  <rect x="395" y="260" width="20" height="12" rx="3" fill="#fef3c7"/>
+  <!-- Small plant on table -->
+  <rect x="428" y="260" width="5" height="12" rx="2" fill="#78350f"/>
+  <circle cx="430" cy="255" r="8" fill="#10b981"/>
+  
+  <!-- Water dispenser -->
+  <rect x="690" y="180" width="25" height="50" rx="6" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="693" y="230" width="19" height="6" rx="2" fill="#94a3b8"/>
+  <rect x="695" y="182" width="15" height="30" rx="3" fill="#bfdbfe"/>
+  <rect x="688" y="178" width="29" height="6" rx="3" fill="#64748b"/>
+  
+  <!-- TV on wall -->
+  <rect x="100" y="85" width="100" height="60" rx="6" fill="#1e293b"/>
+  <rect x="105" y="90" width="90" height="45" rx="3" fill="#38bdf8"/>
+  <!-- Screen content - simple shape -->
+  <circle cx="150" cy="112" r="12" fill="#facc15"/>
+  <rect x="140" y="125" width="20" height="6" rx="2" fill="#22c55e"/>
+  
+  <!-- Notice board -->
+  <rect x="610" y="85" width="70" height="50" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="645" y="102" text-anchor="middle" fill="#92400e" font-family="Arial" font-size="7">NOTICE</text>
+  <text x="645" y="115" text-anchor="middle" fill="#92400e" font-family="Arial" font-size="6">BOARD</text>
+  <circle cx="625" cy="95" r="3" fill="#ef4444"/>
+  <circle cx="665" cy="95" r="3" fill="#22c55e"/>
+  
+  <!-- Ambient lamp - floor -->
+  <rect x="520" y="155" width="4" height="70" fill="#64748b"/>
+  <ellipse cx="522" cy="152" rx="10" ry="6" fill="#fef08a"/>
+  <rect x="510" y="225" width="24" height="6" rx="3" fill="#475569"/>
+  
+  <!-- Magazine rack -->
+  <rect x="80" y="280" width="30" height="30" rx="3" fill="#0d9488" opacity="0.8"/>
+  <rect x="85" y="275" width="20" height="5" rx="2" fill="#fef3c7"/>
+  <rect x="88" y="282" width="14" height="4" rx="2" fill="#fef3c7"/>
+  
+  <!-- Label -->
+  <text x="400" y="420" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="13">Patient Waiting Area — Comfortable & Calming</text>
+</svg>

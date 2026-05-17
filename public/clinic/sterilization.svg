@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="800" height="310" fill="url(#bg)"/>
+  <rect x="0" y="310" width="800" height="140" fill="url(#fl)"/>
+  <line x1="0" y1="310" x2="800" y2="310" stroke="#a0aec0" stroke-width="2"/>
+  
+  <!-- Autoclave (main sterilization machine) -->
+  <rect x="280" y="150" width="120" height="130" rx="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="290" y="160" width="100" height="60" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <!-- Door handle -->
+  <rect x="370" y="180" width="8" height="20" rx="4" fill="#64748b"/>
+  <!-- Display panel -->
+  <rect x="300" y="230" width="80" height="30" rx="4" fill="#1e293b"/>
+  <text x="340" y="248" text-anchor="middle" fill="#22c55e" font-family="monospace" font-size="10">STERILIZED</text>
+  <!-- Indicator lights -->
+  <circle cx="310" y="235" r="3" fill="#22c55e"/>
+  <circle cx="320" y="235" r="3" fill="#22c55e"/>
+  <!-- Brand label -->
+  <text x="340" y="145" text-anchor="middle" fill="#64748b" font-family="Arial" font-size="9" font-weight="bold">CLASS B AUTOCLAVE</text>
+  
+  <!-- Second smaller sterilizer -->
+  <rect x="420" y="180" width="80" height="100" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="430" y="190" width="60" height="40" rx="4" fill="#f8fafc"/>
+  <rect x="480" y="205" width="6" height="15" rx="3" fill="#64748b"/>
+  <text x="460" y="175" text-anchor="middle" fill="#64748b" font-family="Arial" font-size="8">ULTRASONIC</text>
+  
+  <!-- Countertop -->
+  <rect x="150" y="220" width="500" height="10" rx="3" fill="#cbd5e1"/>
+  <rect x="150" y="220" width="500" height="50" fill="#e2e8f0" opacity="0.5"/>
+  <rect x="150" y="270" width="500" height="10" rx="3" fill="#94a3b8"/>
+  
+  <!-- Organized instruments wrapped in pouches on counter -->
+  <rect x="170" y="200" width="60" height="20" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="240" y="200" width="60" height="20" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="520" y="200" width="60" height="20" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <!-- Instrument pouches colored indicators -->
+  <rect x="180" y="205" width="15" height="10" rx="2" fill="#0d9488" opacity="0.6"/>
+  <rect x="250" y="205" width="15" height="10" rx="2" fill="#0d9488" opacity="0.6"/>
+  <rect x="530" y="205" width="15" height="10" rx="2" fill="#0d9488" opacity="0.6"/>
+  
+  <!-- Sterilization indicator strips -->
+  <rect x="310" y="205" width="40" height="8" rx="2" fill="#fef3c7"/>
+  <line x1="315" y1="209" x2="325" y2="209" stroke="#000" stroke-width="1" opacity="0.3"/>
+  <line x1="330" y1="209" x2="340" y2="209" stroke="#000" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Gloves box -->
+  <rect x="590" y="195" width="45" height="25" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="612" y="211" text-anchor="middle" fill="#64748b" font-family="Arial" font-size="6">GLOVES</text>
+  
+  <!-- Hand wash station -->
+  <ellipse cx="160" cy="185" rx="14" ry="8" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+  <rect x="158" y="193" width="4" height="30" fill="#94a3b8"/>
+  <rect x="155" y="170" width="10" height="18" rx="2" fill="#94a3b8"/>
+  <rect x="150" y="168" width="20" height="4" rx="2" fill="#94a3b8"/>
+  <!-- Soap dispenser -->
+  <rect x="130" y="165" width="12" height="20" rx="4" fill="#0d9488"/>
+  <rect x="133" y="185" width="6" height="3" rx="1" fill="#0f766e"/>
+  
+  <!-- Biohazard bin -->
+  <rect x="680" y="240" width="30" height="40" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="695" y="258" text-anchor="middle" fill="#dc2626" font-family="Arial" font-size="7" font-weight="bold">⚠</text>
+  
+  <!-- UV light on ceiling -->
+  <rect x="350" y="30" width="100" height="6" rx="3" fill="#7dd3fc"/>
+  <rect x="350" y="30" width="100" height="6" rx="3" fill="#38bdf8" opacity="0.3"/>
+  
+  <!-- Label -->
+  <text x="400" y="420" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="13">Sterilization Room — Class B Autoclave & Ultrasonic</text>
+</svg>

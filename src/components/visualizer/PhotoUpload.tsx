@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { put } from "@vercel/blob";
 
 interface PhotoUploadProps {
   onUploadComplete: (url: string) => void;
@@ -46,11 +45,20 @@ export default function PhotoUpload({ onUploadComplete, disabled }: PhotoUploadP
     setShowConsent(false);
 
     try {
-      const blob = await put(pendingFile.name, pendingFile, {
-        access: "public",
-        addRandomSuffix: true,
+      const formData = new FormData();
+      formData.append("file", pendingFile);
+      formData.append("filename", pendingFile.name);
+      formData.append("contentType", pendingFile.type);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
       });
-      onUploadComplete(blob.url);
+
+      if (!res.ok) throw new Error("Upload failed");
+
+      const data = await res.json();
+      onUploadComplete(data.url);
     } catch {
       setError("Upload failed. Please try again.");
     } finally {

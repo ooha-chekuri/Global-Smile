@@ -14,6 +14,7 @@ import {
   ChartLine,
   UserCircle,
   Lock,
+  VideoCamera,
 } from "@phosphor-icons/react";
 
 const modules = [
@@ -211,6 +212,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Teleconsultation CTA ── */}
+      <section className="py-16 px-4 bg-gradient-to-br from-teal-50 to-emerald-50">
+        <motion.div className="max-w-3xl mx-auto text-center" {...fadeUp}>
+          <VideoCamera size={36} className="mx-auto mb-4 text-teal-600" />
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+            Not Ready for a Clinic Visit?
+          </h2>
+          <p className="text-gray-500 mb-8 max-w-xl mx-auto">
+            Book a video consultation with a prosthodontic specialist from the
+            comfort of your home. Available for local and international patients.
+          </p>
+          <Link
+            href="/teleconsultation"
+            className="inline-flex items-center gap-2 rounded-xl bg-teal-600 text-white px-8 py-3.5 font-semibold hover:bg-teal-700 transition-all"
+          >
+            <VideoCamera size={20} weight="bold" />
+            Book a Teleconsultation
+          </Link>
+        </motion.div>
+      </section>
+
       {/* ── CTA ── */}
       <section className="py-20 px-4 text-center">
         <motion.div className="max-w-2xl mx-auto" {...fadeUp}>
@@ -238,6 +260,9 @@ export default function Home() {
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-gray-600 transition-colors">
               Privacy Policy
+            </Link>
+            <Link href="/teleconsultation" className="hover:text-gray-600 transition-colors">
+              Teleconsultation
             </Link>
             <Link href="/trust" className="hover:text-gray-600 transition-colors">
               Trust Dashboard

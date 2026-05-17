@@ -4,6 +4,7 @@ import type {
   dentists,
   referrals,
   milestones,
+  teleconsultations,
 } from "../../drizzle/schema";
 
 export type Patient = typeof patients.$inferSelect;
@@ -20,6 +21,9 @@ export type NewReferral = typeof referrals.$inferInsert;
 
 export type Milestone = typeof milestones.$inferSelect;
 export type NewMilestone = typeof milestones.$inferInsert;
+
+export type Teleconsultation = typeof teleconsultations.$inferSelect;
+export type NewTeleconsultation = typeof teleconsultations.$inferInsert;
 
 export interface GeminiReport {
   complexityTier: "mild" | "moderate" | "complex";

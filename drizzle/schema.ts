@@ -98,3 +98,25 @@ export const milestones = pgTable("milestones", {
   isAnonymized: boolean("is_anonymized").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const consultationStatusEnum = pgEnum("consultation_status", [
+  "pending",
+  "confirmed",
+  "completed",
+  "cancelled",
+]);
+
+export const teleconsultations = pgTable("teleconsultations", {
+  id: serial("id").primaryKey(),
+  patientName: varchar("patient_name", { length: 255 }).notNull(),
+  patientEmail: varchar("patient_email", { length: 255 }).notNull(),
+  patientPhone: varchar("patient_phone", { length: 50 }),
+  preferredDate: timestamp("preferred_date").notNull(),
+  preferredTime: varchar("preferred_time", { length: 20 }).notNull(),
+  reason: text("reason").notNull(),
+  notes: text("notes"),
+  status: consultationStatusEnum("status").notNull().default("pending"),
+  meetingLink: varchar("meeting_link", { length: 1024 }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
