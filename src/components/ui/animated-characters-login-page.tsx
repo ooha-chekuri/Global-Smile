@@ -146,6 +146,25 @@ const EyeBall = ({
   );
 };
 
+interface ToothRowProps {
+  count?: number;
+  toothWidth?: number;
+  toothHeight?: number;
+  className?: string;
+}
+
+const ToothRow = ({ count = 5, toothWidth = 8, toothHeight = 10, className }: ToothRowProps) => (
+  <div className={className} aria-hidden="true">
+    {Array.from({ length: count }).map((_, index) => (
+      <span
+        key={index}
+        className="block rounded-b-[3px] border-x border-b border-black/10 bg-white shadow-[inset_0_-1px_0_rgba(0,0,0,0.08)]"
+        style={{ width: `${toothWidth}px`, height: `${toothHeight}px` }}
+      />
+    ))}
+  </div>
+);
+
 type DemoCredential = {
   label: string;
   email: string;
@@ -422,6 +441,27 @@ function LoginPage({
                   }
                 />
               </div>
+              <div
+                className="absolute overflow-hidden rounded-b-full bg-[#2D2D2D] transition-all duration-700 ease-in-out"
+                style={{
+                  left:
+                    password.length > 0 && showPassword
+                      ? "39px"
+                      : isLookingAtEachOther
+                        ? "70px"
+                        : `${62 + purplePos.faceX}px`,
+                  top:
+                    password.length > 0 && showPassword
+                      ? "72px"
+                      : isLookingAtEachOther
+                        ? "102px"
+                        : `${78 + purplePos.faceY}px`,
+                  width: "58px",
+                  height: "18px",
+                }}
+              >
+                <ToothRow count={5} toothWidth={9} toothHeight={9} className="flex justify-center gap-px" />
+              </div>
             </div>
 
             <div
@@ -481,6 +521,27 @@ function LoginPage({
                   forceLookY={password.length > 0 && showPassword ? -4 : isLookingAtEachOther ? -4 : undefined}
                 />
               </div>
+              <div
+                className="absolute overflow-hidden rounded-b-full bg-white shadow-sm transition-all duration-700 ease-in-out"
+                style={{
+                  left:
+                    password.length > 0 && showPassword
+                      ? "31px"
+                      : isLookingAtEachOther
+                        ? "52px"
+                        : `${46 + blackPos.faceX}px`,
+                  top:
+                    password.length > 0 && showPassword
+                      ? "62px"
+                      : isLookingAtEachOther
+                        ? "46px"
+                        : `${64 + blackPos.faceY}px`,
+                  width: "44px",
+                  height: "14px",
+                }}
+              >
+                <ToothRow count={4} toothWidth={8} toothHeight={8} className="flex justify-center gap-px" />
+              </div>
             </div>
 
             <div
@@ -523,6 +584,19 @@ function LoginPage({
                   forceLookX={password.length > 0 && showPassword ? -5 : undefined}
                   forceLookY={password.length > 0 && showPassword ? -4 : undefined}
                 />
+              </div>
+              <div
+                className="absolute overflow-hidden rounded-b-full bg-[#2D2D2D] transition-all duration-200 ease-out"
+                style={{
+                  left:
+                    password.length > 0 && showPassword ? "64px" : `${96 + orangePos.faceX}px`,
+                  top:
+                    password.length > 0 && showPassword ? "116px" : `${122 + orangePos.faceY}px`,
+                  width: "72px",
+                  height: "22px",
+                }}
+              >
+                <ToothRow count={6} toothWidth={9} toothHeight={10} className="flex justify-center gap-px" />
               </div>
             </div>
 
@@ -568,14 +642,18 @@ function LoginPage({
                 />
               </div>
               <div
-                className="absolute h-[4px] w-20 rounded-full bg-[#2D2D2D] transition-all duration-200 ease-out"
+                className="absolute overflow-hidden rounded-b-full bg-[#2D2D2D] transition-all duration-200 ease-out"
                 style={{
                   left:
-                    password.length > 0 && showPassword ? "10px" : `${40 + yellowPos.faceX}px`,
+                    password.length > 0 && showPassword ? "14px" : `${38 + yellowPos.faceX}px`,
                   top:
-                    password.length > 0 && showPassword ? "88px" : `${88 + yellowPos.faceY}px`,
+                    password.length > 0 && showPassword ? "84px" : `${84 + yellowPos.faceY}px`,
+                  width: "74px",
+                  height: "24px",
                 }}
-              />
+              >
+                <ToothRow count={6} toothWidth={9} toothHeight={11} className="flex justify-center gap-px" />
+              </div>
             </div>
           </div>
         </div>
