@@ -44,6 +44,53 @@ const FALLBACK_REPORT: GeminiReport = {
     "This report is for educational purposes only and does not constitute a medical diagnosis or treatment recommendation. Please consult a licensed prosthodontist for professional advice.",
 };
 
+function extractJsonPayload(text: string): string {
+  const stripped = text
+    .replace(/```json\s*/gi, "")
+    .replace(/```\s*/g, "")
+    .trim();
+
+  const start = stripped.indexOf("{");
+  if (start < 0) {
+    return stripped;
+  }
+
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let index = start; index < stripped.length; index += 1) {
+    const char = stripped[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+      continue;
+    }
+
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return stripped.slice(start, index + 1);
+      }
+    }
+  }
+
+  return stripped.slice(start);
+}
+
 export async function generateReport(
   concernText: string,
   ageBracket: AgeBracket = "31-45",
@@ -57,7 +104,8 @@ export async function generateReport(
       model: "gemini-2.5-flash",
       generationConfig: {
         temperature: 0.4,
-        maxOutputTokens: 1024,
+        maxOutputTokens: 2048,
+        responseMimeType: "application/json",
       },
     });
 
@@ -105,7 +153,7 @@ export async function generateReport(
     const text = result.response.text();
     console.log("[Gemini] Raw response received:", text);
 
-    const cleaned = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    const cleaned = extractJsonPayload(text);
     const parsed: GeminiReport = JSON.parse(cleaned);
 
     return {
