@@ -41,9 +41,10 @@ export const treatmentTypeEnum = pgEnum("treatment_type", [
 export const patients = pgTable("patients", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
   phone: varchar("phone", { length: 50 }),
   homeCity: varchar("home_city", { length: 255 }),
+  hashedPassword: varchar("hashed_password", { length: 255 }),
   consentPhotoUse: boolean("consent_photo_use").notNull().default(false),
   photoDeleteAfter: timestamp("photo_delete_after"),
   createdAt: timestamp("created_at").notNull().defaultNow(),

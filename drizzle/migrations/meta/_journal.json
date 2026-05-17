@@ -15,6 +15,13 @@
       "when": 1779001489863,
       "tag": "0001_jittery_abomination",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779008465631,
+      "tag": "0002_rapid_ted_forrester",
+      "breakpoints": true
     }
   ]
 }

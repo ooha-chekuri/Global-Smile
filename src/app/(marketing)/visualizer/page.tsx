@@ -9,7 +9,7 @@ import type { PatientFormData } from "@/components/visualizer/PatientForm";
 import type { GeminiReport } from "@/types";
 
 export default function VisualizerPage() {
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [report, setReport] = useState<GeminiReport | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -25,7 +25,7 @@ export default function VisualizerPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
-          photoUrl: photoUrl,
+          photoUrls,
         }),
       });
 
@@ -69,7 +69,7 @@ export default function VisualizerPage() {
               </h2>
 
               <PhotoUpload
-                onUploadComplete={setPhotoUrl}
+                onUploadComplete={setPhotoUrls}
                 disabled={isSubmitting}
               />
 
@@ -98,7 +98,7 @@ export default function VisualizerPage() {
               <button
                 onClick={() => {
                   setReport(null);
-                  setPhotoUrl(null);
+                  setPhotoUrls([]);
                 }}
                 className="text-sm text-teal-600 hover:text-teal-700 underline"
               >

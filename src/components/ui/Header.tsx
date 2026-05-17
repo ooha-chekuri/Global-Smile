@@ -11,7 +11,7 @@ const links = [
   { href: "/calculator", label: "Calculator" },
   { href: "/teleconsultation", label: "Consult" },
   { href: "/trust", label: "Trust" },
-  { href: "/auth/signin", label: "GP Portal" },
+  { href: "/auth/signin", label: "Sign In" },
 ];
 
 export default function Header() {
