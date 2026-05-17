@@ -34,13 +34,18 @@ export default function SignInPage() {
 
   const handlePatientSubmit = useCallback(
     async (email: string, password: string, _remember: boolean) => {
+      console.log(`[Sign-In] Initiating patient authentication for: ${email}`);
       const result = await signIn("credentials", {
         email,
         password,
         userType: "patient",
         redirect: false,
       });
-      if (result?.error) return "Invalid email or password";
+      if (result?.error) {
+        console.warn(`[Sign-In] Patient authentication failed: ${result.error}`);
+        return "Invalid email or password";
+      }
+      console.log("[Sign-In] Patient authentication successful. Redirecting to /patient/dashboard...");
       router.push("/patient/dashboard");
       router.refresh();
     },
@@ -49,13 +54,18 @@ export default function SignInPage() {
 
   const handleDentistSubmit = useCallback(
     async (email: string, password: string, _remember: boolean) => {
+      console.log(`[Sign-In] Initiating dentist authentication for: ${email}`);
       const result = await signIn("credentials", {
         email,
         password,
         userType: "dentist",
         redirect: false,
       });
-      if (result?.error) return "Invalid email or password";
+      if (result?.error) {
+        console.warn(`[Sign-In] Dentist authentication failed: ${result.error}`);
+        return "Invalid email or password";
+      }
+      console.log("[Sign-In] Dentist authentication successful. Redirecting to /referral/dashboard...");
       router.push("/referral/dashboard");
       router.refresh();
     },

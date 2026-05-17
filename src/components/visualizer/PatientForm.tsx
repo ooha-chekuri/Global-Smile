@@ -9,6 +9,7 @@ const patientSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Valid email required"),
   phone: z.string().optional(),
+  homeCity: z.string().min(2, "Your city/location is required"),
   ageBracket: z.enum(["18-30", "31-45", "46-60", "60+"] as const),
   priorDentalHistory: z.array(z.string()).optional(),
   concernText: z.string().min(10, "Please describe your concern in more detail"),
@@ -22,6 +23,7 @@ export type PatientFormData = z.infer<typeof patientSchema>;
 interface PatientFormProps {
   onSubmit: (data: PatientFormData) => void;
   isSubmitting: boolean;
+  defaultValues?: Partial<PatientFormData>;
 }
 
 const AGE_BRACKETS: AgeBracket[] = ["18-30", "31-45", "46-60", "60+"];
@@ -35,7 +37,7 @@ const HISTORY_OPTIONS: { value: PriorDentalHistory; label: string }[] = [
   { value: "None", label: "None of the above" },
 ];
 
-export default function PatientForm({ onSubmit, isSubmitting }: PatientFormProps) {
+export default function PatientForm({ onSubmit, isSubmitting, defaultValues }: PatientFormProps) {
   const {
     register,
     handleSubmit,
@@ -44,6 +46,7 @@ export default function PatientForm({ onSubmit, isSubmitting }: PatientFormProps
     resolver: zodResolver(patientSchema),
     defaultValues: {
       priorDentalHistory: [],
+      ...defaultValues,
     },
   });
 
@@ -91,6 +94,18 @@ export default function PatientForm({ onSubmit, isSubmitting }: PatientFormProps
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
+            Your City / Location
+          </label>
+          <input
+            type="text"
+            {...register("homeCity")}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none"
+            placeholder="e.g. London, UK or Vijayawada"
+          />
+          {errors.homeCity && <p className="text-red-500 text-xs mt-1">{errors.homeCity.message}</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Age Bracket
           </label>
           <select
@@ -105,6 +120,7 @@ export default function PatientForm({ onSubmit, isSubmitting }: PatientFormProps
           {errors.ageBracket && <p className="text-red-500 text-xs mt-1">{errors.ageBracket.message}</p>}
         </div>
       </div>
+
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">

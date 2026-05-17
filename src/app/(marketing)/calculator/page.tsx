@@ -8,6 +8,7 @@ import PDFExport from "@/components/calculator/PDFExport";
 import ShareButton from "@/components/calculator/ShareButton";
 import { calculateSavings } from "@/lib/calculator-utils";
 import type { CalculatorInput, CalculatorResult } from "@/types";
+import { Calculator } from "@phosphor-icons/react";
 
 export default function CalculatorPage() {
   const [result, setResult] = useState<CalculatorResult | null>(null);
@@ -31,38 +32,43 @@ export default function CalculatorPage() {
   };
 
   return (
-    <div className="flex-1">
-      <section className="bg-gradient-to-br from-teal-600 to-teal-800 text-white py-16 px-4">
+    <div className="flex-1 bg-white">
+      <section className="border-b border-gray-100 bg-white py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
+          <p className="text-teal-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Stage 3: Cost Analysis</p>
+          <h1 className="text-[clamp(2rem,5vw,3rem)] font-bold text-gray-900 tracking-tight mb-4">
             Dental Tourism Calculator
           </h1>
-          <p className="text-teal-100 text-lg">
-            See how much you save with world-class prosthodontic care in Vijayawada
+          <p className="text-gray-500 text-lg font-light leading-relaxed">
+            Compute the true cost of world-class prosthodontic care in Vijayawada 
+            vs. London, New York, or Sydney — including flights and stay.
           </p>
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Compare Your Costs
-          </h2>
+      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12">
+        <div className="space-y-8">
+          <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
+             <h2 className="text-xl font-bold text-gray-900">
+              Your Parameters
+            </h2>
+          </div>
           <CalculatorForm onCalculate={handleCalculate} isCalculating={isCalculating} />
         </div>
 
-        <div ref={resultsRef}>
+        <div ref={resultsRef} className="relative">
           {isCalculating && (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center space-y-3">
-                <div className="animate-spin h-8 w-8 border-4 border-teal-500 border-t-transparent rounded-full mx-auto" />
-                <p className="text-gray-500 text-sm">Calculating your savings...</p>
-              </div>
+            <div className="flex flex-col items-center justify-center h-full min-h-[400px] space-y-6">
+              <div className="animate-spin h-10 w-10 border-2 border-teal-500 border-t-transparent rounded-full" />
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Recomputing Net Savings...</p>
             </div>
           )}
 
           {result && lastInput && !isCalculating && (
-            <div ref={resultsRef} className="space-y-6">
+            <div ref={resultsRef} className="space-y-8 animate-in fade-in duration-500">
+              <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
+                <h2 className="text-xl font-bold text-gray-900">Savings Analysis</h2>
+              </div>
               <ResultsDisplay
                 result={result}
                 treatmentType={lastInput.treatmentType}
@@ -72,7 +78,7 @@ export default function CalculatorPage() {
                 patientName="Your"
                 treatmentType={lastInput.treatmentType}
               />
-              <div className="flex justify-end gap-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                 <ShareButton
                   text={`I could save ${result.savingsPercentage}% on ${lastInput.treatmentType.replace("-", " ")} treatment in Vijayawada! Check your savings at Global Smile.`}
                 />
@@ -82,13 +88,14 @@ export default function CalculatorPage() {
           )}
 
           {!result && !isCalculating && (
-            <div className="flex items-center justify-center h-full border-2 border-dashed border-gray-200 rounded-xl p-12">
-              <div className="text-center text-gray-400">
-                <svg className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-                <p>Fill in the form to see your savings</p>
+            <div className="flex flex-col items-center justify-center h-full min-h-[400px] border border-dashed border-gray-200 rounded-lg bg-gray-50/30 p-12 text-center">
+              <div className="shrink-0 h-16 w-16 bg-gray-100 text-gray-300 rounded-full flex items-center justify-center mb-6">
+                 <Calculator size={32} weight="thin" />
               </div>
+              <p className="text-sm text-gray-400 font-light italic">
+                Enter your treatment and travel details to <br /> 
+                generate a comparative cost report.
+              </p>
             </div>
           )}
         </div>
@@ -96,3 +103,4 @@ export default function CalculatorPage() {
     </div>
   );
 }
+

@@ -19,40 +19,64 @@ import {
 
 const modules = [
   {
-    title: "AI Treatment Visualizer",
+    title: "AI Treatment Scan",
     description:
-      "Upload a photo and describe your concern. Get a plain-language report showing restorative possibilities, complexity tier, and next steps.",
-    href: "/visualizer",
+      "Upload photos to receive a preliminary specialist report on restorative possibilities and complexity. No diagnosis, total clarity.",
+    href: "/auth/signin",
     icon: MagicWand,
-    color: "from-teal-500 to-emerald-600",
-    gradient: "group-hover:shadow-teal-500/25",
+    action: "Initiate Scan",
   },
   {
-    title: "Dental Tourism Calculator",
+    title: "Partner Verification",
     description:
-      "Compare treatment costs in Vijayawada vs. New York, London, and Sydney. See your net savings including flights and stay.",
-    href: "/calculator",
-    icon: Calculator,
-    color: "from-emerald-500 to-teal-600",
-    gradient: "group-hover:shadow-emerald-500/25",
-  },
-  {
-    title: "Trust Dashboard",
-    description:
-      "Verify our credentials, sterilization protocols, and live anonymized patient milestones. Total transparency.",
+      "Verify our specialist credentials, NABH/ISO protocols, and live patient milestones with total clinical transparency.",
     href: "/trust",
     icon: ShieldCheck,
-    color: "from-cyan-500 to-teal-600",
-    gradient: "group-hover:shadow-cyan-500/25",
+    action: "Verify Standards",
   },
   {
-    title: "GP Referral Portal",
+    title: "Savings Analysis",
     description:
-      "Secure referral portal for general dentists. Submit cases, track status, and receive closure summaries.",
+      "Compare costs in Vijayawada vs. your home city. See net savings including flights and 5-star recovery accommodation.",
+    href: "/calculator",
+    icon: Calculator,
+    action: "Run Calculator",
+  },
+  {
+    title: "Specialist Consultation",
+    description:
+      "Book a secure diagnostic video call with our clinical leads. Finalize your plan from the comfort of your home.",
     href: "/auth/signin",
-    icon: UserCircle,
-    color: "from-teal-600 to-teal-800",
-    gradient: "group-hover:shadow-teal-600/25",
+    icon: VideoCamera,
+    action: "Book Call",
+  },
+];
+
+const steps = [
+  {
+    stage: "01",
+    title: "Clinical Scan",
+    description: "Secure record upload for specialist AI assessment of restorative possibilities.",
+  },
+  {
+    stage: "02",
+    title: "Regional Plan",
+    description: "Receive recommendations for verified clinical partners in your home city.",
+  },
+  {
+    stage: "03",
+    title: "Trust Audit",
+    description: "Verify our clinical protocols, credentials, and live sterilization logs.",
+  },
+  {
+    stage: "04",
+    title: "Value Analysis",
+    description: "Calculate your net savings compared to London, NYC, or Sydney quotes.",
+  },
+  {
+    stage: "05",
+    title: "Specialist Action",
+    description: "Book your diagnostic call and finalize your treatment roadmap.",
   },
 ];
 
@@ -74,63 +98,109 @@ const fadeUp = {
 
 export default function Home() {
   return (
-    <div className="flex-1 bg-white">
+    <div className="flex-1 bg-brand-ivory">
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden border-b border-gray-100 bg-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.03)_0%,transparent_50%)]" />
+      <section className="relative overflow-hidden bg-brand-cream/20 border-b border-brand-gold/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,168,76,0.05)_0%,transparent_50%)]" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-teal/0 via-brand-gold/40 to-brand-teal/0" />
+        
         <motion.div
-          className="relative max-w-5xl mx-auto px-6 py-24 md:py-32 text-center"
+          className="relative max-w-5xl mx-auto px-6 py-28 md:py-48 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 border border-teal-100 bg-teal-50/50 rounded-md px-3 py-1 text-xs font-medium text-teal-800 mb-8 tracking-wide uppercase"
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            animate={{ opacity: 1, letterSpacing: "0.4em" }}
+            transition={{ delay: 0.2, duration: 1.5 }}
+            className="inline-flex items-center gap-2 border border-brand-gold/20 bg-white/50 rounded-sm px-6 py-1.5 text-[10px] font-bold text-brand-gold mb-12 uppercase tracking-[0.4em]"
           >
-            <MagicWand size={14} weight="bold" />
-            Specialist Prosthodontic Intelligence
+            <div className="h-1 w-1 rounded-full bg-brand-gold animate-pulse" />
+            Specialist Trust Engine
           </motion.div>
 
-          <h1 className="text-[clamp(2.25rem,6vw,4rem)] font-bold tracking-tight text-gray-900 mb-6 leading-[1.1]">
-            Global Standard Care, <br />
-            <span className="text-teal-600">Locally Anchored.</span>
+          <h1 className="text-[clamp(3rem,10vw,6.5rem)] font-bold tracking-tighter text-brand-ink mb-10 leading-[0.88]">
+            Clinical Mastery. <br />
+            <span className="text-brand-gold italic">Radical Transparency.</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
-            Transparency. Trust. Precision. Experience the world-class expertise of 
-            prosthodontic specialists in Vijayawada, built for the global patient.
+          
+          <p className="text-xl md:text-2xl text-brand-muted max-w-3xl mx-auto mb-20 leading-relaxed font-light">
+            Architecting the future of prosthodontics for the global patient. <br />
+            <span className="text-brand-ink font-medium">Precision restoration, built on a chain of digital trust.</span>
           </p>
 
           <motion.div
-            className="flex flex-wrap gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
             <Link
-              href="/visualizer"
-              className="inline-flex items-center gap-2 rounded-md bg-teal-600 text-white px-8 py-3.5 text-sm font-semibold hover:bg-teal-700 transition-all active:scale-[0.98]"
+              href="/auth/signin"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-4 rounded-md bg-brand-teal text-brand-cream px-12 py-5 text-sm font-bold hover:bg-brand-ink transition-all shadow-2xl shadow-brand-teal/20 active:scale-[0.98] group"
             >
-              <MagicWand size={18} weight="bold" />
-              See Your Smile Potential
-              <ArrowRight size={16} weight="bold" />
+              Start Clinical Journey
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" weight="bold" />
             </Link>
             <Link
-              href="/calculator"
-              className="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-white text-gray-600 px-8 py-3.5 text-sm font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-[0.98]"
+              href="/trust"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md border border-brand-gold/30 bg-white text-brand-muted px-12 py-5 text-sm font-bold hover:bg-brand-cream hover:text-brand-ink transition-all active:scale-[0.98]"
             >
-              <Calculator size={18} weight="bold" />
-              Savings Calculator
+              Verify Credentials
             </Link>
           </motion.div>
+
+          <div className="mt-32 pt-16 border-t border-brand-gold/10 flex flex-wrap justify-center gap-x-20 gap-y-8">
+             {stats.slice(0, 3).map((stat) => (
+                <div key={stat.label} className="text-left space-y-1">
+                  <p className="text-3xl font-bold text-brand-ink tracking-tight">{stat.value}</p>
+                  <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em]">{stat.label}</p>
+                </div>
+             ))}
+          </div>
         </motion.div>
       </section>
 
-      {/* ── Module Cards ── */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-2 gap-6">
+      {/* ── Trust Bar ── */}
+      <section className="border-b border-brand-gold/10 bg-white/50 py-10">
+        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center md:justify-between items-center gap-12 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-1000">
+           <div className="font-bold text-[10px] tracking-[0.3em]">NABH ACCREDITED</div>
+           <div className="font-bold text-[10px] tracking-[0.3em]">ISO 9001:2015</div>
+           <div className="font-bold text-[10px] tracking-[0.3em]">DCI REGISTERED</div>
+           <div className="font-bold text-[10px] tracking-[0.3em]">500+ INTL PATIENTS</div>
+        </div>
+      </section>
+
+      {/* ── Journey Stages ── */}
+      <section className="bg-white py-32 px-6 border-b border-gray-50">
+        <div className="max-w-5xl mx-auto space-y-20">
+          <div className="text-center space-y-4">
+            <h2 className="text-[10px] font-bold text-teal-600 uppercase tracking-[0.3em]">The Flywheel</h2>
+            <p className="text-4xl font-bold text-gray-900 tracking-tight">Your Treatment Roadmap</p>
+          </div>
+          <div className="grid md:grid-cols-4 gap-12">
+            {steps.map((step) => (
+              <div key={step.stage} className="relative space-y-6 group">
+                <div className="text-5xl font-bold text-gray-100 group-hover:text-teal-600/10 transition-colors duration-500 font-mono leading-none">{step.stage}</div>
+                <div className="space-y-2">
+                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">{step.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed font-light">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Capabilities ── */}
+      <section className="max-w-6xl mx-auto px-6 py-32">
+        <div className="text-center mb-24 space-y-4">
+          <h2 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.4em]">Core Infrastructure</h2>
+          <p className="text-5xl font-bold text-brand-ink tracking-tight">Built for Total Trust</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10">
           {modules.map((mod, i) => {
             const Icon = mod.icon;
             return (
@@ -143,25 +213,23 @@ export default function Home() {
               >
                 <Link
                   href={mod.href}
-                  className="group relative block rounded-lg border border-gray-100 bg-white p-8 hover:border-teal-200 hover:bg-teal-50/30 transition-all"
+                  className="group relative block rounded-2xl border border-brand-gold/10 bg-brand-cream/10 p-12 hover:border-brand-gold/30 hover:bg-white transition-all shadow-sm hover:shadow-xl hover:shadow-brand-gold/5"
                 >
-                  <div className="flex items-start gap-5">
-                    <div className="shrink-0 flex h-12 w-12 items-center justify-center rounded-md border border-teal-100 bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-colors">
-                      <Icon size={24} weight="bold" />
+                  <div className="flex flex-col gap-8">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-brand-teal text-brand-cream group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-brand-teal/20">
+                      <Icon size={32} weight="light" />
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-bold text-brand-ink tracking-tight">
                         {mod.title}
                       </h3>
-                      <p className="text-sm text-gray-500 leading-relaxed font-light">
+                      <p className="text-brand-muted leading-relaxed font-light">
                         {mod.description}
                       </p>
+                      <div className="pt-4 inline-flex items-center gap-2 text-xs font-bold text-brand-gold uppercase tracking-[0.2em] group-hover:gap-4 transition-all">
+                        {mod.action} <ArrowRight size={14} weight="bold" />
+                      </div>
                     </div>
-                    <ArrowRight
-                      size={18}
-                      className="shrink-0 mt-1 text-gray-200 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"
-                      weight="bold"
-                    />
                   </div>
                 </Link>
               </motion.div>
@@ -170,102 +238,72 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
-      <section className="bg-gray-50/50 border-y border-gray-100 py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <motion.div className="text-center mb-16" {...fadeUp}>
-            <h2 className="text-sm font-bold text-teal-600 uppercase tracking-widest mb-3">Why Global Smile</h2>
-            <p className="text-3xl md:text-4xl font-bold text-gray-900">Clinical Excellence at Scale</p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {stats.map((stat, i) => {
-              const Icon = stat.icon;
-              return (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-lg border border-gray-100 p-6 flex flex-col items-center text-center"
-                >
-                  <Icon
-                    size={32}
-                    className="mb-4 text-teal-600/80"
-                    weight="light"
-                  />
-                  <p className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">{stat.value}</p>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">{stat.label}</p>
-                </motion.div>
-              );
-            })}
+      {/* ── Specialist CTA ── */}
+      <section className="py-32 px-6">
+        <div className="max-w-5xl mx-auto bg-gray-900 rounded-lg overflow-hidden relative">
+          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+          <div className="relative p-12 md:p-20 text-center space-y-10">
+             <VideoCamera size={48} className="mx-auto text-teal-500" weight="thin" />
+             <div className="space-y-4">
+                <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+                  High-Complexity <br /> Rehabilitation?
+                </h2>
+                <p className="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                  Discuss your case with Dr. Prakash in a secure, one-on-one video diagnostic call. 
+                  Get clinical clarity before you book your flight.
+                </p>
+             </div>
+             <Link
+                href="/teleconsultation"
+                className="inline-flex items-center gap-3 rounded-md bg-white text-gray-900 px-12 py-5 text-sm font-bold hover:bg-teal-50 transition-all active:scale-[0.98]"
+              >
+                Schedule Specialist Call
+                <ArrowRight size={18} weight="bold" />
+              </Link>
           </div>
         </div>
       </section>
 
-      {/* ── Teleconsultation CTA ── */}
-      <section className="py-24 px-6">
-        <motion.div 
-          className="max-w-4xl mx-auto border border-teal-100 rounded-lg p-12 text-center bg-teal-50/20"
-          {...fadeUp}
-        >
-          <VideoCamera size={40} className="mx-auto mb-6 text-teal-600" weight="thin" />
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-            Remote Clinical Assessment
-          </h2>
-          <p className="text-gray-500 mb-10 max-w-xl mx-auto font-light leading-relaxed">
-            Consult with a specialist prosthodontist via encrypted video. 
-            Perfect for initial diagnostic discussions and international travel planning.
-          </p>
-          <Link
-            href="/teleconsultation"
-            className="inline-flex items-center gap-2 rounded-md bg-white border border-teal-200 text-teal-700 px-10 py-4 text-sm font-semibold hover:bg-teal-50 transition-all active:scale-[0.98]"
-          >
-            <VideoCamera size={20} weight="bold" />
-            Book Specialist Consultation
-          </Link>
-        </motion.div>
-      </section>
-
-      {/* ── Final CTA ── */}
-      <section className="py-32 px-6 text-center bg-gray-900 text-white">
-        <motion.div className="max-w-2xl mx-auto" {...fadeUp}>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Verify Your Treatment Plan
-          </h2>
-          <p className="text-gray-400 mb-12 text-lg font-light leading-relaxed">
-            Upload your case for a preliminary specialist review. 
-            Experience radical transparency before you fly.
-          </p>
-          <Link
-            href="/visualizer"
-            className="inline-flex items-center gap-2 rounded-md bg-teal-500 text-white px-10 py-4 text-sm font-bold hover:bg-teal-400 transition-all active:scale-[0.98]"
-          >
-            <MagicWand size={20} weight="bold" />
-            Get Preliminary Report
-          </Link>
-        </motion.div>
-      </section>
-
       {/* ── Footer ── */}
-      <footer className="border-t border-gray-100 bg-white py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
-            <span className="text-xl font-bold text-teal-600 tracking-tighter">GLOBAL SMILE</span>
-            <div className="flex flex-wrap justify-center gap-8 text-xs font-bold text-gray-400 uppercase tracking-widest">
-              <Link href="/privacy" className="hover:text-teal-600 transition-colors">Privacy</Link>
-              <Link href="/teleconsultation" className="hover:text-teal-600 transition-colors">Teleconsultation</Link>
-              <Link href="/trust" className="hover:text-teal-600 transition-colors">Trust</Link>
-              <Link href="/auth/signin" className="hover:text-teal-600 transition-colors">GP Portal</Link>
+      <footer className="border-t border-gray-100 bg-white py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-12 mb-20">
+            <div className="space-y-6">
+               <span className="text-2xl font-bold text-teal-600 tracking-tighter">GLOBAL SMILE</span>
+               <p className="text-sm text-gray-400 font-light leading-relaxed">
+                The world's first trust-chain infrastructure for specialist prosthodontics and dental tourism.
+               </p>
+            </div>
+            <div className="space-y-6">
+              <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Navigation</p>
+              <nav className="flex flex-col gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <Link href="/auth/signin" className="hover:text-teal-600 transition-colors">Journey Hub</Link>
+                <Link href="/calculator" className="hover:text-teal-600 transition-colors">Calculator</Link>
+                <Link href="/trust" className="hover:text-teal-600 transition-colors">Trust Dashboard</Link>
+              </nav>
+            </div>
+            <div className="space-y-6">
+               <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Compliance</p>
+               <nav className="flex flex-col gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <Link href="/privacy" className="hover:text-teal-600 transition-colors">Privacy</Link>
+                <Link href="#" className="hover:text-teal-600 transition-colors">DCI Registration</Link>
+                <Link href="#" className="hover:text-teal-600 transition-colors">NABH Status</Link>
+              </nav>
+            </div>
+            <div className="space-y-6">
+               <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Contact</p>
+               <nav className="flex flex-col gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <span className="text-gray-900">Vijayawada, India</span>
+                <a href="mailto:care@globalsmile.in" className="hover:text-teal-600 transition-colors">care@globalsmile.in</a>
+              </nav>
             </div>
           </div>
-          <div className="text-center text-[10px] text-gray-300 uppercase tracking-[0.2em] leading-relaxed">
-            &copy; {new Date().getFullYear()} Global Smile. Specialized Prosthodontics & Maxillofacial Rehabilitation. <br />
-            An educational platform for clinical transparency. Not a substitute for professional medical diagnosis.
+          <div className="pt-12 border-t border-gray-50 text-center text-[9px] text-gray-300 uppercase tracking-[0.3em] leading-relaxed max-w-4xl mx-auto">
+            &copy; {new Date().getFullYear()} Global Smile Centre. Specialist Prosthodontics & Maxillofacial Rehabilitation. <br />
+            Clinical transparency engine for educational purposes. Not medical advice.
           </div>
         </div>
       </footer>
     </div>
   );
 }
-

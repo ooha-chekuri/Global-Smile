@@ -47,6 +47,9 @@ export const patients = pgTable("patients", {
   hashedPassword: varchar("hashed_password", { length: 255 }),
   consentPhotoUse: boolean("consent_photo_use").notNull().default(false),
   photoDeleteAfter: timestamp("photo_delete_after"),
+  currentStage: varchar("current_stage", { length: 50 }).notNull().default("scan"),
+  selectedClinicId: integer("selected_clinic_id"),
+  selectedDoctorId: integer("selected_doctor_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

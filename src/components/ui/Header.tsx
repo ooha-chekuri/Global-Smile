@@ -7,7 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
-  { href: "/visualizer", label: "Visualizer" },
+  { href: "/auth/signin", label: "Journey Hub" },
   { href: "/calculator", label: "Calculator" },
   { href: "/teleconsultation", label: "Consult" },
   { href: "/trust", label: "Trust" },

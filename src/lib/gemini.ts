@@ -48,7 +48,10 @@ export async function generateReport(
   concernText: string,
   ageBracket: AgeBracket = "31-45",
   priorDentalHistory: PriorDentalHistory[] = [],
+  imageUrls: string[] = [],
 ): Promise<GeminiReport> {
+  console.log(`[Gemini] Sending prompt for concern: "${concernText.slice(0, 50)}..." with ${imageUrls.length} photos`);
+  
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
@@ -58,15 +61,50 @@ export async function generateReport(
       },
     });
 
+    const prompt = buildPrompt(concernText, ageBracket, priorDentalHistory);
+
+    // Convert imageUrls to Gemini content parts if they exist
+    const imageParts = await Promise.all(
+      imageUrls.map(async (url) => {
+        try {
+          const resolvedUrl = url.startsWith("/")
+            ? `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}${url}`
+            : url;
+          const res = await fetch(resolvedUrl);
+          const buffer = await res.arrayBuffer();
+          const contentType = res.headers.get("content-type") || "image/jpeg";
+          return {
+            inlineData: {
+              data: Buffer.from(buffer).toString("base64"),
+              mimeType: contentType,
+            },
+          };
+        } catch (e) {
+          console.warn("[Gemini] Failed to fetch image for processing:", url);
+          return null;
+        }
+      })
+    );
+
+    const validImageParts = imageParts.filter(Boolean) as { inlineData: { data: string; mimeType: string } }[];
+
     const result = await model.generateContent({
       contents: [
         { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
-        { role: "model", parts: [{ text: "Understood. I will act as a dental education assistant and never provide diagnoses." }] },
-        { role: "user", parts: [{ text: buildPrompt(concernText, ageBracket, priorDentalHistory) }] },
+        { role: "model", parts: [{ text: "Understood. I will act as a dental education assistant, providing expert restorative possibilities based on clinical patterns without diagnosis." }] },
+        { 
+          role: "user", 
+          parts: [
+            { text: prompt },
+            ...validImageParts
+          ] 
+        },
       ],
     });
 
     const text = result.response.text();
+    console.log("[Gemini] Raw response received:", text);
+
     const cleaned = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
     const parsed: GeminiReport = JSON.parse(cleaned);
 
@@ -78,7 +116,8 @@ export async function generateReport(
       educationalNote: parsed.educationalNote ?? FALLBACK_REPORT.educationalNote,
       disclaimer: parsed.disclaimer ?? FALLBACK_REPORT.disclaimer,
     };
-  } catch {
+  } catch (error) {
+    console.error("[Gemini] Error generating report:", error);
     return FALLBACK_REPORT;
   }
 }

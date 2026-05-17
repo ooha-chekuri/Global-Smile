@@ -57,9 +57,10 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       const contentWidth = pageWidth - margin * 2;
       let cursorY = margin;
 
-      const primaryColor: [number, number, number] = [13, 148, 136];
-      const grayColor: [number, number, number] = [107, 114, 128];
-      const darkColor: [number, number, number] = [17, 24, 39];
+      const primaryColor: [number, number, number] = [45, 107, 107]; // brand-teal
+      const accentColor: [number, number, number] = [201, 168, 76]; // brand-gold
+      const grayColor: [number, number, number] = [122, 110, 99]; // brand-muted
+      const darkColor: [number, number, number] = [26, 20, 16]; // brand-ink
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(22);
@@ -70,7 +71,7 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor(...grayColor);
-      doc.text("Preliminary Treatment Analysis", pageWidth / 2, cursorY, { align: "center" });
+      doc.text("Specialist Preliminary Analysis", pageWidth / 2, cursorY, { align: "center" });
       cursorY += 6;
       doc.text(`Prepared for: ${patientName}`, pageWidth / 2, cursorY, { align: "center" });
       cursorY += 6;
@@ -83,7 +84,7 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       cursorY += 14;
 
       // Horizontal rule
-      doc.setDrawColor(...primaryColor);
+      doc.setDrawColor(...accentColor);
       doc.setLineWidth(0.5);
       doc.line(margin, cursorY, pageWidth - margin, cursorY);
       cursorY += 8;
@@ -213,16 +214,16 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       doc.setFontSize(10);
       doc.setTextColor(75, 85, 99);
 
-      doc.setFillColor(249, 250, 251);
+      doc.setFillColor(245, 240, 232); // brand-cream
       const noteStartY = cursorY;
       doc.roundedRect(margin, noteStartY - 4, contentWidth, 30, 3, 3, "F");
       cursorY = wrapText(doc, report.educationalNote, margin + 4, cursorY, contentWidth - 8, 5);
       const noteEndY = cursorY + 4;
       // Redraw rect with correct height
-      doc.setFillColor(249, 250, 251);
+      doc.setFillColor(245, 240, 232); // brand-cream
       doc.roundedRect(margin, noteStartY - 4, contentWidth, cursorY - noteStartY + 8, 3, 3, "F");
       // Re-render text on top
-      doc.setTextColor(75, 85, 99);
+      doc.setTextColor(...darkColor);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       wrapText(doc, report.educationalNote, margin + 4, noteStartY, contentWidth - 8, 5);
@@ -238,8 +239,8 @@ export default function VisualizerPDF({ photoUrls, report, patientName, concernT
       doc.roundedRect(margin, cursorY, contentWidth, 14, 4, 4, "F");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
-      doc.setTextColor(255, 255, 255);
-      doc.text("Book a Virtual Consultation", pageWidth / 2, cursorY + 9, { align: "center" });
+      doc.setTextColor(245, 240, 232); // brand-cream text on teal
+      doc.text("Schedule Your Specialist Consultation", pageWidth / 2, cursorY + 9, { align: "center" });
       cursorY += 24;
 
       // Disclaimer

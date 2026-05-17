@@ -255,6 +255,7 @@ export default function SignUpPage() {
       return;
     }
     setLoading(true);
+    console.log(`[Sign-Up] Initiating registration for: ${email}`);
 
     try {
       const res = await fetch("/api/auth/signup", {
@@ -265,8 +266,11 @@ export default function SignUpPage() {
 
       if (!res.ok) {
         const data = await res.json();
+        console.warn(`[Sign-Up] Registration API failed: ${data.error}`);
         throw new Error(data.error ?? "Sign up failed");
       }
+
+      console.log("[Sign-Up] Registration successful. Initiating automatic sign-in...");
 
       const result = await signIn("credentials", {
         email,
@@ -276,12 +280,15 @@ export default function SignUpPage() {
       });
 
       if (result?.error) {
+        console.warn(`[Sign-Up] Automatic sign-in failed: ${result.error}`);
         throw new Error("Account created but login failed. Please sign in.");
       }
 
+      console.log("[Sign-Up] Flow complete. Redirecting to /patient/dashboard...");
       router.push("/patient/dashboard");
       router.refresh();
     } catch (err) {
+      console.error("[Sign-Up] Error encountered:", err);
       setError((err as Error).message);
     } finally {
       setLoading(false);

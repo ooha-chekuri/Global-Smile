@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
     const filePath = join(uploadDir, uniqueName);
     await writeFile(filePath, buffer);
 
-    const url = `/temp-uploads/${uniqueName}`;
+    const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+    const url = `${baseUrl}/temp-uploads/${uniqueName}`;
     return NextResponse.json({ url }, { status: 200 });
   } catch {
     return NextResponse.json(

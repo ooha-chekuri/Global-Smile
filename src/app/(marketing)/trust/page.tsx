@@ -6,36 +6,26 @@ import MilestoneFeed from "@/components/trust/MilestoneFeed";
 import GoogleReviews from "@/components/trust/GoogleReviews";
 import VideoTestimonial from "@/components/trust/VideoTestimonial";
 
+import TrustPortal from "@/components/trust/TrustPortal";
+
 export default function TrustPage() {
   return (
-    <div className="flex-1">
-      <section className="bg-gradient-to-br from-teal-600 to-teal-800 text-white py-16 px-4">
+    <div className="flex-1 bg-white">
+      <section className="border-b border-gray-100 bg-white py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Trust-Chain Verification Dashboard
+          <p className="text-teal-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Verification Layer</p>
+          <h1 className="text-[clamp(2rem,5vw,3rem)] font-bold text-gray-900 tracking-tight mb-4">
+            Trust-Chain Dashboard
           </h1>
-          <p className="text-teal-100 text-lg">
-            Every credential. Every protocol. Every milestone. See it all here.
+          <p className="text-gray-500 text-lg font-light leading-relaxed">
+            Direct access to our clinical credentials, sterilization protocols, 
+            and real-time patient journey milestones.
           </p>
         </div>
       </section>
 
-      <section className="max-w-4xl mx-auto px-4 py-12 space-y-16">
-        <CredentialWall />
-        <SterilizationStatus />
-        <PhotoCarousel />
-        <Suspense
-          fallback={
-            <div className="text-center py-8 text-gray-400">
-              Loading milestones...
-            </div>
-          }
-        >
-          <MilestoneFeed />
-        </Suspense>
-        <GoogleReviews />
-        <VideoTestimonial />
-      </section>
+      <TrustPortal standalone={false} />
     </div>
   );
 }
+
