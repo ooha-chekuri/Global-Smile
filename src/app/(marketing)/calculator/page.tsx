@@ -5,6 +5,7 @@ import CalculatorForm from "@/components/calculator/CalculatorForm";
 import ResultsDisplay from "@/components/calculator/ResultsDisplay";
 import ItineraryCard from "@/components/calculator/ItineraryCard";
 import PDFExport from "@/components/calculator/PDFExport";
+import ShareButton from "@/components/calculator/ShareButton";
 import { calculateSavings } from "@/lib/calculator-utils";
 import type { CalculatorInput, CalculatorResult } from "@/types";
 
@@ -71,7 +72,10 @@ export default function CalculatorPage() {
                 patientName="Your"
                 treatmentType={lastInput.treatmentType}
               />
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-3">
+                <ShareButton
+                  text={`I could save ${result.savingsPercentage}% on ${lastInput.treatmentType.replace("-", " ")} treatment in Vijayawada! Check your savings at Global Smile.`}
+                />
                 <PDFExport contentRef={resultsRef as React.RefObject<HTMLDivElement | null>} />
               </div>
             </div>
