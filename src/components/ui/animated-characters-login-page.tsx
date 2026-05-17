@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Eye, EyeOff, Mail, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -29,32 +29,46 @@ const Pupil = ({
   forceLookX,
   forceLookY,
 }: PupilProps) => {
-  const [pupilPosition, setPupilPosition] = useState({ x: 0, y: 0 });
+  const [mouseX, setMouseX] = useState<number>(0);
+  const [mouseY, setMouseY] = useState<number>(0);
   const pupilRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!pupilRef.current || (forceLookX !== undefined && forceLookY !== undefined)) return;
-
-      const pupil = pupilRef.current.getBoundingClientRect();
-      const pupilCenterX = pupil.left + pupil.width / 2;
-      const pupilCenterY = pupil.top + pupil.height / 2;
-      const deltaX = event.clientX - pupilCenterX;
-      const deltaY = event.clientY - pupilCenterY;
-      const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
-      const angle = Math.atan2(deltaY, deltaX);
-
-      setPupilPosition({ x: Math.cos(angle) * distance, y: Math.sin(angle) * distance });
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseX(e.clientX);
+      setMouseY(e.clientY);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [forceLookX, forceLookY, maxDistance]);
 
-  const effectivePupilPosition =
-    forceLookX !== undefined && forceLookY !== undefined
-      ? { x: forceLookX, y: forceLookY }
-      : pupilPosition;
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const calculatePupilPosition = () => {
+    if (!pupilRef.current) return { x: 0, y: 0 };
+
+    if (forceLookX !== undefined && forceLookY !== undefined) {
+      return { x: forceLookX, y: forceLookY };
+    }
+
+    const pupil = pupilRef.current.getBoundingClientRect();
+    const pupilCenterX = pupil.left + pupil.width / 2;
+    const pupilCenterY = pupil.top + pupil.height / 2;
+
+    const deltaX = mouseX - pupilCenterX;
+    const deltaY = mouseY - pupilCenterY;
+    const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
+
+    const angle = Math.atan2(deltaY, deltaX);
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+
+    return { x, y };
+  };
+
+  const pupilPosition = calculatePupilPosition();
 
   return (
     <div
@@ -64,7 +78,7 @@ const Pupil = ({
         width: `${size}px`,
         height: `${size}px`,
         backgroundColor: pupilColor,
-        transform: `translate(${effectivePupilPosition.x}px, ${effectivePupilPosition.y}px)`,
+        transform: `translate(${pupilPosition.x}px, ${pupilPosition.y}px)`,
         transition: "transform 0.1s ease-out",
       }}
     />
@@ -92,32 +106,46 @@ const EyeBall = ({
   forceLookX,
   forceLookY,
 }: EyeBallProps) => {
-  const [pupilPosition, setPupilPosition] = useState({ x: 0, y: 0 });
+  const [mouseX, setMouseX] = useState<number>(0);
+  const [mouseY, setMouseY] = useState<number>(0);
   const eyeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!eyeRef.current || (forceLookX !== undefined && forceLookY !== undefined)) return;
-
-      const eye = eyeRef.current.getBoundingClientRect();
-      const eyeCenterX = eye.left + eye.width / 2;
-      const eyeCenterY = eye.top + eye.height / 2;
-      const deltaX = event.clientX - eyeCenterX;
-      const deltaY = event.clientY - eyeCenterY;
-      const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
-      const angle = Math.atan2(deltaY, deltaX);
-
-      setPupilPosition({ x: Math.cos(angle) * distance, y: Math.sin(angle) * distance });
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseX(e.clientX);
+      setMouseY(e.clientY);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [forceLookX, forceLookY, maxDistance]);
 
-  const effectivePupilPosition =
-    forceLookX !== undefined && forceLookY !== undefined
-      ? { x: forceLookX, y: forceLookY }
-      : pupilPosition;
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const calculatePupilPosition = () => {
+    if (!eyeRef.current) return { x: 0, y: 0 };
+
+    if (forceLookX !== undefined && forceLookY !== undefined) {
+      return { x: forceLookX, y: forceLookY };
+    }
+
+    const eye = eyeRef.current.getBoundingClientRect();
+    const eyeCenterX = eye.left + eye.width / 2;
+    const eyeCenterY = eye.top + eye.height / 2;
+
+    const deltaX = mouseX - eyeCenterX;
+    const deltaY = mouseY - eyeCenterY;
+    const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
+
+    const angle = Math.atan2(deltaY, deltaX);
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+
+    return { x, y };
+  };
+
+  const pupilPosition = calculatePupilPosition();
 
   return (
     <div
@@ -137,7 +165,7 @@ const EyeBall = ({
             width: `${pupilSize}px`,
             height: `${pupilSize}px`,
             backgroundColor: pupilColor,
-            transform: `translate(${effectivePupilPosition.x}px, ${effectivePupilPosition.y}px)`,
+            transform: `translate(${pupilPosition.x}px, ${pupilPosition.y}px)`,
             transition: "transform 0.1s ease-out",
           }}
         />
@@ -178,10 +206,12 @@ interface AnimatedCharactersLoginPageProps {
   defaultPassword?: string;
   demoCredentials?: DemoCredential[];
   onSubmit?: (email: string, password: string, remember: boolean) => Promise<string | void>;
+  tab?: "patient" | "dentist";
+  onTabChange?: (tab: "patient" | "dentist") => void;
 }
 
 function calculateCharacterPosition(
-  ref: RefObject<HTMLDivElement | null>,
+  ref: React.RefObject<HTMLDivElement | null>,
   pointerX: number,
   pointerY: number,
 ): CharacterPosition {
@@ -205,6 +235,8 @@ function LoginPage({
   defaultPassword = "",
   demoCredentials = [],
   onSubmit,
+  tab,
+  onTabChange,
 }: AnimatedCharactersLoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(defaultEmail);
@@ -286,7 +318,7 @@ function LoginPage({
     }, Math.random() * 3000 + 2000);
 
     return () => window.clearTimeout(peekInterval);
-  }, [password, showPassword, isPurplePeeking]);
+  }, [password, showPassword]);
 
   const handleFieldFocus = () => {
     setIsTyping(true);
@@ -689,6 +721,33 @@ function LoginPage({
             <p className="text-sm text-muted-foreground">Please enter your details</p>
           </div>
 
+          {onTabChange && (
+            <div className="mb-6 flex rounded-xl bg-muted p-1">
+              <button
+                type="button"
+                onClick={() => onTabChange("patient")}
+                className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
+                  tab === "patient"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                I&apos;m a Patient
+              </button>
+              <button
+                type="button"
+                onClick={() => onTabChange("dentist")}
+                className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
+                  tab === "dentist"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                I&apos;m a Dentist
+              </button>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
@@ -798,7 +857,7 @@ function LoginPage({
 
           <div className="mt-8 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <a href="#" className="font-medium text-foreground hover:underline">
+            <a href="/auth/signup" className="font-medium text-foreground hover:underline">
               Sign Up
             </a>
           </div>
@@ -808,4 +867,4 @@ function LoginPage({
   );
 }
 
-export const Component = LoginPage;
+export { LoginPage as Component };
