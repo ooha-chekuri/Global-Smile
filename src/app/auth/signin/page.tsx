@@ -41,7 +41,7 @@ export default function SignInPage() {
         redirect: false,
       });
       if (result?.error) return "Invalid email or password";
-      router.push("/portal/dashboard");
+      router.push("/patient/dashboard");
       router.refresh();
     },
     [router]

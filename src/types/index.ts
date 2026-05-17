@@ -27,11 +27,22 @@ export type NewTeleconsultation = typeof teleconsultations.$inferInsert;
 
 export interface GeminiReport {
   complexityTier: "mild" | "moderate" | "complex";
+  concernCategory: string;
   possiblePathways: string[];
   restorationScore: number;
   educationalNote: string;
   disclaimer: string;
 }
+
+export type AgeBracket = "18-30" | "31-45" | "46-60" | "60+";
+
+export type PriorDentalHistory =
+  | "Previous crowns or bridges"
+  | "Previous implants"
+  | "Gum disease treatment"
+  | "Orthodontic treatment"
+  | "Tooth extraction(s)"
+  | "None";
 
 export type TreatmentType = "full-arch" | "implants-single" | "veneers" | "crowns-bridges" | "maxillofacial";
 export type HomeCity = "newYork" | "london" | "sydney";

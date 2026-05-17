@@ -279,7 +279,7 @@ export default function SignUpPage() {
         throw new Error("Account created but login failed. Please sign in.");
       }
 
-      router.push("/portal/dashboard");
+      router.push("/patient/dashboard");
       router.refresh();
     } catch (err) {
       setError((err as Error).message);

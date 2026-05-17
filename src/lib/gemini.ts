@@ -1,15 +1,26 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import type { GeminiReport } from "@/types";
+import type { GeminiReport, AgeBracket, PriorDentalHistory } from "@/types";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-const SYSTEM_PROMPT = `You are a dental education assistant. You help patients understand restorative dental possibilities in plain language. You NEVER diagnose, prescribe treatment, or make medical recommendations. Always end with a disclaimer.`;
+const SYSTEM_PROMPT = `You are a dental education assistant. You help patients understand restorative dental possibilities in plain language. You NEVER diagnose, prescribe treatment, or make medical recommendations. Always end with a disclaimer. Respond ONLY with valid JSON.`;
 
-function buildPrompt(concernText: string): string {
-  return `A patient describes their concern as: "${concernText}".
-Based on common prosthodontic presentations matching this description,
+function buildPrompt(
+  concernText: string,
+  ageBracket: AgeBracket,
+  priorDentalHistory: PriorDentalHistory[],
+): string {
+  const history = priorDentalHistory.length > 0
+    ? priorDentalHistory.join(", ")
+    : "None reported";
+
+  return `A patient aged ${ageBracket} describes their concern as: "${concernText}".
+Their prior dental history includes: ${history}.
+
+Based on common prosthodontic presentations matching this description and patient profile,
 respond ONLY with valid JSON:
 {
+  "concernCategory": "Cosmetic|Restorative|Functional|Orthodontic|General",
   "complexityTier": "mild|moderate|complex",
   "possiblePathways": ["string", ...],
   "restorationScore": number,
@@ -19,6 +30,7 @@ respond ONLY with valid JSON:
 }
 
 const FALLBACK_REPORT: GeminiReport = {
+  concernCategory: "General",
   complexityTier: "moderate",
   possiblePathways: [
     "Consultation with a prosthodontist for a comprehensive evaluation",
@@ -32,10 +44,14 @@ const FALLBACK_REPORT: GeminiReport = {
     "This report is for educational purposes only and does not constitute a medical diagnosis or treatment recommendation. Please consult a licensed prosthodontist for professional advice.",
 };
 
-export async function generateReport(concernText: string): Promise<GeminiReport> {
+export async function generateReport(
+  concernText: string,
+  ageBracket: AgeBracket = "31-45",
+  priorDentalHistory: PriorDentalHistory[] = [],
+): Promise<GeminiReport> {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       generationConfig: {
         temperature: 0.4,
         maxOutputTokens: 1024,
@@ -46,7 +62,7 @@ export async function generateReport(concernText: string): Promise<GeminiReport>
       contents: [
         { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
         { role: "model", parts: [{ text: "Understood. I will act as a dental education assistant and never provide diagnoses." }] },
-        { role: "user", parts: [{ text: buildPrompt(concernText) }] },
+        { role: "user", parts: [{ text: buildPrompt(concernText, ageBracket, priorDentalHistory) }] },
       ],
     });
 
@@ -55,6 +71,7 @@ export async function generateReport(concernText: string): Promise<GeminiReport>
     const parsed: GeminiReport = JSON.parse(cleaned);
 
     return {
+      concernCategory: parsed.concernCategory ?? FALLBACK_REPORT.concernCategory,
       complexityTier: parsed.complexityTier ?? FALLBACK_REPORT.complexityTier,
       possiblePathways: parsed.possiblePathways ?? FALLBACK_REPORT.possiblePathways,
       restorationScore: parsed.restorationScore ?? FALLBACK_REPORT.restorationScore,

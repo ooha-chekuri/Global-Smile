@@ -4,13 +4,15 @@ import { useState, useRef } from "react";
 import PhotoUpload from "@/components/visualizer/PhotoUpload";
 import PatientForm from "@/components/visualizer/PatientForm";
 import ReportCard from "@/components/visualizer/ReportCard";
-import PDFExport from "@/components/calculator/PDFExport";
+import VisualizerPDF from "@/components/visualizer/VisualizerPDF";
 import type { PatientFormData } from "@/components/visualizer/PatientForm";
 import type { GeminiReport } from "@/types";
 
 export default function VisualizerPage() {
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [report, setReport] = useState<GeminiReport | null>(null);
+  const [patientName, setPatientName] = useState("");
+  const [concernText, setConcernText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const reportRef = useRef<HTMLDivElement | null>(null);
@@ -18,6 +20,8 @@ export default function VisualizerPage() {
   const handleSubmitForm = async (data: PatientFormData) => {
     setIsSubmitting(true);
     setError("");
+    setPatientName(data.name);
+    setConcernText(data.concernText);
 
     try {
       const res = await fetch("/api/visualizer", {
@@ -34,8 +38,9 @@ export default function VisualizerPage() {
         throw new Error(err.error ?? "Something went wrong");
       }
 
-      const result: GeminiReport = await res.json();
-      setReport(result);
+      const result = await res.json();
+      const { patientId: _, ...reportData } = result;
+      setReport(reportData as GeminiReport);
 
       setTimeout(() => {
         reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -51,11 +56,12 @@ export default function VisualizerPage() {
     <div className="flex-1">
       <section className="bg-gradient-to-br from-teal-600 to-teal-800 text-white py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
+          <p className="text-teal-200 text-sm uppercase tracking-wider mb-2">Preliminary Analysis — First Step</p>
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            AI Treatment Visualizer
+            See Your Smile Potential
           </h1>
           <p className="text-teal-100 text-lg">
-            Upload a photo and describe your concern to see restorative possibilities
+            Upload your photos and describe your concern to explore restorative possibilities
           </p>
         </div>
       </section>
@@ -92,8 +98,27 @@ export default function VisualizerPage() {
         {report && (
           <div ref={reportRef} className="space-y-6">
             <div className="bg-white border rounded-xl p-6">
+              {/* Photos */}
+              {photoUrls.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-500 mb-3">Your Photos</h3>
+                  <div className="flex gap-3 overflow-x-auto pb-2">
+                    {photoUrls.map((url, i) => (
+                      <div key={i} className="shrink-0">
+                        <img
+                          src={url}
+                          alt={`Upload ${i + 1}`}
+                          className="w-32 h-24 object-cover rounded-lg border border-gray-200"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <ReportCard report={report} />
             </div>
+
             <div className="flex justify-between items-center">
               <button
                 onClick={() => {
@@ -104,7 +129,12 @@ export default function VisualizerPage() {
               >
                 Generate Another Report
               </button>
-              <PDFExport contentRef={reportRef as React.RefObject<HTMLDivElement | null>} filename="global-smile-treatment-report" />
+              <VisualizerPDF
+                photoUrls={photoUrls}
+                report={report}
+                patientName={patientName}
+                concernText={concernText}
+              />
             </div>
           </div>
         )}

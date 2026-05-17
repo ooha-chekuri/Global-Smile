@@ -18,6 +18,10 @@ export default function ReportCard({ report }: ReportCardProps) {
 
   return (
     <div className="space-y-5">
+      <div className="text-center mb-2">
+        <p className="text-xs text-gray-400 uppercase tracking-wider">Preliminary Analysis — First Step</p>
+      </div>
+
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-gray-800">
           Your Value-Added Report
@@ -27,6 +31,11 @@ export default function ReportCard({ report }: ReportCardProps) {
         >
           {tier.label} Complexity
         </span>
+      </div>
+
+      <div>
+        <h3 className="text-sm text-gray-500 mb-1">Concern Category</h3>
+        <p className="text-base font-medium text-gray-800">{report.concernCategory}</p>
       </div>
 
       <div>

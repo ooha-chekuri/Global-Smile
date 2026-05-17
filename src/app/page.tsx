@@ -114,7 +114,7 @@ export default function Home() {
               className="inline-flex items-center gap-2 rounded-md bg-teal-600 text-white px-8 py-3.5 text-sm font-semibold hover:bg-teal-700 transition-all active:scale-[0.98]"
             >
               <MagicWand size={18} weight="bold" />
-              Visualize Treatment
+              See Your Smile Potential
               <ArrowRight size={16} weight="bold" />
             </Link>
             <Link

@@ -4,11 +4,15 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { patients, reports } from "../../../../drizzle/schema";
 import { generateReport } from "@/lib/gemini";
+import { sendEmail, reportSummaryHtml } from "@/lib/resend";
+import type { AgeBracket, PriorDentalHistory } from "@/types";
 
 const visualizerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().optional(),
+  ageBracket: z.enum(["18-30", "31-45", "46-60", "60+"] as const),
+  priorDentalHistory: z.array(z.string()).optional(),
   concernText: z.string().min(10),
   photoUrls: z.array(z.string()).optional(),
   consentEducational: z.literal(true),
@@ -26,7 +30,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, email, phone, concernText, photoUrls } = parsed.data;
+    const { name, email, phone, ageBracket, priorDentalHistory, concernText, photoUrls } = parsed.data;
     const photoUrl = photoUrls?.[0] ?? null;
 
     let patient = await db
@@ -50,7 +54,11 @@ export async function POST(req: NextRequest) {
         .returning();
     }
 
-    const geminiReport = await generateReport(concernText);
+    const geminiReport = await generateReport(
+      concernText,
+      ageBracket as AgeBracket,
+      (priorDentalHistory ?? []) as PriorDentalHistory[],
+    );
 
     await db.insert(reports).values({
       patientId: patient.id,
@@ -60,7 +68,21 @@ export async function POST(req: NextRequest) {
       reportJson: JSON.stringify(geminiReport),
     });
 
-    return NextResponse.json(geminiReport, { status: 200 });
+    sendEmail({
+      to: email,
+      subject: "Your Preliminary Treatment Report — Global Smile",
+      html: reportSummaryHtml({
+        patientName: name,
+        concernCategory: geminiReport.concernCategory,
+        complexityTier: geminiReport.complexityTier,
+        restorationScore: geminiReport.restorationScore,
+        possiblePathways: geminiReport.possiblePathways,
+        educationalNote: geminiReport.educationalNote,
+        bookingUrl: `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/teleconsultation`,
+      }),
+    });
+
+    return NextResponse.json({ ...geminiReport, patientId: patient.id }, { status: 200 });
   } catch {
     return NextResponse.json(
       { error: "Internal server error", code: "INTERNAL_ERROR" },
