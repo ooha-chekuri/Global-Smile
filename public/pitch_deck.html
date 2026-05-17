@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Global Smile — Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --ivory: #FAF7F2;
+    --ink: #1A1410;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-dim: #8B6F35;
+    --teal: #2D6B6B;
+    --teal-light: #4A9494;
+    --rust: #C4522A;
+    --muted: #7A6E63;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 40px;
+    background: rgba(26,20,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; font-weight:600; letter-spacing:0.08em;
+    color: var(--gold);
+  }
+  .nav-slides {
+    display:flex; gap:6px;
+  }
+  .nav-dot {
+    width:6px; height:6px; border-radius:50%;
+    background: var(--muted); cursor:pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .nav-dot.active { background:var(--gold); transform:scale(1.4); }
+  .nav-counter {
+    font-family:'DM Mono',monospace;
+    font-size:0.72rem; color:var(--muted); letter-spacing:0.1em;
+  }
+
+  /* ─── SLIDES ─── */
+  .slide {
+    min-height: 100vh;
+    display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    padding: 100px 40px 60px;
+    position:relative; overflow:hidden;
+  }
+
+  /* ─── BG TEXTURES ─── */
+  .bg-grid::before {
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events:none;
+  }
+  .bg-radial::after {
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .corner-mark {
+    position:absolute;
+    font-family:'DM Mono',monospace;
+    font-size:0.65rem; letter-spacing:0.15em;
+    color: var(--gold-dim); opacity:0.5;
+  }
+  .corner-mark.tl { top:90px; left:40px; }
+  .corner-mark.tr { top:90px; right:40px; }
+  .corner-mark.bl { bottom:30px; left:40px; }
+  .corner-mark.br { bottom:30px; right:40px; }
+
+  /* ─── TYPOGRAPHY ─── */
+  .slide-label {
+    font-family:'DM Mono',monospace;
+    font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .slide-label::before, .slide-label::after {
+    content:''; flex:1; max-width:40px;
+    height:1px; background:var(--gold-dim);
+  }
+
+  h1 {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(3.5rem,8vw,7rem);
+    font-weight:300; line-height:0.92;
+    letter-spacing:-0.02em;
+  }
+  h1 em { font-style:italic; color:var(--gold); }
+
+  h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(2.2rem,5vw,4rem);
+    font-weight:300; line-height:1.1;
+  }
+  h2 em { font-style:italic; color:var(--gold); }
+
+  h3 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.6rem; font-weight:400;
+  }
+
+  .body-text {
+    font-family:'DM Sans',sans-serif;
+    font-size:1rem; font-weight:300;
+    line-height:1.75; color: rgba(245,240,232,0.75);
+    max-width:640px;
+  }
+
+  .gold-line {
+    width:60px; height:2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 24px 0;
+  }
+
+  /* ─── SLIDE 1: COVER ─── */
+  #slide-1 {
+    background: var(--ink);
+    text-align:center;
+  }
+  .cover-eyebrow {
+    font-family:'DM Mono',monospace;
+    font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--gold-dim); margin-bottom:32px;
+  }
+  .cover-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(4rem,10vw,9rem);
+    font-weight:300; line-height:0.88;
+    letter-spacing:-0.03em;
+  }
+  .cover-title .accent { color:var(--gold); font-style:italic; }
+  .cover-sub {
+    margin-top:32px;
+    font-size:1.05rem; font-weight:300;
+    color:rgba(245,240,232,0.6); letter-spacing:0.04em;
+    max-width:480px; margin-left:auto; margin-right:auto;
+  }
+  .cover-tagline {
+    margin-top:48px; padding:16px 32px;
+    border:1px solid var(--border);
+    display:inline-block;
+    font-family:'DM Mono',monospace;
+    font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--gold);
+  }
+  .cover-arc {
+    position:absolute;
+    width:600px; height:600px;
+    border-radius:50%;
+    border:1px solid rgba(201,168,76,0.08);
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    pointer-events:none;
+  }
+  .cover-arc:nth-child(2) { width:900px; height:900px; border-color:rgba(201,168,76,0.04); }
+  .cover-arc:nth-child(3) { width:1200px; height:1200px; border-color:rgba(201,168,76,0.02); }
+
+  /* ─── SLIDE 2: PROBLEM ─── */
+  #slide-2 { background: #120E0A; }
+  .problem-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:2px; width:100%; max-width:900px; margin-top:40px;
+  }
+  .problem-card {
+    background:rgba(255,255,255,0.025);
+    border:1px solid rgba(255,255,255,0.06);
+    padding:32px 28px;
+    position:relative; overflow:hidden;
+    transition: background 0.3s;
+  }
+  .problem-card:hover { background:rgba(201,168,76,0.04); }
+  .problem-card::before {
+    content:''; position:absolute; top:0; left:0;
+    width:3px; height:100%;
+    background:var(--rust);
+  }
+  .problem-card.teal::before { background:var(--teal-light); }
+  .problem-card.gold::before { background:var(--gold); }
+  .problem-card.muted::before { background:var(--muted); }
+  .problem-stat {
+    font-family:'Cormorant Garamond',serif;
+    font-size:3rem; font-weight:300; color:var(--rust);
+    line-height:1;
+  }
+  .problem-card.teal .problem-stat { color:var(--teal-light); }
+  .problem-card.gold .problem-stat { color:var(--gold); }
+  .problem-card.muted .problem-stat { color:var(--muted); }
+  .problem-card p {
+    font-size:0.88rem; color:rgba(245,240,232,0.6);
+    margin-top:10px; line-height:1.6;
+  }
+  .problem-card strong { color:var(--cream); font-weight:500; }
+
+  /* ─── SLIDE 3: INSIGHT ─── */
+  #slide-3 {
+    background: linear-gradient(135deg, #120E0A 0%, #1A1410 60%, #0D1A1A 100%);
+    text-align:center;
+  }
+  .insight-quote {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(1.8rem,4vw,3.2rem);
+    font-weight:300; font-style:italic;
+    line-height:1.3; max-width:780px;
+    color:var(--cream);
+  }
+  .insight-quote span { color:var(--gold); }
+  .insight-attr {
+    margin-top:28px;
+    font-family:'DM Mono',monospace;
+    font-size:0.68rem; letter-spacing:0.2em; color:var(--muted);
+  }
+  .insight-pillars {
+    display:flex; gap:40px; margin-top:60px;
+    flex-wrap:wrap; justify-content:center;
+  }
+  .insight-pill {
+    padding:10px 24px;
+    border:1px solid var(--border);
+    font-size:0.82rem; letter-spacing:0.08em; color:var(--gold-light);
+  }
+
+  /* ─── SLIDE 4: SOLUTION ─── */
+  #slide-4 { background: var(--ink); }
+  .solution-modules {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:20px; max-width:900px; width:100%; margin-top:40px;
+  }
+  .module-card {
+    padding:32px 28px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid var(--border);
+    position:relative; overflow:hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .module-card:hover {
+    transform:translateY(-4px);
+    border-color:rgba(201,168,76,0.5);
+  }
+  .module-num {
+    font-family:'DM Mono',monospace;
+    font-size:0.65rem; letter-spacing:0.2em;
+    color:var(--gold-dim); margin-bottom:14px;
+  }
+  .module-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.4rem; font-weight:400; color:var(--cream);
+    margin-bottom:10px;
+  }
+  .module-desc {
+    font-size:0.83rem; color:rgba(245,240,232,0.55);
+    line-height:1.65;
+  }
+  .module-tag {
+    margin-top:16px; display:inline-block;
+    padding:4px 12px;
+    background:rgba(201,168,76,0.08);
+    font-family:'DM Mono',monospace;
+    font-size:0.62rem; letter-spacing:0.15em; color:var(--gold);
+  }
+
+  /* ─── SLIDE 5: MARKET ─── */
+  #slide-5 { background: #0A0F0F; }
+  .market-hero {
+    display:flex; gap:80px; align-items:flex-start;
+    max-width:900px; width:100%; flex-wrap:wrap;
+  }
+  .market-main { flex:1; min-width:260px; }
+  .market-big {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(4rem,8vw,7rem);
+    font-weight:300; line-height:0.9;
+    color:var(--gold);
+  }
+  .market-label {
+    font-size:0.85rem; color:var(--muted); margin-top:10px;
+  }
+  .market-stats { flex:1; min-width:220px; }
+  .stat-row {
+    display:flex; align-items:baseline; gap:16px;
+    padding:18px 0; border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .stat-row:last-child { border-bottom:none; }
+  .stat-num {
+    font-family:'Cormorant Garamond',serif;
+    font-size:2rem; font-weight:300; color:var(--teal-light);
+    min-width:80px;
+  }
+  .stat-desc { font-size:0.82rem; color:rgba(245,240,232,0.6); line-height:1.5; }
+  .stat-desc strong { color:var(--cream); font-weight:500; }
+  .market-segments {
+    max-width:900px; width:100%; margin-top:40px;
+    display:flex; gap:12px; flex-wrap:wrap;
+  }
+  .seg-chip {
+    padding:10px 20px;
+    border:1px solid rgba(255,255,255,0.08);
+    font-size:0.8rem; color:rgba(245,240,232,0.65);
+    display:flex; align-items:center; gap:10px;
+  }
+  .seg-chip .dot {
+    width:6px; height:6px; border-radius:50%;
+    background:var(--gold);
+  }
+  .seg-chip.b .dot { background:var(--teal-light); }
+  .seg-chip.c .dot { background:var(--rust); }
+
+  /* ─── SLIDE 6: TRACTION / WHY NOW ─── */
+  #slide-6 { background: var(--ink); }
+  .why-grid {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:16px; max-width:900px; width:100%; margin-top:40px;
+  }
+  .why-card {
+    padding:28px 22px;
+    border-top:2px solid var(--gold-dim);
+    background:rgba(255,255,255,0.015);
+  }
+  .why-icon {
+    font-size:1.8rem; margin-bottom:14px;
+  }
+  .why-card h4 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; font-weight:400; color:var(--cream);
+    margin-bottom:10px;
+  }
+  .why-card p {
+    font-size:0.8rem; color:rgba(245,240,232,0.55);
+    line-height:1.65;
+  }
+
+  /* ─── SLIDE 7: BUSINESS MODEL ─── */
+  #slide-7 { background: #0D0A07; }
+  .biz-table {
+    width:100%; max-width:900px; border-collapse:collapse;
+    margin-top:40px;
+  }
+  .biz-table th {
+    font-family:'DM Mono',monospace;
+    font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--gold-dim); padding:12px 16px; text-align:left;
+    border-bottom:1px solid var(--border);
+  }
+  .biz-table td {
+    padding:18px 16px; font-size:0.85rem;
+    color:rgba(245,240,232,0.7); line-height:1.5;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    vertical-align:top;
+  }
+  .biz-table tr:hover td { background:rgba(201,168,76,0.03); }
+  .biz-table td:first-child { color:var(--cream); font-weight:500; }
+  .biz-table td.amount {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.3rem; font-weight:300; color:var(--gold);
+  }
+  .biz-highlight {
+    margin-top:32px; padding:20px 28px;
+    border:1px solid var(--gold-dim);
+    max-width:900px; width:100%;
+    display:flex; align-items:center; gap:24px;
+  }
+  .biz-highlight .big {
+    font-family:'Cormorant Garamond',serif;
+    font-size:3rem; font-weight:300; color:var(--gold);
+    white-space:nowrap;
+  }
+  .biz-highlight p { font-size:0.83rem; color:rgba(245,240,232,0.6); line-height:1.6; }
+
+  /* ─── SLIDE 8: COMPETITION ─── */
+  #slide-8 { background:var(--ink); }
+  .comp-matrix {
+    max-width:900px; width:100%; margin-top:40px;
+    overflow-x:auto;
+  }
+  .comp-table {
+    width:100%; border-collapse:collapse; min-width:600px;
+  }
+  .comp-table th {
+    font-family:'DM Mono',monospace;
+    font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--muted); padding:10px 14px; text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .comp-table th:first-child { text-align:left; }
+  .comp-table td {
+    padding:14px; font-size:0.82rem; text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    color:rgba(245,240,232,0.6);
+  }
+  .comp-table td:first-child { text-align:left; color:var(--cream); }
+  .comp-table tr.us td { background:rgba(201,168,76,0.06); }
+  .comp-table tr.us td:first-child { color:var(--gold); font-weight:500; }
+  .check { color:#4A9; font-size:1rem; }
+  .cross { color:#944; font-size:1rem; }
+  .partial { color:var(--gold-dim); font-size:0.85rem; }
+
+  /* ─── SLIDE 9: ROADMAP ─── */
+  #slide-9 { background:#090C0C; }
+  .roadmap {
+    max-width:900px; width:100%; margin-top:40px;
+    display:flex; flex-direction:column; gap:0;
+  }
+  .phase {
+    display:flex; gap:0; position:relative;
+  }
+  .phase::before {
+    content:''; position:absolute;
+    left:110px; top:0; bottom:0; width:1px;
+    background:rgba(201,168,76,0.15);
+  }
+  .phase-time {
+    width:110px; padding:24px 20px 24px 0;
+    font-family:'DM Mono',monospace;
+    font-size:0.68rem; letter-spacing:0.12em; color:var(--gold-dim);
+    text-align:right; flex-shrink:0; padding-top:28px;
+  }
+  .phase-dot {
+    width:10px; height:10px; border-radius:50%;
+    background:var(--gold); margin-top:30px; flex-shrink:0;
+    position:relative; z-index:1; margin-left:-5px; margin-right:20px;
+    box-shadow:0 0 0 3px rgba(201,168,76,0.15);
+  }
+  .phase-dot.dim { background:var(--muted); box-shadow:none; }
+  .phase-dot.teal { background:var(--teal-light); box-shadow:0 0 0 3px rgba(74,148,148,0.15); }
+  .phase-content { padding:20px 0 28px; flex:1; }
+  .phase-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; font-weight:400; color:var(--cream);
+    margin-bottom:8px;
+  }
+  .phase-items {
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+  }
+  .phase-item {
+    padding:4px 12px;
+    background:rgba(255,255,255,0.04);
+    font-size:0.75rem; color:rgba(245,240,232,0.55);
+  }
+
+  /* ─── SLIDE 10: TEAM ─── */
+  #slide-10 { background:var(--ink); }
+  .team-grid {
+    display:flex; gap:24px; max-width:900px; width:100%;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .team-card {
+    flex:1; min-width:180px;
+    padding:28px 22px;
+    border:1px solid rgba(255,255,255,0.06);
+    position:relative;
+  }
+  .team-card::after {
+    content:''; position:absolute;
+    bottom:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,var(--gold),transparent);
+  }
+  .team-avatar {
+    width:48px; height:48px; border-radius:50%;
+    background:linear-gradient(135deg, var(--teal), var(--gold-dim));
+    margin-bottom:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; color:var(--cream);
+  }
+  .team-name {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1rem; color:var(--cream); margin-bottom:4px;
+  }
+  .team-role {
+    font-family:'DM Mono',monospace;
+    font-size:0.62rem; letter-spacing:0.15em; color:var(--gold-dim);
+    text-transform:uppercase; margin-bottom:12px;
+  }
+  .team-bio { font-size:0.78rem; color:rgba(245,240,232,0.5); line-height:1.6; }
+  .advisors {
+    max-width:900px; width:100%; margin-top:28px;
+    padding:16px 24px; border:1px solid rgba(255,255,255,0.06);
+    display:flex; align-items:center; gap:16px;
+  }
+  .advisors .label {
+    font-family:'DM Mono',monospace;
+    font-size:0.62rem; letter-spacing:0.2em; color:var(--gold-dim);
+    text-transform:uppercase; white-space:nowrap;
+  }
+  .advisors p { font-size:0.8rem; color:rgba(245,240,232,0.5); }
+
+  /* ─── SLIDE 11: ASK ─── */
+  #slide-11 {
+    background: linear-gradient(135deg, #0A0F0F 0%, #120E0A 100%);
+    text-align:center;
+  }
+  .ask-amount {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(4rem,10vw,8rem);
+    font-weight:300; color:var(--gold); line-height:1;
+    margin:24px 0;
+  }
+  .ask-note {
+    font-size:0.85rem; color:var(--muted); letter-spacing:0.05em;
+  }
+  .use-grid {
+    display:flex; gap:16px; margin-top:48px; flex-wrap:wrap; justify-content:center;
+  }
+  .use-item {
+    min-width:160px;
+    padding:20px 18px; text-align:left;
+    border:1px solid var(--border);
+    flex:1; max-width:200px;
+  }
+  .use-pct {
+    font-family:'Cormorant Garamond',serif;
+    font-size:2.2rem; font-weight:300; color:var(--gold);
+  }
+  .use-item p { font-size:0.78rem; color:rgba(245,240,232,0.55); margin-top:6px; line-height:1.5; }
+
+  /* ─── SLIDE 12: CLOSE ─── */
+  #slide-12 {
+    background:var(--ink); text-align:center;
+    position:relative;
+  }
+  .close-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(3rem,8vw,6.5rem);
+    font-weight:300; line-height:0.9;
+  }
+  .close-title em { color:var(--gold); font-style:italic; }
+  .close-sub {
+    margin-top:24px; font-size:1rem; font-weight:300;
+    color:rgba(245,240,232,0.55); max-width:520px;
+    margin-left:auto; margin-right:auto; line-height:1.7;
+  }
+  .contact-row {
+    display:flex; gap:32px; margin-top:48px;
+    justify-content:center; flex-wrap:wrap;
+  }
+  .contact-item {
+    text-align:center;
+  }
+  .contact-item .c-label {
+    font-family:'DM Mono',monospace;
+    font-size:0.62rem; letter-spacing:0.2em;
+    color:var(--gold-dim); text-transform:uppercase; margin-bottom:6px;
+  }
+  .contact-item .c-val {
+    font-size:0.88rem; color:var(--cream);
+  }
+  .final-seal {
+    margin-top:60px;
+    width:80px; height:80px; border-radius:50%;
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    margin-left:auto; margin-right:auto;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.6rem; color:var(--gold);
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  #progress-bar {
+    position:fixed; top:0; left:0; height:2px; z-index:200;
+    background:linear-gradient(90deg, var(--gold), var(--teal-light));
+    transition:width 0.3s ease;
+  }
+
+  /* ─── SLIDE NUMBERS ─── */
+  .slide-number {
+    position:absolute; bottom:30px; right:40px;
+    font-family:'DM Mono',monospace;
+    font-size:0.65rem; letter-spacing:0.15em; color:var(--muted);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up {
+    opacity:0; transform:translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+  .fade-up:nth-child(2) { transition-delay:0.1s; }
+  .fade-up:nth-child(3) { transition-delay:0.2s; }
+  .fade-up:nth-child(4) { transition-delay:0.3s; }
+  .fade-up:nth-child(5) { transition-delay:0.4s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:700px) {
+    nav { padding:14px 20px; }
+    .slide { padding:80px 20px 50px; }
+    .problem-grid, .solution-modules, .why-grid { grid-template-columns:1fr; }
+    .market-hero { flex-direction:column; gap:32px; }
+    .team-grid { flex-direction:column; }
+    .corner-mark { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width:8.33%"></div>
+
+<nav>
+  <div class="nav-logo">⬡ Global Smile</div>
+  <div class="nav-slides" id="nav-dots"></div>
+  <div class="nav-counter" id="nav-counter">01 / 12</div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 1 — COVER
+════════════════════════════════════════════════════ -->
+<section class="slide bg-grid bg-radial" id="slide-1">
+  <div class="cover-arc"></div>
+  <div class="cover-arc"></div>
+  <div class="cover-arc"></div>
+
+  <div class="cover-eyebrow fade-up">Hackathon 2025 · MedTech Track · Vijayawada, India</div>
+  <div class="cover-title fade-up">
+    Global<br><span class="accent">Smile</span>
+  </div>
+  <div class="cover-sub fade-up">
+    The Integrated Patient Acquisition & Trust Engine for World-Class Prosthodontics
+  </div>
+  <div class="cover-tagline fade-up">Turning a Local Clinic into a Global Destination</div>
+
+  <div class="corner-mark tl">GS-2025</div>
+  <div class="corner-mark tr">CONFIDENTIAL</div>
+  <div class="corner-mark bl">SEED STAGE</div>
+  <span class="slide-number">01</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 2 — PROBLEM
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-2">
+  <div class="slide-label">The Problem</div>
+  <h2 class="fade-up">The world's best specialist<br>is <em>invisible</em> to those who need them most</h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="problem-grid fade-up">
+    <div class="problem-card">
+      <div class="problem-stat">18mo</div>
+      <p><strong>NHS waitlist</strong> for complex prosthodontic work in the UK. US patients face $40,000+ quotes with 6-month waits.</p>
+    </div>
+    <div class="problem-card teal">
+      <div class="problem-stat">80%</div>
+      <p><strong>Cost savings</strong> available in India vs. Western markets — but patients don't know, don't trust, or can't verify.</p>
+    </div>
+    <div class="problem-card gold">
+      <div class="problem-stat">0</div>
+      <p><strong>Digital trust signals</strong> at most specialist clinics. No credential verification. No live patient journey. No cost transparency.</p>
+    </div>
+    <div class="problem-card muted">
+      <div class="problem-stat">60%</div>
+      <p><strong>Referral drop-off</strong> from local GPs who have no clean handoff system and fear losing the patient relationship.</p>
+    </div>
+  </div>
+
+  <div class="corner-mark tl">THE CHALLENGE</div>
+  <span class="slide-number">02</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 3 — INSIGHT
+════════════════════════════════════════════════════ -->
+<section class="slide bg-radial" id="slide-3">
+  <div class="slide-label">Core Insight</div>
+  <div class="insight-quote fade-up">
+    "Patients don't hesitate because of <span>cost</span>.<br>
+    They hesitate because of <span>opacity</span>."
+  </div>
+  <div class="insight-attr fade-up">— Validated across 200+ dental tourism patient interviews</div>
+
+  <div class="gold-line fade-up" style="margin:32px auto;"></div>
+
+  <p class="body-text fade-up" style="text-align:center;">
+    The barriers are informational, not financial. Once a patient can see their treatment possibilities, verify the clinic's standards, and calculate the real savings — the decision becomes obvious. We build that infrastructure.
+  </p>
+
+  <div class="insight-pillars fade-up">
+    <div class="insight-pill">Transparency</div>
+    <div class="insight-pill">Verifiability</div>
+    <div class="insight-pill">Cost Clarity</div>
+    <div class="insight-pill">Post-Op Continuity</div>
+    <div class="insight-pill">Cultural Intelligence</div>
+  </div>
+  <span class="slide-number">03</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 4 — SOLUTION
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-4">
+  <div class="slide-label">The Solution</div>
+  <h2 class="fade-up">Four modules. One <em>trust engine.</em></h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="solution-modules fade-up">
+    <div class="module-card">
+      <div class="module-num">MODULE 01</div>
+      <div class="module-title">AI Treatment Visualizer</div>
+      <div class="module-desc">Patients upload photos and describe their concern. Gemini AI generates a plain-language "Value-Added Report" — restorative possibilities, complexity tier, consultation CTA. No diagnosis. Maximum intent.</div>
+      <span class="module-tag">Gemini API + Next.js</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">MODULE 02</div>
+      <div class="module-title">Dental Tourism Calculator</div>
+      <div class="module-desc">Dynamic cost comparison: Vijayawada vs. New York, London, Sydney. Outputs net savings, TCDT score, and a personalized 12-hour Day 1 itinerary. Turns doubt into a data-backed decision.</div>
+      <span class="module-tag">Real-time · PDF Export</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">MODULE 03</div>
+      <div class="module-title">Trust-Chain Dashboard</div>
+      <div class="module-desc">Live credentials, sterilization logs, anonymized patient journey milestones, post-op care coordination and teleconsultation. Every skeptic's objection — answered visually.</div>
+      <span class="module-tag">WhatsApp API · Realtime</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">MODULE 04</div>
+      <div class="module-title">Local Referral Ecosystem</div>
+      <div class="module-desc">Secure GP-to-specialist portal with encrypted record transfer, consent management, referral status tracking, and case closure summaries. The GP stays in the loop. The patient feels continuity.</div>
+      <span class="module-tag">Neon DB · NextAuth</span>
+    </div>
+  </div>
+  <span class="slide-number">04</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 5 — MARKET
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-5">
+  <div class="slide-label">Market Opportunity</div>
+  <h2 class="fade-up">A <em>$14B market</em> hiding in plain sight</h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="market-hero fade-up">
+    <div class="market-main">
+      <div class="market-big">$14.2B</div>
+      <div class="market-label">Global Dental Tourism Market by 2030</div>
+      <div style="margin-top:20px; font-size:0.82rem; color:var(--muted); line-height:1.7;">
+        CAGR: <strong style="color:var(--teal-light);">13.1%</strong>&ensp;·&ensp;
+        India's advantage: <strong style="color:var(--gold);">60–80%</strong> cost reduction&ensp;·&ensp;
+        Vijayawada: <strong style="color:var(--cream);">Underrepresented</strong> despite top infrastructure
+      </div>
+    </div>
+    <div class="market-stats">
+      <div class="stat-row">
+        <div class="stat-num">₹12L</div>
+        <div class="stat-desc"><strong>Revenue per international patient</strong><br>full-arch rehabilitation case</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num">200M+</div>
+        <div class="stat-desc"><strong>NRI/diaspora globally</strong><br>primary warm target segment</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num">$9B</div>
+        <div class="stat-desc"><strong>India medical tourism</strong><br>annual contribution to economy</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="market-segments fade-up">
+    <div class="seg-chip"><span class="dot"></span> International Dental Tourists (35–65, UK/US/AU)</div>
+    <div class="seg-chip b"><span class="dot"></span> NRI/Diaspora (Telugu-speaking globally)</div>
+    <div class="seg-chip c"><span class="dot"></span> High-Value Local Patients (AP/Telangana)</div>
+  </div>
+  <span class="slide-number">05</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 6 — WHY NOW
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-6">
+  <div class="slide-label">Why Now</div>
+  <h2 class="fade-up">The <em>timing</em> is structural, not accidental</h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="why-grid fade-up">
+    <div class="why-card">
+      <div class="why-icon">🌐</div>
+      <h4>Post-COVID Trust Deficit</h4>
+      <p>International patients demand verifiable hygiene standards and transparent clinical protocols — exactly what incumbents cannot provide digitally.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🤖</div>
+      <h4>AI Cost Inflection</h4>
+      <p>Gemini/Claude APIs make patient-facing AI accessible at near-zero cost. The visualizer tool was impossible to build affordably 3 years ago.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">✈️</div>
+      <h4>Tier-2 City Moment</h4>
+      <p>Vijayawada Airport's expanding international routes (Middle East, SE Asia) make first-visit logistics viable for diaspora patients for the first time.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📱</div>
+      <h4>WhatsApp-First Patients</h4>
+      <p>80%+ of our target diaspora segment manages healthcare inquiries via WhatsApp. We meet them there, natively, without friction.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🇮🇳</div>
+      <h4>DPDP Act Compliance</h4>
+      <p>India's new data protection law creates a trust moat for practices that comply publicly — most competitors have no compliance stack whatsoever.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💰</div>
+      <h4>Insurance Arbitrage Window</h4>
+      <p>Western dental insurance caps ($2,000/yr) are driving out-of-pocket patients to actively seek international alternatives. Search volume up 340% since 2022.</p>
+    </div>
+  </div>
+  <span class="slide-number">06</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 7 — BUSINESS MODEL
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-7">
+  <div class="slide-label">Business Model</div>
+  <h2 class="fade-up">Multiple revenue streams,<br>one <em>compounding flywheel</em></h2>
+  <div class="gold-line fade-up"></div>
+
+  <table class="biz-table fade-up">
+    <thead>
+      <tr>
+        <th>Revenue Stream</th>
+        <th>Model</th>
+        <th>Year 1 Monthly</th>
+        <th>Margin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>International Patient Cases</td>
+        <td>Fee-for-service (specialist procedures)</td>
+        <td class="amount">₹8–15L</td>
+        <td>70%+</td>
+      </tr>
+      <tr>
+        <td>Local Specialist Cases</td>
+        <td>Fee-for-service (referred + direct)</td>
+        <td class="amount">₹3–6L</td>
+        <td>65%+</td>
+      </tr>
+      <tr>
+        <td>Tourism Coordination Fee</td>
+        <td>₹5,000–15,000 per international patient</td>
+        <td class="amount">₹50K–1.5L</td>
+        <td>90%</td>
+      </tr>
+      <tr>
+        <td>Platform SaaS (Year 2+)</td>
+        <td>License to other specialist practices</td>
+        <td class="amount">₹20–50K/practice</td>
+        <td>85%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="biz-highlight fade-up">
+    <div class="big">₹1.5Cr</div>
+    <p>Projected annual revenue by end of Year 1 (conservative case, 10 international patients/month + 25 local specialist cases). Platform SaaS not included. Unit economics positive from month 3.</p>
+  </div>
+  <span class="slide-number">07</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 8 — COMPETITION
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-8">
+  <div class="slide-label">Competitive Landscape</div>
+  <h2 class="fade-up">We don't compete with aggregators.<br>We make them <em>obsolete.</em></h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="comp-matrix fade-up">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>AI Visualizer</th>
+          <th>Cost Calculator</th>
+          <th>Trust Dashboard</th>
+          <th>Referral Portal</th>
+          <th>Practice-Owned</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="us">
+          <td>⬡ Global Smile</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>DentaVacation</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>Apollo Dental</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>MyMediTravel</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>Bangkok Dental Hub</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="body-text fade-up" style="margin-top:28px; font-size:0.83rem;">
+    Aggregators commoditize providers and extract commission. We give the practice a <strong style="color:var(--cream);">owned trust infrastructure</strong> — no middleman, no revenue share, full patient relationship retained.
+  </p>
+  <span class="slide-number">08</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 9 — ROADMAP
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-9">
+  <div class="slide-label">Roadmap</div>
+  <h2 class="fade-up">From hackathon to <em>market leader</em></h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="roadmap fade-up">
+    <div class="phase">
+      <div class="phase-time">NOW<br>Month 0</div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-title">Hackathon MVP</div>
+        <div class="phase-items">
+          <span class="phase-item">AI Visualizer (text)</span>
+          <span class="phase-item">Tourism Calculator</span>
+          <span class="phase-item">Trust Dashboard (static)</span>
+          <span class="phase-item">Referral Portal v1</span>
+          <span class="phase-item">Deployed on Vercel</span>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-time">Q3 2025<br>Month 3</div>
+      <div class="phase-dot teal"></div>
+      <div class="phase-content">
+        <div class="phase-title">Digital Foundation</div>
+        <div class="phase-items">
+          <span class="phase-item">Image analysis upgrade</span>
+          <span class="phase-item">WhatsApp integration live</span>
+          <span class="phase-item">20 GP referral partners</span>
+          <span class="phase-item">SEO content engine</span>
+          <span class="phase-item">First 10 intl. patients</span>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-time">Q4 2025<br>Month 6</div>
+      <div class="phase-dot dim"></div>
+      <div class="phase-content">
+        <div class="phase-title">Community & Scale</div>
+        <div class="phase-items">
+          <span class="phase-item">NRI community outreach</span>
+          <span class="phase-item">Live milestone tracker</span>
+          <span class="phase-item">Teleconsultation module</span>
+          <span class="phase-item">Razorpay integration</span>
+          <span class="phase-item">Meta / Google Ads</span>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-time">2026<br>Year 2</div>
+      <div class="phase-dot dim"></div>
+      <div class="phase-content">
+        <div class="phase-title">Platform & Licensing</div>
+        <div class="phase-items">
+          <span class="phase-item">SaaS to other practices</span>
+          <span class="phase-item">Insurance empanelment</span>
+          <span class="phase-item">Corporate dental tie-ups</span>
+          <span class="phase-item">Multi-city expansion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">09</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 10 — TEAM
+════════════════════════════════════════════════════ -->
+<section class="slide" id="slide-10">
+  <div class="slide-label">The Team</div>
+  <h2 class="fade-up">Built by <em>specialists</em>,<br>for specialists</h2>
+  <div class="gold-line fade-up"></div>
+
+  <div class="team-grid fade-up">
+    <div class="team-card">
+      <div class="team-avatar">P</div>
+      <div class="team-name">Dr. Prakash R.</div>
+      <div class="team-role">Clinical Lead</div>
+      <div class="team-bio">MDS Prosthodontics. 14 years specialist practice. 500+ implant cases. Deep understanding of international patient psychology.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">A</div>
+      <div class="team-name">Aditya K.</div>
+      <div class="team-role">Product & Full-Stack</div>
+      <div class="team-bio">Next.js · Supabase · AI integration. Ex-startup. Built two patient-facing SaaS products. Obsessed with conversion flows.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">S</div>
+      <div class="team-name">Sravya M.</div>
+      <div class="team-role">Design & UX</div>
+      <div class="team-bio">Healthcare UX specialist. Understands the anxiety of high-stakes medical decisions. Designs for trust, not aesthetics.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">R</div>
+      <div class="team-name">Rahul T.</div>
+      <div class="team-role">Growth & BD</div>
+      <div class="team-bio">NRI community networks in UK and US. Former dental tourism coordinator. Fluent in the diaspora patient journey.</div>
+    </div>
+  </div>
+
+  <div class="advisors fade-up">
+    <div class="label">Advisors</div>
+    <p>Dr. Venkat N. (Maxillofacial Surgery, AIIMS Delhi) · Priya S. (Digital Health VC, Mumbai) · James L. (Dental Tourism Consultant, London)</p>
+  </div>
+  <span class="slide-number">10</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 11 — THE ASK
+════════════════════════════════════════════════════ -->
+<section class="slide bg-radial" id="slide-11">
+  <div class="slide-label">The Ask</div>
+  <div class="fade-up" style="text-align:center;">
+    <div style="font-size:0.85rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace;">Seeking Seed Investment</div>
+    <div class="ask-amount">₹80L</div>
+    <div class="ask-note">$96,000 USD equivalent · 18-month runway</div>
+  </div>
+
+  <div class="use-grid fade-up">
+    <div class="use-item">
+      <div class="use-pct">35%</div>
+      <p>Product Engineering — AI upgrades, image analysis, teleconsultation, mobile PWA</p>
+    </div>
+    <div class="use-item">
+      <div class="use-pct">25%</div>
+      <p>Patient Acquisition — Google/Meta ads, NRI community partnerships, SEO content</p>
+    </div>
+    <div class="use-item">
+      <div class="use-pct">20%</div>
+      <p>Clinical Infrastructure — CBCT upgrade, sterilization certification, NABH accreditation</p>
+    </div>
+    <div class="use-item">
+      <div class="use-pct">12%</div>
+      <p>GP Referral Network — onboard 50 referring dentists across AP/Telangana</p>
+    </div>
+    <div class="use-item">
+      <div class="use-pct">8%</div>
+      <p>Operations & Legal — DPDP compliance, GDPR, international patient concierge</p>
+    </div>
+  </div>
+  <span class="slide-number">11</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 12 — CLOSE
+════════════════════════════════════════════════════ -->
+<section class="slide bg-grid" id="slide-12">
+  <div class="close-title fade-up">
+    Every patient deserves<br>a <em>specialist</em> who is<br>findable, trusted,<br>& <em>transparent.</em>
+  </div>
+  <div class="close-sub fade-up">
+    Global Smile is the infrastructure that makes that possible — starting in Vijayawada, scaling across every specialist clinic in Tier-2 India.
+  </div>
+
+  <div class="contact-row fade-up">
+    <div class="contact-item">
+      <div class="c-label">Website</div>
+      <div class="c-val">globalsmile.health</div>
+    </div>
+    <div class="contact-item">
+      <div class="c-label">Email</div>
+      <div class="c-val">pitch@globalsmile.health</div>
+    </div>
+    <div class="contact-item">
+      <div class="c-label">WhatsApp</div>
+      <div class="c-val">+91 98765 43210</div>
+    </div>
+    <div class="contact-item">
+      <div class="c-label">Demo</div>
+      <div class="c-val">demo.globalsmile.health</div>
+    </div>
+  </div>
+
+  <div class="final-seal fade-up">⬡</div>
+
+  <div class="corner-mark bl">GLOBAL SMILE · 2025</div>
+  <div class="corner-mark br">SEED STAGE · CONFIDENTIAL</div>
+  <span class="slide-number">12</span>
+</section>
+
+<script>
+  const TOTAL = 12;
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const navDots = document.getElementById('nav-dots');
+  const navCounter = document.getElementById('nav-counter');
+  const progressBar = document.getElementById('progress-bar');
+
+  // Build nav dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => {
+      slides[i].scrollIntoView({ behavior: 'smooth' });
+    });
+    navDots.appendChild(dot);
+  });
+
+  // Intersection Observer for active slide
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = slides.indexOf(entry.target);
+        document.querySelectorAll('.nav-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+        navCounter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+        progressBar.style.width = ((idx + 1) / TOTAL * 100) + '%';
+
+        // Animate elements in slide
+        entry.target.querySelectorAll('.fade-up').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 80);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const active = slides.findIndex(s => {
+      const rect = s.getBoundingClientRect();
+      return rect.top >= -50 && rect.top < window.innerHeight / 2;
+    });
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      if (active < slides.length - 1) slides[active + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      if (active > 0) slides[active - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>

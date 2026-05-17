@@ -45,13 +45,18 @@ A secure portal for referring general dentists to hand off complex cases with on
 
 #### Tech Stack
 
-- **Frontend:** React 18, Tailwind CSS, Framer Motion
-- **Backend:** Node.js, Express, Supabase
-- **AI:** Anthropic Claude API (claude-sonnet-4)
-- **Communications:** WhatsApp Business API, Resend
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS + Framer Motion
+- **Backend:** Next.js Route Handlers
+- **Database:** Neon DB (Serverless Postgres)
+- **ORM:** Drizzle ORM
+- **Auth:** NextAuth.js (referral portal)
+- **AI:** Gemini API
 - **PDF:** jsPDF + html2canvas
-- **Hosting:** Vercel + Railway
-- **CDN:** Cloudflare
+- **Email:** Resend
+- **WhatsApp:** WhatsApp Business API
+- **Hosting:** Vercel
+- **CDN:** Cloudflare (optional)
 
 ---
 
