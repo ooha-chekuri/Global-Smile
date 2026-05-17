@@ -3,7 +3,7 @@
 ### Global Smile — Integrated Patient Acquisition & Trust Engine
 
 **Hackathon Project | MedTech + HealthTech Track**
-Charan donkey
+Ooha good girl
 
 ---
 
