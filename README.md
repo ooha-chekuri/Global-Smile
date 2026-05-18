@@ -1,108 +1,134 @@
-# README.md
+# Global Smile
 
-### Global Smile — Integrated Patient Acquisition & Trust Engine
+Integrated patient acquisition, trust, and care-navigation platform for specialist prosthodontics in Vijayawada, India.
 
-**Hackathon Project | MedTech + HealthTech Track**
-Ooha good girl
+Global Smile helps international dental tourists, local patients, and referring dentists understand specialist treatment possibilities, compare costs, verify clinical trust signals, and move into a guided consultation or referral flow.
 
----
+## Core Modules
 
-#### What is Global Smile?
+### AI Treatment Visualizer
 
-Global Smile is a full-stack web platform that transforms a specialized prosthodontic practice in Vijayawada, India into a transparent, globally accessible destination for high-complexity dental care. It targets two underserved markets simultaneously: international dental tourists seeking cost-effective specialist care, and local high-value patients who need to understand what specialist prosthodontics can do for them.
+Patients upload smile photos, describe their concern, and receive an educational Value-Added Report. The report includes concern category, complexity tier, restorative readiness score, possible treatment pathways, clinical disclaimers, uploaded images, and a downloadable PDF.
 
----
+The report is educational only and does not provide diagnosis or treatment prescription.
 
-#### The Problem
+### Patient Journey Portal
 
-Prosthodontists and maxillofacial specialists in Tier-2 Indian cities are invisible to international patients who desperately need them. International patients face:
-- No cost transparency before committing to travel
-- No way to verify clinical standards remotely
-- No post-operative support coordination after returning home
-- No clear picture of what treatment is even possible for their condition
+Authenticated patients can continue through a guided flow with stage tracking, report history, visualizer access, treatment-cost context, and next-step calls to action.
 
-Local patients face:
-- No awareness that specialist prosthodontics exists beyond "the dentist"
-- No easy referral pathway from their GP to a specialist
-- High anxiety about cost with no framing of long-term value
+### Dental Tourism Calculator
 
----
+The calculator compares estimated treatment, travel, hotel, and companion costs for Vijayawada against international benchmark cities. It presents potential savings and itinerary-oriented planning context.
 
-#### The Solution — 4 Integrated Modules
+### Trust Portal
 
-**1. AI Treatment Visualizer**
-Patients upload photos + describe their concern. Claude API analyzes the inputs against a curated treatment taxonomy and generates a plain-language "Value-Added Report" showing restorative possibilities, complexity tier, and a CTA to book a virtual consultation. No diagnosis. Maximum interest.
+The trust experience surfaces credentials, sterilization standards, clinical milestones, patient proof points, and practice credibility signals in a structured way for patients evaluating care remotely.
 
-**2. Dental Tourism Calculator**
-A dynamic module that computes the true cost of treatment + travel + stay in Vijayawada vs. New York, London, and Sydney. Outputs a bold "Net Savings" figure and generates a personalized 12-hour Quick-Start itinerary for Day 1 of the patient's first visit. Turns "is it worth it?" from a doubt into a data-backed yes.
+### Referral Ecosystem
 
-**3. Trust-Chain Verification Dashboard**
-A live, structured display of the practice's credentials, sterilization protocols, anonymized patient journey milestones, and post-operative care coordination. Designed to answer every trust objection an international patient has — without a single sales pitch.
+General dentists can access a protected GP portal for referral workflows, patient handoff, referral tracking, and status visibility.
 
-**4. Local Referral Ecosystem**
-A secure portal for referring general dentists to hand off complex cases with one-click simplicity. Includes patient consent management, encrypted record transfer, referral status tracking, and case closure summaries. Keeps the GP in the loop without violating privacy.
+### Animated Authentication
 
----
+The sign-in experience uses a custom animated character login page with shadcn-style UI primitives and NextAuth credentials login.
 
-#### Tech Stack
+## Tech Stack
 
-- **Framework:** Next.js 15 (App Router)
-- **Styling:** Tailwind CSS + Framer Motion
-- **Backend:** Next.js Route Handlers
-- **Database:** Neon DB (Serverless Postgres)
-- **ORM:** Drizzle ORM
-- **Auth:** NextAuth.js (referral portal)
-- **AI:** Gemini API
-- **PDF:** jsPDF + html2canvas
-- **Email:** Resend
-- **WhatsApp:** WhatsApp Business API
-- **Hosting:** Vercel
-- **CDN:** Cloudflare (optional)
+- Framework: Next.js 16 App Router
+- Language: TypeScript
+- Styling: Tailwind CSS 4
+- UI primitives: shadcn-style components, Radix UI, lucide-react
+- Animation: Framer Motion and CSS-driven interactive UI
+- Auth: NextAuth.js
+- Database: Neon Serverless Postgres
+- ORM: Drizzle ORM
+- AI: Gemini API
+- PDF: jsPDF and html2canvas
+- Email: Resend
+- Payments: Razorpay
+- File storage: Vercel Blob with local public fallback
 
----
+## Key Routes
 
-#### Market Context
+- `/` - main marketing entry
+- `/auth/signin` - animated sign-in page
+- `/auth/signup` - patient/doctor signup
+- `/visualizer` - AI report generation flow
+- `/calculator` - dental tourism cost comparison
+- `/trust` - trust and verification portal
+- `/teleconsultation` - virtual consultation booking
+- `/referral/dashboard` - GP referral dashboard
+- `/patient/dashboard` - patient journey dashboard
 
-- Global dental tourism market: $6.8B (2024) → $14.2B (2030), CAGR 13.1%
-- India's cost advantage: 60–80% cheaper than USA/UK for equivalent specialist procedures
-- Vijayawada: underrepresented in dental tourism despite strong clinical infrastructure and lower operating costs than Chennai/Hyderabad
-- Primary international target: NRI/diaspora + Western patients aged 35–65 with complex restorative needs
+## Local Development
 
----
+Install dependencies:
 
-#### Key Differentiators
+```bash
+npm install
+```
 
-- Not an aggregator. Not a booking platform. A practice-owned trust infrastructure.
-- Specialist-only positioning (prosthodontics, not general dentistry)
-- Post-operative continuity built into the product, not bolted on
-- Designed for the NRI segment's specific psychology: they want India's value with Western-standard transparency
-- Local referral network as a growth flywheel, not just a feature
+Run the dev server:
 
----
+```bash
+npm run dev
+```
 
-#### Team Focus Areas for Build
+Build for production:
 
-| Track | Primary Owner |
-|---|---|
-| AI Visualizer + Report Generation | AI/ML Engineer + Backend |
-| Tourism Calculator + Itinerary Engine | Full-Stack |
-| Trust Dashboard + Credential CMS | Frontend + Design |
-| Referral Portal + Auth + Privacy | Backend + Security |
-| Branding, Copy, UX Flow | Design + Product |
+```bash
+npm run build
+```
 
----
+Run lint:
 
-#### Hackathon MVP Deliverables
+```bash
+npm run lint
+```
 
-- Functional AI Visualizer with Claude API integration
-- Working Tourism Calculator with 3-city comparison and itinerary output
-- Trust Dashboard with static + semi-dynamic content
-- Referral portal with form submission, status tracker, and email notification
-- Deployed, shareable URL
-- 3-minute demo video
+## Environment Variables
 
----
+Create a `.env` file with the project secrets used by the app:
 
-#### Vision
+```bash
+DATABASE_URL=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+GEMINI_API_KEY=
+RESEND_API_KEY=
+BLOB_READ_WRITE_TOKEN=
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+NEXT_PUBLIC_RAZORPAY_KEY_ID=
+```
 
-Every specialist practice in a Tier-2 Indian city deserves the infrastructure to compete globally. Global Smile is the proof of concept that trust, transparency, and technology — not location — determine where patients choose to heal.
+`BLOB_READ_WRITE_TOKEN` is optional for local development. When it is missing, uploaded images are written to `public/temp-uploads`.
+
+## Database
+
+Drizzle schema lives in `drizzle/schema.ts`.
+
+Useful commands:
+
+```bash
+npm run seed
+npm run seed-milestones
+npm run seed-all
+```
+
+## PDF Reports
+
+The Value-Added Report PDF includes:
+
+- Patient name and report date
+- Uploaded smile photos
+- Patient concern summary
+- Analysis summary
+- Possible treatment pathways
+- Educational note
+- Disclaimer
+- Clickable consultation CTA
+
+## Product Positioning
+
+Global Smile is not a generic dental aggregator. It is practice-owned trust infrastructure for specialist prosthodontic care, built around transparency, education, and continuity from first interest to consultation and referral.
