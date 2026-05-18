@@ -19,6 +19,11 @@ import {
   Presentation
 } from "@phosphor-icons/react";
 
+import MilestoneCards from "@/components/marketing/MilestoneCards";
+import SavingsTeaser from "@/components/marketing/SavingsTeaser";
+import SpecialtiesGrid from "@/components/marketing/SpecialtiesGrid";
+import WhatsAppButton from "@/components/marketing/WhatsAppButton";
+
 const modules = [
   {
     title: "AI Treatment Scan",
@@ -116,7 +121,7 @@ export default function Home() {
 
           <h1 className="text-[clamp(3.5rem,10vw,7.5rem)] font-bold tracking-tighter text-gray-900 mb-8 leading-[0.9]">
             Clinical Mastery. <br />
-            <span className="text-gray-400 font-light italic">Radical Transparency.</span>
+            <span className="text-gray-900/40 font-light italic">Radical Transparency.</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-500 max-w-3xl mx-auto mb-16 leading-relaxed font-light">
@@ -132,7 +137,7 @@ export default function Home() {
           >
             <Link
               href="/auth/signin"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-brand-ink text-white px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 active:scale-[0.98] group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-brand-ink text-white px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 active:scale-[0.98] group min-h-[56px]"
             >
               Start Clinical Journey
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" weight="bold" />
@@ -140,16 +145,16 @@ export default function Home() {
             <a
               href="/pitch_deck.html"
               target="_blank"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-brand-gold text-brand-ink px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-ink hover:text-white transition-all shadow-xl shadow-brand-gold/20 active:scale-[0.98] group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-brand-gold text-brand-ink px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-ink hover:text-white transition-all shadow-xl shadow-brand-gold/20 active:scale-[0.98] group min-h-[56px]"
             >
               View Pitch Deck
               <Presentation size={18} weight="bold" />
             </a>
             <Link
               href="/trust"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-gray-600 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-50 hover:text-gray-900 transition-all active:scale-[0.98]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-gray-600 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-50 hover:text-gray-900 transition-all active:scale-[0.98] group min-h-[56px]"
             >
-              Verify Credentials
+              <span className="group-hover:underline decoration-brand-teal/30 underline-offset-4 decoration-2">Verify Credentials</span>
             </Link>
           </motion.div>
 
@@ -157,7 +162,7 @@ export default function Home() {
              {stats.slice(0, 3).map((stat) => (
                 <div key={stat.label} className="text-left space-y-2">
                   <p className="text-4xl font-bold text-gray-900 tracking-tight font-mono">{stat.value}</p>
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">{stat.label}</p>
                 </div>
              ))}
           </div>
@@ -174,6 +179,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Social Proof ── */}
+      <MilestoneCards />
+
       {/* ── Capabilities ── */}
       <section className="bg-white py-32 px-6">
         <div className="max-w-7xl mx-auto">
@@ -182,7 +190,7 @@ export default function Home() {
             <p className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tighter leading-none">Built for Total Clinical Trust.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 border border-gray-100 rounded-3xl overflow-hidden">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 border border-gray-100 rounded-3xl overflow-hidden shadow-2xl shadow-brand-teal/5">
             {modules.map((mod, i) => {
               const Icon = mod.icon;
               return (
@@ -217,6 +225,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Specialties ── */}
+      <SpecialtiesGrid />
+
       {/* ── Journey Stages ── */}
       <section className="bg-gray-50/50 py-32 px-6 border-y border-gray-100">
         <div className="max-w-7xl mx-auto">
@@ -237,14 +248,14 @@ export default function Home() {
             {steps.map((step, i) => (
               <div key={step.stage} className="relative space-y-6 group">
                 <div className="flex items-center gap-4">
-                   <div className="text-3xl font-bold text-gray-200 group-hover:text-brand-teal transition-colors duration-500 font-mono leading-none">
+                   <div className={`text-3xl font-bold transition-colors duration-500 font-mono leading-none ${i === 0 ? "text-brand-teal" : "text-gray-200 group-hover:text-brand-teal"}`}>
                      {step.stage}
                    </div>
                    {i < steps.length - 1 && (
                      <div className="hidden md:block h-px bg-gray-200 flex-1 group-hover:bg-brand-teal/30 transition-colors" />
                    )}
                 </div>
-                <div className="space-y-3 pl-2 border-l border-gray-200 group-hover:border-brand-teal transition-colors duration-500">
+                <div className={`space-y-3 pl-2 border-l transition-colors duration-500 ${i === 0 ? "border-brand-teal" : "border-gray-200 group-hover:border-brand-teal"}`}>
                   <h3 className="text-base font-bold text-gray-900 tracking-tight">{step.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed font-light">{step.description}</p>
                 </div>
@@ -253,6 +264,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Savings ── */}
+      <SavingsTeaser />
+
+      {/* ── Testimonials ── */}
+      <VideoTeaser />
 
       {/* ── Specialist CTA ── */}
       <section className="py-32 px-6 bg-white">
@@ -331,6 +348,8 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      <WhatsAppButton />
     </div>
   );
 }
