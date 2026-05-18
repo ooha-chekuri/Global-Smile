@@ -23,7 +23,7 @@ export default async function MilestoneFeed() {
     .from(milestones)
     .where(eq(milestones.isAnonymized, true))
     .orderBy(desc(milestones.createdAt))
-    .limit(8);
+    .limit(6);
 
   if (items.length === 0) {
     return (

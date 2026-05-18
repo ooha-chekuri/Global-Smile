@@ -9,7 +9,8 @@ import { sendEmail, reportSummaryHtml } from "@/lib/resend";
 import type { AgeBracket, PriorDentalHistory } from "@/types";
 
 const visualizerSchema = z.object({
-  name: z.string().min(2).optional(),
+  name: z.string().min(2),
+  email: z.string().email("Valid email required"),
   phone: z.string().optional(),
   homeCity: z.string().min(2),
   ageBracket: z.enum(["18-30", "31-45", "46-60", "60+"] as const),
@@ -20,14 +21,6 @@ const visualizerSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  console.log("[Visualizer API] Authenticating request...");
-  const session = await auth();
-  
-  if (!session?.user?.id) {
-    console.warn("[Visualizer API] Unauthorized access attempt");
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
     const body = await req.json();
     const parsed = visualizerSchema.safeParse(body);
@@ -40,29 +33,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, phone, homeCity, ageBracket, priorDentalHistory, concernText, photoUrls } = parsed.data;
+    const { name, email, phone, homeCity, ageBracket, priorDentalHistory, concernText, photoUrls } = parsed.data;
     const photoUrl = photoUrls?.[0] ?? null;
 
-    console.log(`[Visualizer API] Processing authenticated case for: ${session.user.name} (ID: ${session.user.id})`);
-
-    // 1. Update/Ensure patient metadata in DB
-    const patientId = parseInt(session.user.id);
-    
-    console.log(`[Visualizer API] Updating patient metadata for ID: ${patientId}`);
-    await db.update(patients)
-      .set({ 
-        homeCity, 
-        phone: phone || undefined,
-        currentStage: "recommendation", // Advance journey stage
-        consentPhotoUse: !!photoUrl,
-        photoDeleteAfter: photoUrl
-          ? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
-          : undefined,
-      })
-      .where(eq(patients.id, patientId));
-
-    // 2. Generate AI Clinical Report
-    console.log("[Visualizer API] Invoking Gemini-2.5-Flash for analysis with images...");
+    // 1. Generate AI Clinical Report
+    console.log("[Visualizer API] Invoking Gemini-2.5-Flash for analysis...");
     const geminiReport = await generateReport(
       concernText,
       ageBracket as AgeBracket,
@@ -71,35 +46,57 @@ export async function POST(req: NextRequest) {
     );
     console.log("[Visualizer API] Gemini report generated successfully");
 
-    // 3. Store Report in DB linked to Patient
-    console.log("[Visualizer API] Storing report in database...");
-    const [storedReport] = await db.insert(reports).values({
-      patientId: patientId,
-      concernText,
-      photoUrl,
-      complexityTier: geminiReport.complexityTier,
-      reportJson: JSON.stringify(geminiReport),
-    }).returning();
-    console.log(`[Visualizer API] Report stored successfully (ID: ${storedReport.id})`);
+    // 2. Handle DB storage (auth-optional)
+    const session = await auth();
+    const isAuthenticated = !!session?.user?.id;
 
-    // 4. Send Email via Resend
-    console.log(`[Visualizer API] Sending summary email to: ${session.user.email}`);
-    sendEmail({
-      to: session.user.email!,
-      subject: "Your Preliminary Treatment Report — Global Smile",
-      html: reportSummaryHtml({
-        patientName: session.user.name || "Valued Patient",
-        concernCategory: geminiReport.concernCategory,
+    let storedReportId: number | null = null;
+
+    if (isAuthenticated) {
+      const patientId = parseInt(session.user.id);
+
+      await db.update(patients)
+        .set({
+          homeCity,
+          phone: phone || undefined,
+          currentStage: "recommendation",
+          consentPhotoUse: !!photoUrl,
+          photoDeleteAfter: photoUrl
+            ? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+            : undefined,
+        })
+        .where(eq(patients.id, patientId));
+
+      const [storedReport] = await db.insert(reports).values({
+        patientId: patientId,
+        concernText,
+        photoUrl,
         complexityTier: geminiReport.complexityTier,
-        restorationScore: geminiReport.restorationScore,
-        possiblePathways: geminiReport.possiblePathways,
-        educationalNote: geminiReport.educationalNote,
-        bookingUrl: `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/patient/dashboard`,
-      }),
-    });
+        reportJson: JSON.stringify(geminiReport),
+      }).returning();
+      storedReportId = storedReport.id;
+    }
+
+    // 3. Send Email via Resend
+    if (email) {
+      console.log(`[Visualizer API] Sending summary email to: ${email}`);
+      sendEmail({
+        to: email,
+        subject: "Your Preliminary Treatment Report — Global Smile",
+        html: reportSummaryHtml({
+          patientName: name || "Valued Patient",
+          concernCategory: geminiReport.concernCategory,
+          complexityTier: geminiReport.complexityTier,
+          restorationScore: geminiReport.restorationScore,
+          possiblePathways: geminiReport.possiblePathways,
+          educationalNote: geminiReport.educationalNote,
+          bookingUrl: `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/teleconsultation`,
+        }),
+      });
+    }
 
     console.log("[Visualizer API] Request completed successfully");
-    return NextResponse.json({ ...geminiReport, reportId: storedReport.id }, { status: 200 });
+    return NextResponse.json({ ...geminiReport, reportId: storedReportId }, { status: 200 });
   } catch (error) {
     console.error("[Visualizer API] CRITICAL ERROR:", error);
     return NextResponse.json(

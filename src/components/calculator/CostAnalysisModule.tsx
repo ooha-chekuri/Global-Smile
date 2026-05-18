@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Plane, Hotel, Utensils, Car, Users, Download, ArrowRight } from "lucide-react";
+import { Plane, Hotel, Utensils, Car, Users, Download, ArrowRight, Mail } from "lucide-react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import {
   TREATMENT_COSTS,
   FLIGHT_ESTIMATES,
@@ -14,14 +16,30 @@ import {
 } from "@/lib/cost-data";
 
 const INR_TO_USD = 0.012;
-const INRAmount = (amount: number) =>
-  "₹" + amount.toLocaleString("en-IN");
+const INR_TO_GBP = 0.0095;
+const INR_TO_AUD = 0.018;
 
-const USDAmount = (amount: number) =>
-  "$" + (amount * INR_TO_USD).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+const CURRENCY_CONFIG: Record<string, { code: string; symbol: string; rate: number; locale: string }> = {
+  newYork: { code: "USD", symbol: "$", rate: INR_TO_USD, locale: "en-US" },
+  london: { code: "GBP", symbol: "£", rate: INR_TO_GBP, locale: "en-GB" },
+  sydney: { code: "AUD", symbol: "A$", rate: INR_TO_AUD, locale: "en-AU" },
+};
 
-function formatBoth(amount: number) {
-  return `${INRAmount(amount)} (${USDAmount(amount)})`;
+function INRAmount(amount: number) {
+  return "₹" + amount.toLocaleString("en-IN");
+}
+
+function formatCityCurrency(amount: number, city: string) {
+  const cfg = CURRENCY_CONFIG[city];
+  if (!cfg) return INRAmount(amount);
+  const converted = amount * cfg.rate;
+  return cfg.symbol + converted.toLocaleString(cfg.locale, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function formatLocalCurrency(amount: number, city: string) {
+  const local = formatCityCurrency(amount, city);
+  const inr = INRAmount(amount);
+  return city === "newYork" || city === "london" || city === "sydney" ? `${local} (${inr})` : inr;
 }
 
 type TreatmentKey = keyof typeof TREATMENT_COSTS;
@@ -69,6 +87,7 @@ export default function CostAnalysisModule({
   const [companion, setCompanion] = useState(false);
   const [calculated, setCalculated] = useState(false);
   const [showItinerary, setShowItinerary] = useState(false);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const tc = TREATMENT_COSTS[treatmentType];
   const fe = FLIGHT_ESTIMATES[homeCity];
@@ -228,6 +247,7 @@ export default function CostAnalysisModule({
             </div>
           ) : (
             <motion.div
+              ref={resultsRef}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
@@ -245,35 +265,35 @@ export default function CostAnalysisModule({
                   <tbody className="divide-y divide-gray-50">
                     <tr>
                       <td className="px-6 py-5 text-sm font-medium text-gray-900 capitalize">{getTreatmentLabel(treatmentType)}</td>
-                      <td className="px-6 py-5 text-right text-sm text-gray-500">{formatBoth(homeMin)} – {formatBoth(homeMax)}</td>
-                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatBoth(vijayawadaMin)} – {formatBoth(vijayawadaMax)}</td>
+                      <td className="px-6 py-5 text-right text-sm text-gray-500">{formatLocalCurrency(homeMin, homeCity)} – {formatLocalCurrency(homeMax, homeCity)}</td>
+                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatLocalCurrency(vijayawadaMin, homeCity)} – {formatLocalCurrency(vijayawadaMax, homeCity)}</td>
                     </tr>
                     <tr className="bg-brand-cream/10">
                       <td className="px-6 py-5 text-sm font-medium text-gray-900 flex items-center gap-2"><Plane size={14} className="text-brand-gold" /> Return Flight ({travelClass === "business" ? "Business" : "Economy"})</td>
                       <td className="px-6 py-5 text-right text-sm text-gray-400">—</td>
-                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatBoth(flightCost)}</td>
+                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatLocalCurrency(flightCost, homeCity)}</td>
                     </tr>
                     <tr className="bg-brand-cream/10">
                       <td className="px-6 py-5 text-sm font-medium text-gray-900 flex items-center gap-2"><Hotel size={14} className="text-brand-gold" /> Hotel Stay ({stayDays} nights)</td>
                       <td className="px-6 py-5 text-right text-sm text-gray-400">—</td>
-                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatBoth(hotelCost)}</td>
+                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatLocalCurrency(hotelCost, homeCity)}</td>
                     </tr>
                     <tr className="bg-brand-cream/10">
                       <td className="px-6 py-5 text-sm font-medium text-gray-900 flex items-center gap-2"><Utensils size={14} className="text-brand-gold" /> Meals</td>
                       <td className="px-6 py-5 text-right text-sm text-gray-400">—</td>
-                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatBoth(mealsCost)}</td>
+                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatLocalCurrency(mealsCost, homeCity)}</td>
                     </tr>
                     <tr className="bg-brand-cream/10">
                       <td className="px-6 py-5 text-sm font-medium text-gray-900 flex items-center gap-2"><Car size={14} className="text-brand-gold" /> Local Transport</td>
                       <td className="px-6 py-5 text-right text-sm text-gray-400">—</td>
-                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatBoth(transportCost)}</td>
+                      <td className="px-6 py-5 text-right text-sm text-brand-teal font-bold">{formatLocalCurrency(transportCost, homeCity)}</td>
                     </tr>
                   </tbody>
                   <tfoot>
                     <tr className="bg-brand-ink text-white">
                       <td className="px-6 py-6 text-base font-bold">Total Investment</td>
-                      <td className="px-6 py-6 text-right text-base font-light opacity-50">{formatBoth(homeMin)} – {formatBoth(homeMax)}</td>
-                      <td className="px-6 py-6 text-right text-2xl font-bold text-brand-gold">{formatBoth(totalGSMin)} – {formatBoth(totalGSMax)}</td>
+                      <td className="px-6 py-6 text-right text-base font-light opacity-50">{formatLocalCurrency(homeMin, homeCity)} – {formatLocalCurrency(homeMax, homeCity)}</td>
+                      <td className="px-6 py-6 text-right text-2xl font-bold text-brand-gold">{formatLocalCurrency(totalGSMin, homeCity)} – {formatLocalCurrency(totalGSMax, homeCity)}</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -289,14 +309,53 @@ export default function CostAnalysisModule({
                       {INRAmount(savingsMin)} – {INRAmount(savingsMax)}
                     </p>
                     <p className="text-xs text-teal-50/70">
-                      {USDAmount(savingsMin)} – {USDAmount(savingsMax)}
+                      {formatCityCurrency(savingsMin, homeCity)} – {formatCityCurrency(savingsMax, homeCity)}
                     </p>
                   </div>
                   <p className="text-sm text-teal-50/70 font-light leading-relaxed">
                     You save <span className="font-bold text-white">{savingsPctMin}–{savingsPctMax}%</span> compared to treatment in {getCityLabel(homeCity)}.
                   </p>
-                  <button className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:gap-4 transition-all text-teal-200">
+                  <button
+                    onClick={async () => {
+                      if (!resultsRef.current) return;
+                      try {
+                        const canvas = await html2canvas(resultsRef.current, { scale: 2, useCORS: true, logging: false });
+                        const imgData = canvas.toDataURL("image/png");
+                        const pdf = new jsPDF("p", "mm", "a4");
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+                        pdf.save(`global-smile-cost-analysis.pdf`);
+                      } catch {}
+                    }}
+                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:gap-4 transition-all text-teal-200"
+                  >
                     Download PDF Analysis <Download size={14} />
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await fetch("/api/calculator/email-report", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            email: "patient@example.com",
+                            name: "Patient",
+                            treatmentType,
+                            homeCity,
+                            savingsMin,
+                            savingsMax,
+                            savingsPctMin,
+                            savingsPctMax,
+                            totalGSMin,
+                            totalGSMax,
+                          }),
+                        });
+                      } catch {}
+                    }}
+                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:gap-4 transition-all text-teal-200"
+                  >
+                    Email Report <Mail size={14} />
                   </button>
                 </div>
 

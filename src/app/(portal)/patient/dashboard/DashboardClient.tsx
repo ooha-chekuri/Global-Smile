@@ -6,10 +6,14 @@ import VisualizerModule from "@/components/visualizer/VisualizerModule";
 import ClinicSearch from "@/components/visualizer/ClinicSearch";
 import CostAnalysisModule from "@/components/calculator/CostAnalysisModule";
 import BookingForm from "@/components/teleconsultation/BookingForm";
+import DashboardAnalytics from "@/components/dashboard/DashboardAnalytics";
+import PostOpCare from "@/components/dashboard/PostOpCare";
+import VisualizerPDF from "@/components/visualizer/VisualizerPDF";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CaretLeft, CheckCircle, VideoCamera } from "@phosphor-icons/react";
+import { ArrowRight, CaretLeft, CheckCircle, VideoCamera, WhatsappLogo } from "@phosphor-icons/react";
 import type { GeminiReport } from "@/types";
+import Link from "next/link";
 
 interface DashboardClientProps {
   session: any;
@@ -17,6 +21,7 @@ interface DashboardClientProps {
   reports: any[];
   homeCity: string;
   trustPortal: ReactNode;
+  nextAppointment: { date: string; time: string } | null;
 }
 
 export default function DashboardClient({ 
@@ -24,7 +29,8 @@ export default function DashboardClient({
   initialStage, 
   reports,
   homeCity,
-  trustPortal
+  trustPortal,
+  nextAppointment
 }: DashboardClientProps) {
   const [stage, setStage] = useState<JourneyStage>(initialStage);
   const [selectedReport, setSelectedReport] = useState<any>(reports[0] || null);
@@ -50,6 +56,17 @@ export default function DashboardClient({
     console.log("Selected clinic:", clinic);
     updateStage("trust");
   };
+
+  const latestReportDate = reports.length > 0
+    ? new Date(reports[0].createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : null;
+
+  const reportDetail = selectedReport
+    ? (() => {
+        try { return JSON.parse(selectedReport.reportJson) as GeminiReport; }
+        catch { return null; }
+      })()
+    : null;
 
   return (
     <div className="space-y-10 pb-20 max-w-6xl mx-auto px-4">
@@ -87,6 +104,14 @@ export default function DashboardClient({
           </div>
         </div>
       </section>
+
+      {/* ── Analytics Dashboard ── */}
+      <DashboardAnalytics
+        reportsCount={reports.length}
+        latestReportDate={latestReportDate}
+        currentStage={stage}
+        nextAppointment={nextAppointment}
+      />
 
       <JourneyTracker currentStage={stage} onStageChange={setStage} />
 
@@ -144,7 +169,7 @@ export default function DashboardClient({
                         <div className="lg:col-span-3 space-y-8">
                            <div className="bg-brand-teal rounded-2xl p-8 text-white flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl shadow-brand-teal/10">
                               <div className="space-y-1">
-                                 <h3 className="text-lg font-bold tracking-tight">Stage Complete: Assessment Ready</h3>
+                                 <h3 className="text-lg font-bold tracking-tight">Assessment GS-A{selectedReport.id}</h3>
                                  <p className="text-teal-100 text-sm font-light">Continue to locate specialist partners in your city.</p>
                               </div>
                               <button 
@@ -154,13 +179,75 @@ export default function DashboardClient({
                                 Find Local Clinics <ArrowRight size={18} />
                               </button>
                            </div>
+
+                           {/* Report Detail */}
                            <div className="bg-white border border-gray-100 rounded-[2rem] p-10 shadow-sm overflow-hidden relative">
                               <div className="absolute top-0 right-0 w-24 h-24 bg-gray-50 rounded-bl-[2rem]" />
-                              <VisualizerModule 
-                                key={selectedReport.id}
-                                initialName={session.user.name} 
-                                initialEmail={session.user.email}
-                              />
+                              {reportDetail && (
+                                <div className="space-y-6">
+                                  <div className="flex items-center gap-3">
+                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                      reportDetail.complexityTier === "mild" ? "bg-green-50 text-green-700" :
+                                      reportDetail.complexityTier === "complex" ? "bg-red-50 text-red-700" :
+                                      "bg-amber-50 text-amber-700"
+                                    }`}>
+                                      {reportDetail.complexityTier} Complexity
+                                    </span>
+                                    <span className="text-xs text-gray-400 font-mono">
+                                      Score: {reportDetail.restorationScore}/10
+                                    </span>
+                                  </div>
+
+                                  <div>
+                                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Concern Category</h4>
+                                    <p className="text-lg font-semibold text-gray-900">{reportDetail.concernCategory}</p>
+                                  </div>
+
+                                  <div>
+                                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Possible Pathways</h4>
+                                    <ul className="space-y-2">
+                                      {reportDetail.possiblePathways.map((p, i) => (
+                                        <li key={i} className="flex items-start gap-3 text-sm text-gray-600 font-light">
+                                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-teal shrink-0" />
+                                          {p}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-gray-50/50 rounded-xl p-5">
+                                    <p className="text-sm text-gray-600 italic leading-relaxed">"{reportDetail.educationalNote}"</p>
+                                  </div>
+
+                                  <div className="bg-amber-50/30 border border-amber-100/50 rounded-xl p-4">
+                                    <p className="text-xs text-amber-700 leading-relaxed">{reportDetail.disclaimer}</p>
+                                  </div>
+
+                                  {/* CTA Buttons */}
+                                  <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-100">
+                                    <VisualizerPDF
+                                      photoUrls={selectedReport.photoUrl ? [selectedReport.photoUrl] : []}
+                                      report={reportDetail}
+                                      patientName={session.user.name}
+                                      concernText={selectedReport.concernText}
+                                    />
+                                    <Link
+                                      href="/teleconsultation"
+                                      className="inline-flex items-center gap-2 bg-brand-teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-brand-ink transition-all shadow-lg shadow-brand-teal/20"
+                                    >
+                                      <VideoCamera size={18} /> Book Consultation
+                                    </Link>
+                                    <a
+                                      href="https://wa.me/911234567890"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
+                                    >
+                                      <WhatsappLogo size={18} weight="fill" /> Chat on WhatsApp
+                                    </a>
+                                  </div>
+                                </div>
+                              )}
                            </div>
                         </div>
                       </div>
@@ -261,7 +348,7 @@ export default function DashboardClient({
                 </button>
               </div>
               <CostAnalysisModule 
-                treatmentType={selectedReport ? JSON.parse(selectedReport.reportJson).concernCategory : "full-arch"} 
+                treatmentType={selectedReport ? (() => { try { return JSON.parse(selectedReport.reportJson).concernCategory; } catch { return "full-arch"; } })() : "full-arch"} 
                 homeCity={homeCity || "London"} 
               />
             </motion.div>
@@ -273,28 +360,34 @@ export default function DashboardClient({
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05 }}
-              className="py-16 bg-brand-cream/30 rounded-[3rem] border border-brand-gold/10"
+              className="space-y-12"
             >
-               <div className="text-center space-y-6 mb-12 px-6">
-                  <div className="inline-block p-4 rounded-full bg-brand-teal/10 text-brand-teal mb-4">
-                     <VideoCamera size={48} weight="thin" />
-                  </div>
-                  <h2 className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em]">Activation Stage</h2>
-                  <p className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tighter leading-none">Your Specialist <br /> Consultation</p>
-                  <p className="text-gray-500 font-light max-w-xl mx-auto leading-relaxed">
-                    Verification complete. Cost report finalized. <br />
-                    Select your diagnostic slot with Dr. Prakash.
-                  </p>
-               </div>
+              {/* Booking Section */}
+              <div className="py-16 bg-brand-cream/30 rounded-[3rem] border border-brand-gold/10">
+                 <div className="text-center space-y-6 mb-12 px-6">
+                    <div className="inline-block p-4 rounded-full bg-brand-teal/10 text-brand-teal mb-4">
+                       <VideoCamera size={48} weight="thin" />
+                    </div>
+                    <h2 className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em]">Activation Stage</h2>
+                    <p className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tighter leading-none">Your Specialist <br /> Consultation</p>
+                    <p className="text-gray-500 font-light max-w-xl mx-auto leading-relaxed">
+                      Verification complete. Cost report finalized. <br />
+                      Select your diagnostic slot with Dr. Prakash.
+                    </p>
+                 </div>
 
-               <div className="max-w-xl mx-auto px-6">
-                  <div className="flex items-center gap-6 justify-center mb-8 text-[10px] font-bold text-gray-300 uppercase tracking-widest">
-                     <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Secure Channel</span>
-                     <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Specialist MD Only</span>
-                     <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Confidential</span>
-                  </div>
-                  <BookingForm />
-               </div>
+                 <div className="max-w-xl mx-auto px-6">
+                    <div className="flex items-center gap-6 justify-center mb-8 text-[10px] font-bold text-gray-300 uppercase tracking-widest">
+                       <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Secure Channel</span>
+                       <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Specialist MD Only</span>
+                       <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Confidential</span>
+                    </div>
+                    <BookingForm />
+                 </div>
+              </div>
+
+              {/* Post-Op Care */}
+              <PostOpCare patientName={session.user.name} />
             </motion.div>
           )}
         </AnimatePresence>
