@@ -22,6 +22,7 @@ import {
 import MilestoneCards from "@/components/marketing/MilestoneCards";
 import SavingsTeaser from "@/components/marketing/SavingsTeaser";
 import SpecialtiesGrid from "@/components/marketing/SpecialtiesGrid";
+import VideoTeaser from "@/components/marketing/VideoTeaser";
 import WhatsAppButton from "@/components/marketing/WhatsAppButton";
 
 const modules = [
