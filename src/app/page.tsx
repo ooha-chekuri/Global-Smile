@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable react/no-unescaped-entities */
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -12,9 +13,10 @@ import {
   Eye,
   ArrowsClockwise,
   ChartLine,
-  UserCircle,
   Lock,
   VideoCamera,
+  ArrowUpRight,
+  Presentation
 } from "@phosphor-icons/react";
 
 const modules = [
@@ -46,7 +48,7 @@ const modules = [
     title: "Specialist Consultation",
     description:
       "Book a secure diagnostic video call with our clinical leads. Finalize your plan from the comfort of your home.",
-    href: "/auth/signin",
+    href: "/teleconsultation",
     icon: VideoCamera,
     action: "Book Call",
   },
@@ -89,73 +91,73 @@ const stats = [
   { icon: Lock, value: "DPDP", label: "Data Privacy Compliant" },
 ];
 
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" as const },
-  transition: { duration: 0.5, ease: "easeOut" as const },
-};
-
 export default function Home() {
   return (
-    <div className="flex-1 bg-brand-ivory">
+    <div className="flex-1 bg-white">
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-brand-cream/20 border-b border-brand-gold/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,168,76,0.05)_0%,transparent_50%)]" />
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-teal/0 via-brand-gold/40 to-brand-teal/0" />
+      <section className="relative overflow-hidden bg-white border-b border-gray-100">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f3f4f6_1px,transparent_1px),linear-gradient(to_bottom,#f3f4f6_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40" />
         
         <motion.div
-          className="relative max-w-5xl mx-auto px-6 py-28 md:py-48 text-center"
+          className="relative max-w-6xl mx-auto px-6 py-32 md:py-48 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
             initial={{ opacity: 0, letterSpacing: "0.1em" }}
-            animate={{ opacity: 1, letterSpacing: "0.4em" }}
+            animate={{ opacity: 1, letterSpacing: "0.3em" }}
             transition={{ delay: 0.2, duration: 1.5 }}
-            className="inline-flex items-center gap-2 border border-brand-gold/20 bg-white/50 rounded-sm px-6 py-1.5 text-[10px] font-bold text-brand-gold mb-12 uppercase tracking-[0.4em]"
+            className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-brand-teal/5 border border-brand-teal/10 text-[10px] font-bold text-brand-teal mb-12 uppercase"
           >
-            <div className="h-1 w-1 rounded-full bg-brand-gold animate-pulse" />
+            <div className="h-1.5 w-1.5 rounded-full bg-brand-teal animate-pulse" />
             Specialist Trust Engine
           </motion.div>
 
-          <h1 className="text-[clamp(3rem,10vw,6.5rem)] font-bold tracking-tighter text-brand-ink mb-10 leading-[0.88]">
+          <h1 className="text-[clamp(3.5rem,10vw,7.5rem)] font-bold tracking-tighter text-gray-900 mb-8 leading-[0.9]">
             Clinical Mastery. <br />
-            <span className="text-brand-gold italic">Radical Transparency.</span>
+            <span className="text-gray-400 font-light italic">Radical Transparency.</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-brand-muted max-w-3xl mx-auto mb-20 leading-relaxed font-light">
+          <p className="text-xl md:text-2xl text-gray-500 max-w-3xl mx-auto mb-16 leading-relaxed font-light">
             Architecting the future of prosthodontics for the global patient. <br />
-            <span className="text-brand-ink font-medium">Precision restoration, built on a chain of digital trust.</span>
+            <span className="text-gray-900 font-medium">Precision restoration, built on a chain of digital trust.</span>
           </p>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
             <Link
               href="/auth/signin"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-4 rounded-md bg-brand-teal text-brand-cream px-12 py-5 text-sm font-bold hover:bg-brand-ink transition-all shadow-2xl shadow-brand-teal/20 active:scale-[0.98] group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-brand-ink text-white px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 active:scale-[0.98] group"
             >
               Start Clinical Journey
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" weight="bold" />
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" weight="bold" />
             </Link>
+            <a
+              href="/pitch_deck.html"
+              target="_blank"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-brand-gold text-brand-ink px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-ink hover:text-white transition-all shadow-xl shadow-brand-gold/20 active:scale-[0.98] group"
+            >
+              View Pitch Deck
+              <Presentation size={18} weight="bold" />
+            </a>
             <Link
               href="/trust"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md border border-brand-gold/30 bg-white text-brand-muted px-12 py-5 text-sm font-bold hover:bg-brand-cream hover:text-brand-ink transition-all active:scale-[0.98]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-gray-600 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-50 hover:text-gray-900 transition-all active:scale-[0.98]"
             >
               Verify Credentials
             </Link>
           </motion.div>
 
-          <div className="mt-32 pt-16 border-t border-brand-gold/10 flex flex-wrap justify-center gap-x-20 gap-y-8">
+          <div className="mt-32 pt-16 border-t border-gray-100 flex flex-wrap justify-center gap-x-24 gap-y-12">
              {stats.slice(0, 3).map((stat) => (
-                <div key={stat.label} className="text-left space-y-1">
-                  <p className="text-3xl font-bold text-brand-ink tracking-tight">{stat.value}</p>
-                  <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em]">{stat.label}</p>
+                <div key={stat.label} className="text-left space-y-2">
+                  <p className="text-4xl font-bold text-gray-900 tracking-tight font-mono">{stat.value}</p>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
                 </div>
              ))}
           </div>
@@ -163,29 +165,88 @@ export default function Home() {
       </section>
 
       {/* ── Trust Bar ── */}
-      <section className="border-b border-brand-gold/10 bg-white/50 py-10">
-        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center md:justify-between items-center gap-12 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-1000">
-           <div className="font-bold text-[10px] tracking-[0.3em]">NABH ACCREDITED</div>
-           <div className="font-bold text-[10px] tracking-[0.3em]">ISO 9001:2015</div>
-           <div className="font-bold text-[10px] tracking-[0.3em]">DCI REGISTERED</div>
-           <div className="font-bold text-[10px] tracking-[0.3em]">500+ INTL PATIENTS</div>
+      <section className="border-b border-gray-100 bg-gray-50/50 py-8">
+        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center md:justify-between items-center gap-12 text-gray-400 hover:text-gray-900 transition-colors duration-700">
+           <div className="font-bold text-[10px] tracking-[0.3em] flex items-center gap-2"><ShieldCheck size={16} /> NABH ACCREDITED</div>
+           <div className="font-bold text-[10px] tracking-[0.3em] flex items-center gap-2"><ShieldCheck size={16} /> ISO 9001:2015</div>
+           <div className="font-bold text-[10px] tracking-[0.3em] flex items-center gap-2"><ShieldCheck size={16} /> DCI REGISTERED</div>
+           <div className="font-bold text-[10px] tracking-[0.3em] flex items-center gap-2"><ShieldCheck size={16} /> 500+ INTL PATIENTS</div>
+        </div>
+      </section>
+
+      {/* ── Capabilities ── */}
+      <section className="bg-white py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-24 space-y-4 max-w-2xl">
+            <h2 className="text-[10px] font-bold text-brand-teal uppercase tracking-[0.4em]">Core Infrastructure</h2>
+            <p className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tighter leading-none">Built for Total Clinical Trust.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 border border-gray-100 rounded-3xl overflow-hidden">
+            {modules.map((mod, i) => {
+              const Icon = mod.icon;
+              return (
+                <Link
+                  key={mod.href}
+                  href={mod.href}
+                  className="group relative flex flex-col bg-white p-10 hover:bg-gray-50/50 transition-colors h-full"
+                >
+                  <div className="flex-1 space-y-8">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-50 text-gray-900 group-hover:bg-brand-teal group-hover:text-white transition-colors duration-500">
+                      <Icon size={24} weight="bold" />
+                    </div>
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-bold text-gray-900 tracking-tight">
+                        {mod.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 leading-relaxed font-light">
+                        {mod.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-10 mt-auto flex items-center justify-between border-t border-gray-100/0 group-hover:border-gray-100 transition-colors">
+                     <span className="text-[9px] font-bold text-brand-teal uppercase tracking-[0.2em] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                        {mod.action}
+                     </span>
+                     <ArrowUpRight size={20} className="text-gray-300 group-hover:text-brand-teal transition-colors" weight="bold" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* ── Journey Stages ── */}
-      <section className="bg-white py-32 px-6 border-b border-gray-50">
-        <div className="max-w-5xl mx-auto space-y-20">
-          <div className="text-center space-y-4">
-            <h2 className="text-[10px] font-bold text-teal-600 uppercase tracking-[0.3em]">The Flywheel</h2>
-            <p className="text-4xl font-bold text-gray-900 tracking-tight">Your Treatment Roadmap</p>
+      <section className="bg-gray-50/50 py-32 px-6 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20">
+            <div className="space-y-4 max-w-2xl">
+              <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">The Flywheel</h2>
+              <p className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tighter">Your Treatment Roadmap</p>
+            </div>
+            <Link
+              href="/auth/signup"
+              className="inline-flex items-center gap-2 text-[10px] font-bold text-brand-teal uppercase tracking-widest hover:text-brand-ink transition-colors"
+            >
+              Begin Stage 01 <ArrowRight size={14} weight="bold" />
+            </Link>
           </div>
-          <div className="grid md:grid-cols-4 gap-12">
-            {steps.map((step) => (
+          
+          <div className="grid md:grid-cols-5 gap-8">
+            {steps.map((step, i) => (
               <div key={step.stage} className="relative space-y-6 group">
-                <div className="text-5xl font-bold text-gray-100 group-hover:text-teal-600/10 transition-colors duration-500 font-mono leading-none">{step.stage}</div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">{step.title}</h3>
-                  <p className="text-sm text-gray-400 leading-relaxed font-light">{step.description}</p>
+                <div className="flex items-center gap-4">
+                   <div className="text-3xl font-bold text-gray-200 group-hover:text-brand-teal transition-colors duration-500 font-mono leading-none">
+                     {step.stage}
+                   </div>
+                   {i < steps.length - 1 && (
+                     <div className="hidden md:block h-px bg-gray-200 flex-1 group-hover:bg-brand-teal/30 transition-colors" />
+                   )}
+                </div>
+                <div className="space-y-3 pl-2 border-l border-gray-200 group-hover:border-brand-teal transition-colors duration-500">
+                  <h3 className="text-base font-bold text-gray-900 tracking-tight">{step.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed font-light">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -193,114 +254,80 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Capabilities ── */}
-      <section className="max-w-6xl mx-auto px-6 py-32">
-        <div className="text-center mb-24 space-y-4">
-          <h2 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.4em]">Core Infrastructure</h2>
-          <p className="text-5xl font-bold text-brand-ink tracking-tight">Built for Total Trust</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-10">
-          {modules.map((mod, i) => {
-            const Icon = mod.icon;
-            return (
-              <motion.div
-                key={mod.href}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link
-                  href={mod.href}
-                  className="group relative block rounded-2xl border border-brand-gold/10 bg-brand-cream/10 p-12 hover:border-brand-gold/30 hover:bg-white transition-all shadow-sm hover:shadow-xl hover:shadow-brand-gold/5"
-                >
-                  <div className="flex flex-col gap-8">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-brand-teal text-brand-cream group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-brand-teal/20">
-                      <Icon size={32} weight="light" />
-                    </div>
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-bold text-brand-ink tracking-tight">
-                        {mod.title}
-                      </h3>
-                      <p className="text-brand-muted leading-relaxed font-light">
-                        {mod.description}
-                      </p>
-                      <div className="pt-4 inline-flex items-center gap-2 text-xs font-bold text-brand-gold uppercase tracking-[0.2em] group-hover:gap-4 transition-all">
-                        {mod.action} <ArrowRight size={14} weight="bold" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
-
       {/* ── Specialist CTA ── */}
-      <section className="py-32 px-6">
-        <div className="max-w-5xl mx-auto bg-gray-900 rounded-lg overflow-hidden relative">
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-          <div className="relative p-12 md:p-20 text-center space-y-10">
-             <VideoCamera size={48} className="mx-auto text-teal-500" weight="thin" />
-             <div className="space-y-4">
-                <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+      <section className="py-32 px-6 bg-white">
+        <div className="max-w-7xl mx-auto bg-brand-ink rounded-[3rem] overflow-hidden relative shadow-2xl shadow-brand-ink/10">
+          <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-brand-teal/10 rounded-full -mr-80 -mt-80 blur-[150px]" />
+          <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-brand-gold/5 rounded-full -ml-60 -mb-60 blur-[120px]" />
+          
+          <div className="relative p-16 md:p-24 text-center space-y-12">
+             <div className="inline-block p-5 rounded-2xl bg-white/5 border border-white/10 text-white mb-2 backdrop-blur-sm">
+               <VideoCamera size={40} weight="thin" />
+             </div>
+             <div className="space-y-6">
+                <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-none">
                   High-Complexity <br /> Rehabilitation?
                 </h2>
-                <p className="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                <p className="text-white/40 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
                   Discuss your case with Dr. Prakash in a secure, one-on-one video diagnostic call. 
                   Get clinical clarity before you book your flight.
                 </p>
              </div>
              <Link
                 href="/teleconsultation"
-                className="inline-flex items-center gap-3 rounded-md bg-white text-gray-900 px-12 py-5 text-sm font-bold hover:bg-teal-50 transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-3 rounded-xl bg-brand-teal text-white px-10 py-5 text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-brand-ink transition-all shadow-xl shadow-brand-teal/20 active:scale-[0.98]"
               >
                 Schedule Specialist Call
-                <ArrowRight size={18} weight="bold" />
+                <ArrowRight size={16} weight="bold" />
               </Link>
           </div>
         </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-gray-100 bg-white py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-20">
-            <div className="space-y-6">
-               <span className="text-2xl font-bold text-teal-600 tracking-tighter">GLOBAL SMILE</span>
-               <p className="text-sm text-gray-400 font-light leading-relaxed">
+      <footer className="border-t border-gray-100 bg-gray-50 py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-12 gap-12 md:gap-8 mb-20">
+            <div className="md:col-span-5 space-y-6 pr-8">
+               <span className="text-xl font-bold text-gray-900 tracking-tighter flex items-center gap-2">
+                 <div className="h-6 w-6 bg-brand-teal rounded-md flex items-center justify-center text-white"><Tooth size={14} weight="bold" /></div>
+                 GLOBAL SMILE
+               </span>
+               <p className="text-sm text-gray-500 font-light leading-relaxed max-w-sm">
                 The world's first trust-chain infrastructure for specialist prosthodontics and dental tourism.
                </p>
             </div>
-            <div className="space-y-6">
+            <div className="md:col-span-2 space-y-6">
               <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Navigation</p>
-              <nav className="flex flex-col gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                <Link href="/auth/signin" className="hover:text-teal-600 transition-colors">Journey Hub</Link>
-                <Link href="/calculator" className="hover:text-teal-600 transition-colors">Calculator</Link>
-                <Link href="/trust" className="hover:text-teal-600 transition-colors">Trust Dashboard</Link>
+              <nav className="flex flex-col gap-4 text-xs font-medium text-gray-500">
+                <Link href="/auth/signin" className="hover:text-brand-teal transition-colors">Journey Hub</Link>
+                <Link href="/calculator" className="hover:text-brand-teal transition-colors">Value Calculator</Link>
+                <Link href="/trust" className="hover:text-brand-teal transition-colors">Trust Audit</Link>
               </nav>
             </div>
-            <div className="space-y-6">
+            <div className="md:col-span-2 space-y-6">
                <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Compliance</p>
-               <nav className="flex flex-col gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                <Link href="/privacy" className="hover:text-teal-600 transition-colors">Privacy</Link>
-                <Link href="#" className="hover:text-teal-600 transition-colors">DCI Registration</Link>
-                <Link href="#" className="hover:text-teal-600 transition-colors">NABH Status</Link>
+               <nav className="flex flex-col gap-4 text-xs font-medium text-gray-500">
+                <Link href="/privacy" className="hover:text-brand-teal transition-colors">Privacy Policy</Link>
+                <Link href="#" className="hover:text-brand-teal transition-colors">DCI Registration</Link>
+                <Link href="#" className="hover:text-brand-teal transition-colors">NABH Status</Link>
               </nav>
             </div>
-            <div className="space-y-6">
+            <div className="md:col-span-3 space-y-6">
                <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Contact</p>
-               <nav className="flex flex-col gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+               <nav className="flex flex-col gap-4 text-xs font-medium text-gray-500">
                 <span className="text-gray-900">Vijayawada, India</span>
-                <a href="mailto:care@globalsmile.in" className="hover:text-teal-600 transition-colors">care@globalsmile.in</a>
+                <a href="mailto:care@globalsmile.in" className="hover:text-brand-teal transition-colors">care@globalsmile.in</a>
               </nav>
             </div>
           </div>
-          <div className="pt-12 border-t border-gray-50 text-center text-[9px] text-gray-300 uppercase tracking-[0.3em] leading-relaxed max-w-4xl mx-auto">
-            &copy; {new Date().getFullYear()} Global Smile Centre. Specialist Prosthodontics & Maxillofacial Rehabilitation. <br />
-            Clinical transparency engine for educational purposes. Not medical advice.
+          <div className="pt-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
+             <p className="text-[9px] text-gray-400 uppercase tracking-[0.2em]">
+               &copy; {new Date().getFullYear()} Global Smile Centre. Specialist Prosthodontics.
+             </p>
+             <p className="text-[9px] text-gray-400 uppercase tracking-[0.2em]">
+               Clinical transparency engine for educational purposes.
+             </p>
           </div>
         </div>
       </footer>

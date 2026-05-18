@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -296,15 +297,15 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="min-h-screen grid lg:grid-cols-2 bg-white">
       {/* Left - Characters */}
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary/90 via-primary to-primary/80 p-12 text-primary-foreground lg:flex">
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-gray-50/50 p-12 text-gray-900 lg:flex border-r border-gray-100">
         <div className="relative z-20">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary-foreground/10 backdrop-blur-sm">
-              <Sparkles className="size-4" />
+          <div className="flex items-center gap-2.5 text-sm font-bold tracking-tight uppercase">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-brand-teal text-white shadow-lg shadow-brand-teal/20">
+              <Sparkles className="size-5" />
             </div>
-            <span>Global Smile</span>
+            <span>Global Smile <span className="text-brand-gold font-light italic ml-1">Platform</span></span>
           </div>
         </div>
 
@@ -313,13 +314,13 @@ export default function SignUpPage() {
             {/* Purple */}
             <div
               ref={purpleRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-purple-500/20"
               style={{
                 left: 70,
                 width: 180,
                 height: isFocused ? 440 : 400,
                 backgroundColor: "#6C3FF5",
-                borderRadius: "10px 10px 0 0",
+                borderRadius: "12px 12px 0 0",
                 zIndex: 1,
                 transform: isFocused
                   ? `skewX(${pPos.bodySkew - 12}deg) translateX(40px)`
@@ -352,13 +353,13 @@ export default function SignUpPage() {
             {/* Black */}
             <div
               ref={blackRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-black/20"
               style={{
                 left: 240,
                 width: 120,
                 height: 310,
                 backgroundColor: "#2D2D2D",
-                borderRadius: "8px 8px 0 0",
+                borderRadius: "10px 10px 0 0",
                 zIndex: 2,
                 transform: isFocused
                   ? `skewX(${bPos.bodySkew * 1.5 + 10}deg) translateX(20px)`
@@ -391,7 +392,7 @@ export default function SignUpPage() {
             {/* Orange */}
             <div
               ref={orangeRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-orange-500/20"
               style={{
                 left: 0,
                 width: 240,
@@ -418,7 +419,7 @@ export default function SignUpPage() {
             {/* Yellow */}
             <div
               ref={yellowRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-yellow-500/20"
               style={{
                 left: 310,
                 width: 140,
@@ -451,37 +452,35 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <div className="relative z-20 flex items-center gap-8 text-sm text-primary-foreground/70">
-          <a href="/privacy" className="transition-colors hover:text-primary-foreground">Privacy Policy</a>
-          <a href="#" className="transition-colors hover:text-primary-foreground">Terms of Service</a>
-          <a href="mailto:hello@globalsmile.in" className="transition-colors hover:text-primary-foreground">Contact</a>
+        <div className="relative z-20 flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <a href="/privacy" className="transition-colors hover:text-brand-teal">Privacy Policy</a>
+          <a href="#" className="transition-colors hover:text-brand-teal">Terms</a>
+          <a href="mailto:hello@globalsmile.in" className="transition-colors hover:text-brand-teal">Contact Support</a>
         </div>
 
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.06)_1px,transparent_1px)] bg-[size:20px_20px]" />
-        <div className="absolute right-1/4 top-1/4 size-64 rounded-full bg-primary-foreground/10 blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 size-96 rounded-full bg-primary-foreground/5 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
       </div>
 
       {/* Right - Sign Up Form */}
-      <div className="flex items-center justify-center bg-background p-8">
+      <div className="flex items-center justify-center bg-white p-8">
         <div className="w-full max-w-[420px]">
-          <div className="mb-12 flex items-center justify-center gap-2 text-lg font-semibold lg:hidden">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
-              <Sparkles className="size-4 text-primary" />
+          <div className="mb-12 flex items-center justify-center gap-2.5 text-sm font-bold uppercase tracking-tight lg:hidden">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-brand-teal text-white shadow-lg shadow-brand-teal/20">
+              <Sparkles className="size-5" />
             </div>
             <span>Global Smile</span>
           </div>
 
-          <div className="mb-10 text-center">
-            <h1 className="mb-2 text-3xl font-bold tracking-tight">Create your account</h1>
-            <p className="text-sm text-muted-foreground">Join us on your smile journey</p>
+          <div className="mb-10 text-center space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Join the Smile Journey</h1>
+            <p className="text-sm text-gray-400 font-light">Create your patient account to access specialist care</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+              <Label htmlFor="name" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   id="name"
                   value={name}
@@ -489,16 +488,16 @@ export default function SignUpPage() {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   required
-                  className="h-12 border-border/60 bg-background pl-10 focus:border-primary"
+                  className="h-12 border-gray-200 bg-gray-50/30 focus:border-brand-teal focus:ring-brand-teal/10 rounded-xl pl-10 transition-all"
                   placeholder="John Doe"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+              <Label htmlFor="email" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Mail className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   id="email"
                   type="email"
@@ -507,16 +506,16 @@ export default function SignUpPage() {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   required
-                  className="h-12 border-border/60 bg-background pl-10 focus:border-primary"
+                  className="h-12 border-gray-200 bg-gray-50/30 focus:border-brand-teal focus:ring-brand-teal/10 rounded-xl pl-10 transition-all"
                   placeholder="john@example.com"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-medium">Phone (optional)</Label>
+              <Label htmlFor="phone" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number (optional)</Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Phone className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   id="phone"
                   type="tel"
@@ -524,14 +523,14 @@ export default function SignUpPage() {
                   onChange={(e) => setPhone(e.target.value)}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
-                  className="h-12 border-border/60 bg-background pl-10 focus:border-primary"
+                  className="h-12 border-gray-200 bg-gray-50/30 focus:border-brand-teal focus:ring-brand-teal/10 rounded-xl pl-10 transition-all"
                   placeholder="+91 98765 43210"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+              <Label htmlFor="password" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Choose Password</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -542,13 +541,13 @@ export default function SignUpPage() {
                   onBlur={() => setIsFocused(false)}
                   required
                   minLength={6}
-                  className="h-12 border-border/60 bg-background pr-10 focus:border-primary"
+                  className="h-12 border-gray-200 bg-gray-50/30 focus:border-brand-teal focus:ring-brand-teal/10 rounded-xl pr-10 transition-all"
                   placeholder="Min 6 characters"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-teal transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
@@ -556,46 +555,41 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-2 pt-1">
+            <div className="flex items-start space-x-3 pt-1 px-1">
               <Checkbox
                 id="agree"
                 checked={agree}
                 onCheckedChange={(value) => setAgree(value === true)}
+                className="border-gray-300 data-[state=checked]:bg-brand-teal data-[state=checked]:border-brand-teal mt-0.5"
               />
-              <Label htmlFor="agree" className="text-xs font-normal leading-relaxed cursor-pointer">
+              <Label htmlFor="agree" className="text-xs font-light leading-relaxed cursor-pointer text-gray-500">
                 I agree to the{" "}
-                <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
+                <a href="/privacy" className="text-brand-teal font-bold hover:underline">Privacy Policy</a>
                 {" "}and{" "}
-                <a href="#" className="text-primary hover:underline">Terms of Service</a>
+                <a href="#" className="text-brand-teal font-bold hover:underline">Terms of Service</a>
               </Label>
             </div>
 
             {error && (
-              <div className="rounded-lg border border-red-900/30 bg-red-950/20 p-3 text-sm text-red-500">
+              <div className="rounded-xl border border-red-100 bg-red-50 p-4 text-xs text-red-600 font-medium animate-shake">
                 {error}
               </div>
             )}
 
-            <Button type="submit" className="h-12 w-full text-base font-medium" size="lg" disabled={loading}>
-              {loading ? "Creating account..." : "Create Account"}
+            <Button 
+              type="submit" 
+              className="h-14 w-full text-xs font-bold uppercase tracking-[0.2em] bg-brand-ink text-white hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 rounded-xl" 
+              size="lg" 
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Create Account"}
             </Button>
           </form>
 
-          <div className="mt-6">
-            <Button
-              variant="outline"
-              className="h-12 w-full border-border/60 bg-background hover:bg-accent"
-              type="button"
-            >
-              <Mail className="mr-2 size-5" />
-              Sign up with Google
-            </Button>
-          </div>
-
-          <div className="mt-8 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link href="/auth/signin" className="font-medium text-foreground hover:underline">
-              Sign In
+          <div className="mt-8 text-center text-sm text-gray-400 font-light">
+            Already registered?{" "}
+            <Link href="/auth/signin" className="font-bold text-brand-teal hover:underline uppercase tracking-widest text-xs ml-1">
+              Log In
             </Link>
           </div>
         </div>

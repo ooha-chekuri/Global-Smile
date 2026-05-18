@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs */
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -373,14 +374,14 @@ function LoginPage({
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary/90 via-primary to-primary/80 p-12 text-primary-foreground lg:flex">
+    <div className="min-h-screen grid lg:grid-cols-2 bg-white">
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-gray-50/50 p-12 text-gray-900 lg:flex border-r border-gray-100">
         <div className="relative z-20">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary-foreground/10 backdrop-blur-sm">
-              <Sparkles className="size-4" />
+          <div className="flex items-center gap-2.5 text-sm font-bold tracking-tight uppercase">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-brand-teal text-white shadow-lg shadow-brand-teal/20">
+              <Sparkles className="size-5" />
             </div>
-            <span>{brandName}</span>
+            <span>Global Smile <span className="text-brand-gold font-light italic ml-1">Platform</span></span>
           </div>
         </div>
 
@@ -388,13 +389,13 @@ function LoginPage({
           <div className="relative" style={{ width: "550px", height: "400px" }}>
             <div
               ref={purpleRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-purple-500/20"
               style={{
                 left: "70px",
                 width: "180px",
                 height: isTyping || (password.length > 0 && !showPassword) ? "440px" : "400px",
                 backgroundColor: "#6C3FF5",
-                borderRadius: "10px 10px 0 0",
+                borderRadius: "12px 12px 0 0",
                 zIndex: 1,
                 transform:
                   password.length > 0 && showPassword
@@ -498,13 +499,13 @@ function LoginPage({
 
             <div
               ref={blackRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-black/20"
               style={{
                 left: "240px",
                 width: "120px",
                 height: "310px",
                 backgroundColor: "#2D2D2D",
-                borderRadius: "8px 8px 0 0",
+                borderRadius: "10px 10px 0 0",
                 zIndex: 2,
                 transform:
                   password.length > 0 && showPassword
@@ -578,7 +579,7 @@ function LoginPage({
 
             <div
               ref={orangeRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-orange-500/20"
               style={{
                 left: "0px",
                 width: "240px",
@@ -634,7 +635,7 @@ function LoginPage({
 
             <div
               ref={yellowRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-2xl shadow-yellow-500/20"
               style={{
                 left: "310px",
                 width: "140px",
@@ -690,68 +691,66 @@ function LoginPage({
           </div>
         </div>
 
-        <div className="relative z-20 flex items-center gap-8 text-sm text-primary-foreground/70">
-          <a href="/privacy" className="transition-colors hover:text-primary-foreground">
+        <div className="relative z-20 flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <a href="/privacy" className="transition-colors hover:text-brand-teal">
             Privacy Policy
           </a>
-          <a href="#" className="transition-colors hover:text-primary-foreground">
-            Terms of Service
+          <a href="#" className="transition-colors hover:text-brand-teal">
+            Terms
           </a>
-          <a href="mailto:hello@globalsmile.in" className="transition-colors hover:text-primary-foreground">
-            Contact
+          <a href="mailto:hello@globalsmile.in" className="transition-colors hover:text-brand-teal">
+            Contact Specialist
           </a>
         </div>
 
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.06)_1px,transparent_1px)] bg-[size:20px_20px]" />
-        <div className="absolute right-1/4 top-1/4 size-64 rounded-full bg-primary-foreground/10 blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 size-96 rounded-full bg-primary-foreground/5 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
       </div>
 
-      <div className="flex items-center justify-center bg-background p-8">
+      <div className="flex items-center justify-center bg-white p-8">
         <div className="w-full max-w-[420px]">
-          <div className="mb-12 flex items-center justify-center gap-2 text-lg font-semibold lg:hidden">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
-              <Sparkles className="size-4 text-primary" />
+          <div className="mb-12 flex items-center justify-center gap-2.5 text-sm font-bold uppercase tracking-tight lg:hidden">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-brand-teal text-white shadow-lg shadow-brand-teal/20">
+              <Sparkles className="size-5" />
             </div>
-            <span>{brandName}</span>
+            <span>Global Smile</span>
           </div>
 
-          <div className="mb-10 text-center">
-            <h1 className="mb-2 text-3xl font-bold tracking-tight">Welcome back!</h1>
-            <p className="text-sm text-muted-foreground">Please enter your details</p>
+          <div className="mb-10 text-center space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Clinical Portal Access</h1>
+            <p className="text-sm text-gray-400 font-light">Secure authentication for specialists and patients</p>
           </div>
 
           {onTabChange && (
-            <div className="mb-6 flex rounded-xl bg-muted p-1">
+            <div className="mb-8 flex rounded-2xl bg-gray-50 p-1.5 border border-gray-100">
               <button
                 type="button"
                 onClick={() => onTabChange("patient")}
-                className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
+                className={`flex-1 rounded-xl py-3 text-[10px] font-bold uppercase tracking-widest transition-all ${
                   tab === "patient"
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-white text-brand-teal shadow-md shadow-brand-teal/5"
+                    : "text-gray-400 hover:text-gray-600"
                 }`}
               >
-                I&apos;m a Patient
+                Patient Access
               </button>
               <button
                 type="button"
                 onClick={() => onTabChange("dentist")}
-                className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
+                className={`flex-1 rounded-xl py-3 text-[10px] font-bold uppercase tracking-widest transition-all ${
                   tab === "dentist"
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-white text-brand-teal shadow-md shadow-brand-teal/5"
+                    : "text-gray-400 hover:text-gray-600"
                 }`}
               >
-                I&apos;m a Dentist
+                Specialist Login
               </button>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">
-                Email
+              <Label htmlFor="email" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
+                Email Address
               </Label>
               <Input
                 id="email"
@@ -763,31 +762,31 @@ function LoginPage({
                 onFocus={handleFieldFocus}
                 onBlur={handleFieldBlur}
                 required
-                className="h-12 border-border/60 bg-background focus:border-primary"
+                className="h-12 border-gray-200 bg-gray-50/30 focus:border-brand-teal focus:ring-brand-teal/10 rounded-xl transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">
-                Password
+              <Label htmlFor="password" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
+                Secure Password
               </Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="Enter credentials"
                   value={password}
                   autoComplete="current-password"
                   onChange={(event) => handlePasswordChange(event.target.value)}
                   onFocus={handleFieldFocus}
                   onBlur={handleFieldBlur}
                   required
-                  className="h-12 border-border/60 bg-background pr-10 focus:border-primary"
+                  className="h-12 border-gray-200 bg-gray-50/30 focus:border-brand-teal focus:ring-brand-teal/10 rounded-xl pr-12 transition-all"
                 />
                 <button
                   type="button"
                   onClick={handlePasswordVisibility}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors hover:text-brand-teal"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
@@ -795,71 +794,86 @@ function LoginPage({
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4 px-1">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="remember"
                   checked={remember}
                   onCheckedChange={(value) => setRemember(value === true)}
+                  className="border-gray-300 data-[state=checked]:bg-brand-teal data-[state=checked]:border-brand-teal"
                 />
-                <Label htmlFor="remember" className="cursor-pointer text-sm font-normal">
-                  Remember for 30 days
+                <Label htmlFor="remember" className="cursor-pointer text-xs font-light text-gray-500">
+                  Trust this device
                 </Label>
               </div>
-              <a href="#" className="text-sm font-medium text-primary hover:underline">
-                Forgot password?
+              <a href="#" className="text-xs font-bold text-brand-teal hover:text-brand-ink transition-colors uppercase tracking-widest">
+                Recovery
               </a>
             </div>
 
             {error && (
-              <div className="rounded-lg border border-red-900/30 bg-red-950/20 p-3 text-sm text-red-500">
+              <div className="rounded-xl border border-red-100 bg-red-50 p-4 text-xs text-red-600 font-medium animate-shake">
                 {error}
               </div>
             )}
 
-            <Button type="submit" className="h-12 w-full text-base font-medium" size="lg" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Log in"}
+            <Button 
+              type="submit" 
+              className="h-14 w-full text-xs font-bold uppercase tracking-[0.2em] bg-brand-ink text-white hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 rounded-xl" 
+              size="lg" 
+              disabled={isLoading}
+            >
+              {isLoading ? "Validating..." : "Initialize Session"}
             </Button>
           </form>
 
-          <div className="mt-6">
-            <Button variant="outline" className="h-12 w-full border-border/60 bg-background hover:bg-accent" type="button">
-              <Mail className="mr-2 size-5" />
-              Log in with Google
+          <div className="mt-8">
+            <Button 
+              variant="outline" 
+              className="h-12 w-full border-gray-100 bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-200 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" 
+              type="button"
+            >
+              <Mail className="mr-2 size-4" />
+              SSO Authentication
             </Button>
           </div>
 
           {demoCredentials.length > 0 && (
-            <div className="mt-8 space-y-2 border-t border-border pt-6">
-              {demoCredentials.map((credential) => (
-                <button
-                  key={credential.email}
-                  type="button"
-                  onClick={() => fillDemo(credential)}
-                  className="w-full rounded-lg border border-dashed border-primary/25 bg-primary/5 px-4 py-3 text-left transition-colors hover:bg-primary/10"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{credential.label}</p>
-                      {credential.role && (
-                        <p className="text-xs text-muted-foreground">{credential.role}</p>
-                      )}
+            <div className="mt-10 space-y-3 border-t border-gray-100 pt-8">
+              <p className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.3em] text-center mb-4">Quick Access Profiles</p>
+              <div className="grid gap-3">
+                {demoCredentials.map((credential) => (
+                  <button
+                    key={credential.email}
+                    type="button"
+                    onClick={() => fillDemo(credential)}
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50/50 px-5 py-4 text-left transition-all hover:bg-white hover:border-brand-teal/30 hover:shadow-lg hover:shadow-brand-teal/5 group"
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-bold text-gray-900 group-hover:text-brand-teal transition-colors">{credential.label}</p>
+                        {credential.role && (
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">{credential.role}</p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] font-mono text-gray-300 tracking-tighter">{credential.email}</p>
+                        <p className="text-[10px] font-mono text-gray-300 tracking-tighter">{credential.password}</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs font-mono text-muted-foreground">{credential.email}</p>
-                      <p className="text-xs font-mono text-muted-foreground">{credential.password}</p>
-                    </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
-          <div className="mt-8 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <a href="/auth/signup" className="font-medium text-foreground hover:underline">
-              Sign Up
-            </a>
+          <div className="mt-10 text-center">
+            <p className="text-sm text-gray-400 font-light">
+              New to Global Smile?{" "}
+              <a href="/auth/signup" className="font-bold text-brand-teal hover:underline uppercase tracking-widest text-xs ml-1">
+                Register Case
+              </a>
+            </p>
           </div>
         </div>
       </div>

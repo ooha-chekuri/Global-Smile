@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { milestones } from "../../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
+import { ChartLineUp, CheckCircle, MapPin } from "@phosphor-icons/react/dist/ssr";
 
 const stageLabels: Record<string, string> = {
   impressions: "Impressions completed",
@@ -31,7 +32,7 @@ export default async function MilestoneFeed() {
         <h2 className="text-xl font-bold text-gray-900 tracking-tight">
           Journey Milestones
         </h2>
-        <div className="bg-white border border-gray-100 rounded-xl p-12 text-center text-gray-400 font-light italic text-sm">
+        <div className="bg-white border border-gray-100 rounded-3xl p-16 text-center text-gray-400 font-light italic text-sm">
           <p>Analyzing active patient data... Live milestones pending.</p>
         </div>
       </section>
@@ -39,46 +40,51 @@ export default async function MilestoneFeed() {
   }
 
   return (
-    <section className="space-y-8">
-      <div className="flex items-center gap-3">
-         <h2 className="text-xl font-bold text-gray-900 tracking-tight shrink-0">
-            Live Case Progress
+    <section className="space-y-10">
+      <div className="flex items-center gap-6">
+         <h2 className="text-2xl font-bold text-gray-900 tracking-tight shrink-0 flex items-center gap-3">
+            <ChartLineUp size={28} className="text-brand-teal" weight="fill" />
+            Active Milestone Log
          </h2>
-         <div className="h-px bg-brand-gold/20 flex-1" />
+         <div className="h-px bg-gray-100 flex-1" />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((m) => (
           <div
             key={m.id}
-            className="bg-white border border-gray-50 rounded-lg p-5 flex flex-col gap-3 shadow-sm hover:border-brand-teal transition-all group"
+            className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col gap-5 shadow-sm hover:border-brand-teal transition-all group hover:shadow-xl hover:shadow-brand-teal/5 relative overflow-hidden"
           >
-            <div className="flex items-center justify-between">
-               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                  Anonymized Record
-               </span>
-               <span className="text-[10px] font-mono text-teal-600 bg-teal-50 px-2 py-0.5 rounded-sm">
-                  {new Date(m.createdAt).toLocaleDateString()}
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gray-50 rounded-bl-[2rem] -mr-10 -mt-10 group-hover:bg-brand-teal/5 transition-colors" />
+            
+            <div className="flex items-center justify-between relative z-10">
+               <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-50 border border-gray-100">
+                  <div className="h-1 w-1 rounded-full bg-brand-gold animate-pulse" />
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+                    Live Record
+                  </span>
+               </div>
+               <span className="text-[9px] font-mono font-medium text-gray-300">
+                  {new Date(m.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric' })}
                </span>
             </div>
             
-            <div className="flex items-start gap-4">
-              <div className="h-2 w-2 rounded-full bg-brand-gold mt-2 shrink-0 group-hover:scale-150 transition-transform" />
+            <div className="space-y-3 relative z-10">
               <div className="space-y-1">
-                 <p className="text-sm font-bold text-gray-900 leading-tight">
-                    Patient from {m.patientCity}
+                 <p className="text-base font-bold text-gray-900 tracking-tight flex items-center gap-2">
+                    <MapPin size={16} weight="fill" className="text-brand-teal/40" /> {m.patientCity}
                  </p>
-                 <p className="text-xs text-gray-500 font-light">
+                 <p className="text-xs text-gray-400 font-light uppercase tracking-widest">
                     {treatmentLabels[m.treatmentType] ?? m.treatmentType}
                  </p>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-gray-50 flex items-center justify-between">
-               <span className="text-xs font-medium text-teal-600">
+            <div className="pt-4 border-t border-gray-50 flex items-center justify-between relative z-10">
+               <span className="text-[10px] font-bold text-brand-teal uppercase tracking-widest">
                  {stageLabels[m.stage] ?? m.stage}
                </span>
-               <span className="text-teal-600 font-bold">✓</span>
+               <CheckCircle size={18} weight="bold" className="text-brand-teal shadow-[0_0_10px_rgba(13,148,136,0.3)]" />
             </div>
           </div>
         ))}

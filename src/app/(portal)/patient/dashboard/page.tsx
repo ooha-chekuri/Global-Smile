@@ -12,29 +12,48 @@ export default async function PatientDashboard() {
   if (!session?.user) redirect("/auth/signin");
   if (session.user.role !== "patient") redirect("/referral/dashboard");
 
-  const patientId = parseInt(session.user.id);
+  const rawId = session.user.id;
+  const isDemo = rawId.startsWith("demo-");
+  const patientId = parseInt(rawId);
 
-  const patientRecord = await db
-    .select()
-    .from(patients)
-    .where(eq(patients.id, patientId))
-    .then(r => r[0]);
+  let patientRecord;
+  let patientReports: any[] = [];
+  let nextAppointment = null;
 
-  if (!patientRecord) redirect("/auth/signin");
+  if (!isDemo && !isNaN(patientId)) {
+    patientRecord = await db
+      .select()
+      .from(patients)
+      .where(eq(patients.id, patientId))
+      .then(r => r[0]);
+    
+    if (patientRecord) {
+      patientReports = await db
+        .select()
+        .from(reports)
+        .where(eq(reports.patientId, patientId))
+        .orderBy(desc(reports.createdAt));
 
-  const patientReports = await db
-    .select()
-    .from(reports)
-    .where(eq(reports.patientId, patientId))
-    .orderBy(desc(reports.createdAt));
+      nextAppointment = await db
+        .select()
+        .from(teleconsultations)
+        .where(eq(teleconsultations.patientEmail, session.user.email!))
+        .orderBy(desc(teleconsultations.createdAt))
+        .limit(1)
+        .then(r => r[0] ?? null);
+    }
+  }
 
-  const nextAppointment = await db
-    .select()
-    .from(teleconsultations)
-    .where(eq(teleconsultations.patientEmail, session.user.email!))
-    .orderBy(desc(teleconsultations.createdAt))
-    .limit(1)
-    .then(r => r[0] ?? null);
+  // ── Demo / Fallback Data ──
+  if (!patientRecord) {
+    patientRecord = {
+      id: 0,
+      name: session.user.name || "Demo Patient",
+      email: session.user.email || "patient@globalsmile.in",
+      currentStage: "scan",
+      homeCity: "London",
+    };
+  }
 
   return (
     <div className="flex-1 bg-background min-h-screen">

@@ -2,16 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Tooth, List, X } from "@phosphor-icons/react";
+import { Sparkle, List, X, CaretRight, Presentation } from "@phosphor-icons/react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
-  { href: "/auth/signin", label: "Journey Hub" },
   { href: "/calculator", label: "Calculator" },
-  { href: "/teleconsultation", label: "Consult" },
-  { href: "/trust", label: "Trust" },
-  { href: "/auth/signin", label: "Sign In" },
+  { href: "/teleconsultation", label: "Specialist Consult" },
+  { href: "/trust", label: "Trust Audit" },
 ];
 
 export default function Header() {
@@ -19,47 +17,66 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-bold text-teal-700 hover:text-teal-600 transition-colors"
-        >
-          <Tooth size={22} weight="bold" />
-          <span>Global Smile</span>
-        </Link>
+    <header className="sticky top-0 z-[100] border-b border-gray-100 bg-white/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-8">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 group"
+          >
+            <div className="h-9 w-9 bg-brand-teal rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-brand-teal/20 group-hover:scale-105 transition-transform">
+              <Sparkle size={20} weight="bold" />
+            </div>
+            <span className="font-bold text-gray-900 tracking-tight text-lg group-hover:text-brand-teal transition-colors">
+              Global Smile <span className="text-brand-gold font-light italic">Centre</span>
+            </span>
+          </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
+          <a 
+            href="/pitch_deck.html" 
+            target="_blank"
+            className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-[9px] font-bold text-brand-gold uppercase tracking-[0.2em] hover:bg-brand-gold hover:text-white transition-all group/pitch"
+          >
+            <Presentation size={14} weight="bold" className="group-hover/pitch:scale-110 transition-transform" />
+            Pitch Deck
+          </a>
+        </div>
+
+        <nav className="hidden md:flex items-center gap-2">
           {links.map((link) => {
-            const active = pathname.startsWith(link.href);
+            const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`relative px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all rounded-full ${
                   active
-                    ? "text-teal-700"
-                    : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                    ? "text-brand-teal bg-brand-teal/5"
+                    : "text-gray-400 hover:text-gray-900 hover:bg-gray-50"
                 }`}
               >
                 {link.label}
-                {active && (
-                  <motion.div
-                    layoutId="header-underline"
-                    className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-teal-600"
-                  />
-                )}
               </Link>
             );
           })}
+          
+          <div className="h-4 w-px bg-gray-100 mx-4" />
+          
+          <Link
+            href="/auth/signin"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-ink text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 active:scale-95 group"
+          >
+            Journey Hub
+            <CaretRight size={12} weight="bold" className="group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </nav>
 
         <button
-          className="md:hidden p-2 text-gray-500 hover:text-gray-800"
+          className="md:hidden h-10 w-10 flex items-center justify-center rounded-xl border border-gray-100 text-gray-500 hover:bg-gray-50"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          {menuOpen ? <X size={22} /> : <List size={22} />}
+          {menuOpen ? <X size={20} /> : <List size={20} />}
         </button>
       </div>
 
@@ -71,24 +88,31 @@ export default function Header() {
             exit={{ height: 0, opacity: 0 }}
             className="md:hidden overflow-hidden border-t border-gray-100 bg-white"
           >
-            <div className="px-4 py-3 space-y-1">
+            <div className="px-6 py-8 space-y-4">
               {links.map((link) => {
-                const active = pathname.startsWith(link.href);
+                const active = pathname === link.href;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    className={`block px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${
                       active
-                        ? "text-teal-700 bg-teal-50"
-                        : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                        ? "text-brand-teal bg-teal-50"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
                     }`}
                   >
                     {link.label}
                   </Link>
                 );
               })}
+              <Link
+                href="/auth/signin"
+                onClick={() => setMenuOpen(false)}
+                className="block px-4 py-4 rounded-xl bg-brand-ink text-white text-center text-xs font-bold uppercase tracking-widest"
+              >
+                Launch Journey Hub
+              </Link>
             </div>
           </motion.nav>
         )}

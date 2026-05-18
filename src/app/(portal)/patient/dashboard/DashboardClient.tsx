@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
@@ -11,7 +12,16 @@ import PostOpCare from "@/components/dashboard/PostOpCare";
 import VisualizerPDF from "@/components/visualizer/VisualizerPDF";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CaretLeft, CheckCircle, VideoCamera, WhatsappLogo } from "@phosphor-icons/react";
+import { 
+  ArrowRight, 
+  CaretLeft, 
+  CheckCircle, 
+  VideoCamera, 
+  WhatsappLogo,
+  FileText,
+  Clock,
+  Plus
+} from "@phosphor-icons/react";
 import type { GeminiReport } from "@/types";
 import Link from "next/link";
 
@@ -69,43 +79,49 @@ export default function DashboardClient({
     : null;
 
   return (
-    <div className="space-y-10 pb-20 max-w-6xl mx-auto px-4">
-      {/* ── Premium Header ── */}
-      <section className="bg-brand-ink rounded-[2rem] p-10 md:p-16 text-white relative overflow-hidden shadow-2xl shadow-brand-teal/20">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-teal/10 rounded-full -mr-48 -mt-48 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-gold/5 rounded-full -ml-32 -mb-32 blur-3xl" />
+    <div className="space-y-8 pb-32 max-w-7xl mx-auto px-6 pt-8">
+      {/* ── Refined Dashboard Header ── */}
+      <section className="bg-brand-ink rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl shadow-brand-teal/20 border border-white/5">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-teal/15 rounded-full -mr-40 -mt-40 blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-gold/10 rounded-full -ml-32 -mb-32 blur-[80px]" />
         
-        <div className="relative z-10 grid md:grid-cols-2 gap-10 items-end">
-          <div className="space-y-8">
-            <div className="flex items-center gap-4">
-               <div className="h-2 w-2 rounded-full bg-brand-gold animate-pulse" />
-               <span className="text-brand-gold text-[10px] font-bold uppercase tracking-[0.4em]">
-                Live Patient Journey Hub
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="space-y-6 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+               <div className="h-1.5 w-1.5 rounded-full bg-brand-gold animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+               <span className="text-white/60 text-[9px] font-bold uppercase tracking-[0.3em]">
+                Patient Journey Hub
               </span>
             </div>
             
-            <div className="space-y-4">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9]">
-                Hello, <br />
-                <span className="text-brand-gold italic">{session.user.name.split(' ')[0]}</span>
+            <div className="space-y-2">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+                Welcome back, <br />
+                <span className="text-brand-gold">{session.user.name.split(' ')[0]}</span>
               </h1>
-              <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
-                Your clinical blueprint is actively processing. Complete all 5 stages for world-class dental restoration.
+              <p className="text-white/40 text-base font-light leading-relaxed max-w-md mx-auto md:mx-0">
+                Your clinical roadmap is ready. Complete all stages to finalize your world-class dental restoration in Vijayawada.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col items-end gap-2 text-right">
-             <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm space-y-1">
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Case Status</p>
-                <p className="text-2xl font-bold text-brand-gold tracking-tight capitalize">{stage.replace('-', ' ')} Phase</p>
+          <div className="flex items-center gap-4 bg-white/5 p-2 rounded-[2rem] border border-white/10 backdrop-blur-sm">
+             <div className="px-6 py-4 text-center md:text-right border-r border-white/10">
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-1">Current Protocol</p>
+                <p className="text-xl font-bold text-brand-gold tracking-tight capitalize">{stage.replace('-', ' ')}</p>
              </div>
-             <p className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">GS-REF-{session.user.id.padStart(4, '0')}</p>
+             <div className="px-6 py-4 hidden sm:block">
+                <p className="text-[9px] font-mono text-white/20 uppercase tracking-[0.3em] mb-1">Case Identifier</p>
+                <p className="text-sm font-mono text-white/60 font-medium">GS-REF-{session.user.id.padStart(4, '0')}</p>
+             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Analytics Dashboard ── */}
+      {/* ── Journey Navigation ── */}
+      <JourneyTracker currentStage={stage} onStageChange={setStage} />
+
+      {/* ── Analytics Layer ── */}
       <DashboardAnalytics
         reportsCount={reports.length}
         latestReportDate={latestReportDate}
@@ -113,9 +129,7 @@ export default function DashboardClient({
         nextAppointment={nextAppointment}
       />
 
-      <JourneyTracker currentStage={stage} onStageChange={setStage} />
-
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <AnimatePresence mode="wait">
           {stage === "scan" && (
             <motion.div
@@ -128,12 +142,17 @@ export default function DashboardClient({
                {reports.length > 0 ? (
                  <div className="space-y-8">
                    <div className="flex items-center justify-between">
-                      <h2 className="text-sm font-bold text-gray-900 uppercase tracking-widest border-l-4 border-brand-teal pl-4">Your Assessments</h2>
+                      <div className="space-y-1">
+                        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                           <FileText size={18} className="text-brand-teal" /> Your Clinical Assessments
+                        </h2>
+                        <p className="text-[10px] text-gray-400 font-light">Select a scan to view restorative possibilities.</p>
+                      </div>
                       <button 
                         onClick={() => setSelectedReport(null)}
-                        className="bg-brand-cream border border-brand-gold/20 text-brand-gold text-[10px] font-bold px-4 py-1.5 rounded-sm hover:bg-brand-gold hover:text-white transition-all uppercase tracking-widest"
+                        className="bg-white border border-gray-200 text-gray-900 text-[10px] font-bold px-5 py-2 rounded-xl hover:border-brand-teal hover:text-brand-teal transition-all uppercase tracking-widest flex items-center gap-2 shadow-sm"
                       >
-                        Create New Scan +
+                        <Plus size={14} weight="bold" /> New Scan
                       </button>
                    </div>
                    
@@ -144,8 +163,9 @@ export default function DashboardClient({
                         onReportGenerated={handleReportGenerated}
                       />
                    ) : (
-                      <div className="grid lg:grid-cols-4 gap-8">
-                        <div className="lg:col-span-1 space-y-3">
+                      <div className="grid lg:grid-cols-12 gap-10">
+                        {/* Reports Sidebar */}
+                        <div className="lg:col-span-3 space-y-4">
                            {reports.map((r) => {
                              const data = JSON.parse(r.reportJson);
                              const active = selectedReport?.id === r.id;
@@ -153,78 +173,99 @@ export default function DashboardClient({
                                <div 
                                  key={r.id}
                                  onClick={() => setSelectedReport(r)}
-                                 className={`p-5 border rounded-2xl cursor-pointer transition-all ${
-                                   active ? 'border-brand-gold bg-brand-cream/30 shadow-lg shadow-brand-gold/10' : 'border-gray-100 bg-white hover:border-brand-teal/30'
+                                 className={`p-6 border rounded-[1.5rem] cursor-pointer transition-all relative overflow-hidden group ${
+                                   active 
+                                   ? 'border-brand-teal bg-white shadow-xl shadow-brand-teal/5' 
+                                   : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-brand-teal/30 hover:shadow-lg'
                                  }`}
                                >
-                                 <div className="space-y-1">
-                                    <p className="text-[10px] font-bold text-brand-gold uppercase tracking-widest">GS-A{r.id}</p>
-                                    <p className="text-sm font-bold text-gray-900 truncate">{data.concernCategory}</p>
-                                    <p className="text-[10px] text-gray-400 font-mono">{new Date(r.createdAt).toLocaleDateString("en-US")}</p>
+                                 {active && <div className="absolute top-0 right-0 w-12 h-12 bg-brand-teal rounded-bl-[1.5rem] flex items-center justify-center text-white scale-75 -mr-2 -mt-2">
+                                    <CheckCircle size={16} weight="bold" />
+                                 </div>}
+                                 <div className="space-y-2">
+                                    <p className={`text-[10px] font-bold uppercase tracking-widest ${active ? 'text-brand-teal' : 'text-gray-400'}`}>Scan ID {r.id}</p>
+                                    <p className="text-sm font-bold text-gray-900 truncate leading-tight">{data.concernCategory}</p>
+                                    <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-medium">
+                                       <Clock size={12} /> {new Date(r.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric' })}
+                                    </div>
                                  </div>
                                </div>
                              );
                            })}
                         </div>
-                        <div className="lg:col-span-3 space-y-8">
-                           <div className="bg-brand-teal rounded-2xl p-8 text-white flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl shadow-brand-teal/10">
-                              <div className="space-y-1">
-                                 <h3 className="text-lg font-bold tracking-tight">Assessment GS-A{selectedReport.id}</h3>
-                                 <p className="text-teal-100 text-sm font-light">Continue to locate specialist partners in your city.</p>
+
+                        {/* Report Detail View */}
+                        <div className="lg:col-span-9 space-y-8">
+                           <div className="bg-brand-ink rounded-[2rem] p-10 text-white flex flex-col md:flex-row justify-between items-center gap-8 shadow-2xl shadow-brand-ink/20 relative overflow-hidden border border-white/5">
+                              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-teal/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+                              <div className="space-y-2 relative z-10 text-center md:text-left">
+                                 <h3 className="text-xl font-bold tracking-tight">Ready for Stage 2?</h3>
+                                 <p className="text-white/40 text-sm font-light">Locate verified specialist partners in your city to continue.</p>
                               </div>
                               <button 
                                 onClick={() => updateStage("recommendation")}
-                                className="bg-brand-gold text-brand-ink px-10 py-3 rounded-md text-sm font-bold hover:bg-white transition-all shadow-lg shadow-brand-gold/20 flex items-center gap-2"
+                                className="bg-brand-teal text-white px-10 py-4 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-ink transition-all shadow-xl shadow-brand-teal/20 flex items-center gap-3 relative z-10"
                               >
-                                Find Local Clinics <ArrowRight size={18} />
+                                Find Local Clinics <ArrowRight size={18} weight="bold" />
                               </button>
                            </div>
 
-                           {/* Report Detail */}
-                           <div className="bg-white border border-gray-100 rounded-[2rem] p-10 shadow-sm overflow-hidden relative">
-                              <div className="absolute top-0 right-0 w-24 h-24 bg-gray-50 rounded-bl-[2rem]" />
+                           {/* Main Report Content */}
+                           <div className="bg-white border border-gray-100 rounded-[2.5rem] p-12 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-brand-teal/5 transition-all">
+                              <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-bl-[2.5rem] group-hover:bg-brand-teal/5 transition-colors" />
+                              
                               {reportDetail && (
-                                <div className="space-y-6">
-                                  <div className="flex items-center gap-3">
-                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                      reportDetail.complexityTier === "mild" ? "bg-green-50 text-green-700" :
-                                      reportDetail.complexityTier === "complex" ? "bg-red-50 text-red-700" :
-                                      "bg-amber-50 text-amber-700"
+                                <div className="space-y-10 relative z-10">
+                                  <div className="flex flex-wrap items-center gap-4">
+                                    <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border ${
+                                      reportDetail.complexityTier === "mild" ? "bg-green-50 text-green-700 border-green-100" :
+                                      reportDetail.complexityTier === "complex" ? "bg-red-50 text-red-700 border-red-100" :
+                                      "bg-amber-50 text-amber-700 border-amber-100"
                                     }`}>
-                                      {reportDetail.complexityTier} Complexity
+                                      {reportDetail.complexityTier} Complexity Tier
                                     </span>
-                                    <span className="text-xs text-gray-400 font-mono">
-                                      Score: {reportDetail.restorationScore}/10
-                                    </span>
+                                    <div className="px-4 py-1.5 bg-gray-50 border border-gray-100 rounded-full flex items-center gap-2">
+                                       <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Restoration Readiness</span>
+                                       <span className="text-xs font-bold text-gray-900">{reportDetail.restorationScore}/10</span>
+                                    </div>
                                   </div>
 
-                                  <div>
-                                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Concern Category</h4>
-                                    <p className="text-lg font-semibold text-gray-900">{reportDetail.concernCategory}</p>
+                                  <div className="grid md:grid-cols-2 gap-12">
+                                     <div className="space-y-8">
+                                        <div>
+                                          <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-3">Concern Category</h4>
+                                          <p className="text-2xl font-bold text-gray-900 tracking-tight leading-none">{reportDetail.concernCategory}</p>
+                                        </div>
+
+                                        <div>
+                                          <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">Possible Pathways</h4>
+                                          <ul className="space-y-3">
+                                            {reportDetail.possiblePathways.map((p, i) => (
+                                              <li key={i} className="flex items-start gap-4 text-sm text-gray-600 font-light group/item">
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand-teal shrink-0 shadow-[0_0_8px_rgba(13,148,136,0.3)] group-hover/item:scale-150 transition-transform" />
+                                                <span className="group-hover/item:text-gray-900 transition-colors">{p}</span>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                     </div>
+
+                                     <div className="space-y-8">
+                                        <div className="bg-gray-50/50 rounded-2xl p-8 border border-gray-100/50 relative">
+                                          <FileText size={40} weight="thin" className="absolute top-4 right-4 text-gray-200" />
+                                          <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">Specialist Note</h4>
+                                          <p className="text-base text-gray-600 italic leading-relaxed font-light">"{reportDetail.educationalNote}"</p>
+                                        </div>
+
+                                        <div className="bg-amber-50/20 border border-amber-100/30 rounded-2xl p-6">
+                                          <p className="text-[10px] text-amber-700/70 leading-relaxed font-medium uppercase tracking-wider mb-2">Legal Disclaimer</p>
+                                          <p className="text-xs text-amber-700/60 leading-relaxed font-light">{reportDetail.disclaimer}</p>
+                                        </div>
+                                     </div>
                                   </div>
 
-                                  <div>
-                                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Possible Pathways</h4>
-                                    <ul className="space-y-2">
-                                      {reportDetail.possiblePathways.map((p, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-sm text-gray-600 font-light">
-                                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-teal shrink-0" />
-                                          {p}
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-
-                                  <div className="bg-gray-50/50 rounded-xl p-5">
-                                    <p className="text-sm text-gray-600 italic leading-relaxed">"{reportDetail.educationalNote}"</p>
-                                  </div>
-
-                                  <div className="bg-amber-50/30 border border-amber-100/50 rounded-xl p-4">
-                                    <p className="text-xs text-amber-700 leading-relaxed">{reportDetail.disclaimer}</p>
-                                  </div>
-
-                                  {/* CTA Buttons */}
-                                  <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-100">
+                                  {/* Refined Action Bar */}
+                                  <div className="flex flex-wrap items-center gap-4 pt-10 border-t border-gray-100">
                                     <VisualizerPDF
                                       photoUrls={selectedReport.photoUrl ? [selectedReport.photoUrl] : []}
                                       report={reportDetail}
@@ -233,17 +274,17 @@ export default function DashboardClient({
                                     />
                                     <Link
                                       href="/teleconsultation"
-                                      className="inline-flex items-center gap-2 bg-brand-teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-brand-ink transition-all shadow-lg shadow-brand-teal/20"
+                                      className="inline-flex items-center gap-3 bg-brand-ink text-white px-8 py-4 rounded-xl text-sm font-bold hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10"
                                     >
-                                      <VideoCamera size={18} /> Book Consultation
+                                      <VideoCamera size={20} weight="bold" /> Book Consult
                                     </Link>
                                     <a
                                       href="https://wa.me/911234567890"
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
+                                      className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-xl text-sm font-bold hover:opacity-90 transition-all shadow-xl shadow-[#25D366]/20"
                                     >
-                                      <WhatsappLogo size={18} weight="fill" /> Chat on WhatsApp
+                                      <WhatsappLogo size={20} weight="fill" /> WhatsApp
                                     </a>
                                   </div>
                                 </div>
@@ -254,19 +295,24 @@ export default function DashboardClient({
                    )}
                  </div>
                ) : (
-                 <div className="space-y-10">
+                 <div className="space-y-12 py-10">
                     <div className="text-center space-y-4">
-                       <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Initiate Treatment Scan</h2>
-                       <p className="text-gray-400 font-light max-w-xl mx-auto leading-relaxed">
-                          Our specialist AI requires clinical records to map your restorative possibilities. 
+                       <div className="h-16 w-16 bg-brand-teal/10 text-brand-teal rounded-full flex items-center justify-center mx-auto mb-6">
+                          <Plus size={32} />
+                       </div>
+                       <h2 className="text-4xl font-bold text-gray-900 tracking-tight leading-none">Initiate Treatment Scan</h2>
+                       <p className="text-gray-400 font-light max-w-xl mx-auto leading-relaxed text-lg">
+                          Our specialist protocol requires clinical records to map your restorative possibilities. 
                           Upload your photos to begin Stage 1.
                        </p>
                     </div>
-                    <VisualizerModule 
-                      initialName={session.user.name} 
-                      initialEmail={session.user.email} 
-                      onReportGenerated={handleReportGenerated}
-                    />
+                    <div className="max-w-4xl mx-auto bg-white p-8 rounded-[3rem] border border-gray-100 shadow-sm">
+                      <VisualizerModule 
+                        initialName={session.user.name} 
+                        initialEmail={session.user.email} 
+                        onReportGenerated={handleReportGenerated}
+                      />
+                    </div>
                  </div>
                )}
             </motion.div>
@@ -280,16 +326,21 @@ export default function DashboardClient({
               exit={{ opacity: 0, x: -20 }}
               className="space-y-10"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 <button 
                   onClick={() => updateStage("scan")}
-                  className="h-10 w-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:text-brand-teal hover:border-brand-teal transition-all"
+                  className="h-12 w-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-brand-teal hover:border-brand-teal hover:shadow-lg transition-all"
                 >
-                  <CaretLeft size={20} />
+                  <CaretLeft size={24} weight="bold" />
                 </button>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Back to scan</p>
+                <div className="space-y-1">
+                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Stage 2</p>
+                   <h2 className="text-xl font-bold text-gray-900 tracking-tight">Locate Partners in {homeCity || "Vijayawada"}</h2>
+                </div>
               </div>
-              <ClinicSearch city={homeCity || "Vijayawada"} onSelect={handleClinicSelect} />
+              <div className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
+                <ClinicSearch city={homeCity || "Vijayawada"} onSelect={handleClinicSelect} />
+              </div>
             </motion.div>
           )}
 
@@ -301,27 +352,29 @@ export default function DashboardClient({
               exit={{ opacity: 0, x: -20 }}
               className="space-y-10"
             >
-              <div className="flex justify-between items-center bg-brand-cream border border-brand-gold/10 p-6 rounded-2xl">
-                 <div className="flex items-center gap-4">
+              <div className="flex flex-col md:flex-row justify-between items-center bg-brand-cream border border-brand-gold/20 p-8 rounded-[2.5rem] gap-8 shadow-lg shadow-brand-gold/5">
+                 <div className="flex items-center gap-6">
                     <button 
                       onClick={() => updateStage("recommendation")}
-                      className="h-10 w-10 rounded-full border border-brand-gold/20 flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-white transition-all"
+                      className="h-12 w-12 rounded-full bg-white border border-brand-gold/20 flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-white hover:shadow-lg transition-all shadow-sm"
                     >
-                      <CaretLeft size={20} />
+                      <CaretLeft size={24} weight="bold" />
                     </button>
-                    <div>
-                       <h4 className="text-sm font-bold text-gray-900">Clinical Verification</h4>
-                       <p className="text-xs text-gray-500 font-light italic">Audit our standards before calculating costs.</p>
+                    <div className="space-y-1">
+                       <h4 className="text-xl font-bold text-gray-900 tracking-tight">Clinical Verification Wall</h4>
+                       <p className="text-sm text-gray-500 font-light italic">Audit our sterilization and clinical protocols.</p>
                     </div>
                  </div>
                  <button 
                   onClick={() => updateStage("cost")}
-                  className="bg-brand-teal text-white px-8 py-3 rounded-md text-sm font-bold hover:bg-brand-ink transition-all shadow-lg shadow-brand-teal/20 flex items-center gap-2"
+                  className="bg-brand-ink text-white px-10 py-4 rounded-xl text-sm font-bold hover:bg-brand-teal transition-all shadow-xl shadow-brand-ink/10 flex items-center gap-3"
                 >
-                  Confirm Standards & Continue <ArrowRight size={18} />
+                  Confirm & Continue <ArrowRight size={18} weight="bold" />
                 </button>
               </div>
-              {trustPortal}
+              <div className="bg-white p-2 rounded-[3rem] border border-gray-100 shadow-sm">
+                {trustPortal}
+              </div>
             </motion.div>
           )}
 
@@ -333,18 +386,22 @@ export default function DashboardClient({
               exit={{ opacity: 0, x: -20 }}
               className="space-y-10"
             >
-              <div className="flex justify-between items-center border-b border-gray-100 pb-6">
+              <div className="flex justify-between items-center border-b border-gray-100 pb-10">
                 <button 
                   onClick={() => updateStage("trust")}
-                  className="flex items-center gap-2 text-[10px] font-bold text-gray-400 hover:text-brand-teal uppercase tracking-widest"
+                  className="flex items-center gap-3 text-[10px] font-bold text-gray-400 hover:text-brand-teal uppercase tracking-[0.3em] transition-colors"
                 >
-                  <CaretLeft size={14} /> Back to Trust
+                  <CaretLeft size={16} weight="bold" /> Back to Trust Wall
                 </button>
+                <div className="text-center hidden md:block">
+                   <h2 className="text-xl font-bold text-gray-900 tracking-tight">Treatment Value Calculator</h2>
+                   <p className="text-xs text-gray-400 font-light">Global cost comparison analysis.</p>
+                </div>
                 <button 
                   onClick={() => updateStage("action")}
-                  className="bg-brand-gold text-brand-ink px-10 py-3 rounded-md text-sm font-bold hover:bg-brand-ink hover:text-white transition-all shadow-lg shadow-brand-gold/10 flex items-center gap-2"
+                  className="bg-brand-gold text-brand-ink px-10 py-4 rounded-xl text-sm font-bold hover:bg-brand-ink hover:text-white transition-all shadow-xl shadow-brand-gold/20 flex items-center gap-3"
                 >
-                  Finalize Journey <ArrowRight size={18} />
+                  Finalize Journey <ArrowRight size={18} weight="bold" />
                 </button>
               </div>
               <CostAnalysisModule 
@@ -357,37 +414,46 @@ export default function DashboardClient({
           {stage === "action" && (
             <motion.div
               key="action"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              className="space-y-12"
+              exit={{ opacity: 0, scale: 1.02 }}
+              className="space-y-16 pt-10"
             >
-              {/* Booking Section */}
-              <div className="py-16 bg-brand-cream/30 rounded-[3rem] border border-brand-gold/10">
-                 <div className="text-center space-y-6 mb-12 px-6">
-                    <div className="inline-block p-4 rounded-full bg-brand-teal/10 text-brand-teal mb-4">
-                       <VideoCamera size={48} weight="thin" />
+              {/* Refined Activation Section */}
+              <div className="py-24 bg-brand-ink rounded-[4rem] text-white relative overflow-hidden shadow-2xl shadow-brand-ink/40 border border-white/5">
+                 <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-brand-teal/10 rounded-full -mr-80 -mt-80 blur-[150px]" />
+                 <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-brand-gold/5 rounded-full -ml-60 -mb-60 blur-[120px]" />
+                 
+                 <div className="relative z-10 text-center space-y-8 mb-16 px-6">
+                    <div className="inline-block p-6 rounded-3xl bg-white/5 border border-white/10 text-brand-gold mb-4 backdrop-blur-md shadow-2xl">
+                       <VideoCamera size={56} weight="thin" />
                     </div>
-                    <h2 className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em]">Activation Stage</h2>
-                    <p className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tighter leading-none">Your Specialist <br /> Consultation</p>
-                    <p className="text-gray-500 font-light max-w-xl mx-auto leading-relaxed">
-                      Verification complete. Cost report finalized. <br />
-                      Select your diagnostic slot with Dr. Prakash.
+                    <div className="space-y-3">
+                       <h2 className="text-xs font-bold text-brand-gold uppercase tracking-[0.5em]">Activation Stage</h2>
+                       <p className="text-5xl md:text-7xl font-bold tracking-tighter leading-none">Your Clinical <br /> Consultation</p>
+                    </div>
+                    <p className="text-white/40 font-light max-w-xl mx-auto leading-relaxed text-lg">
+                      Verification complete. Value report finalized. <br />
+                      Secure your diagnostic slot with our lead prosthodontist.
                     </p>
                  </div>
 
-                 <div className="max-w-xl mx-auto px-6">
-                    <div className="flex items-center gap-6 justify-center mb-8 text-[10px] font-bold text-gray-300 uppercase tracking-widest">
-                       <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Secure Channel</span>
-                       <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Specialist MD Only</span>
-                       <span className="flex items-center gap-2"><CheckCircle size={14} className="text-brand-teal" /> Confidential</span>
+                 <div className="max-w-xl mx-auto px-6 relative z-10">
+                    <div className="flex flex-wrap items-center gap-6 justify-center mb-12 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
+                       <span className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5"><CheckCircle size={16} className="text-brand-teal" weight="bold" /> Secure Channel</span>
+                       <span className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5"><CheckCircle size={16} className="text-brand-teal" weight="bold" /> Specialist MD Only</span>
+                       <span className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5"><CheckCircle size={16} className="text-brand-teal" weight="bold" /> Confidential</span>
                     </div>
-                    <BookingForm />
+                    <div className="bg-white rounded-[2.5rem] p-4 shadow-2xl">
+                       <BookingForm />
+                    </div>
                  </div>
               </div>
 
-              {/* Post-Op Care */}
-              <PostOpCare patientName={session.user.name} />
+              {/* Post-Op Care - Professional Section */}
+              <div className="pt-10">
+                <PostOpCare patientName={session.user.name} />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

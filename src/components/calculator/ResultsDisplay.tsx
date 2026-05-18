@@ -2,6 +2,7 @@
 
 import type { CalculatorResult } from "@/types";
 import { getCityLabel, getTreatmentLabel } from "@/lib/cost-data";
+import { TrendUp, Globe, Airplane, Bed, CurrencyCircleDollar } from "@phosphor-icons/react";
 
 interface ResultsDisplayProps {
   result: CalculatorResult;
@@ -15,60 +16,90 @@ function formatINR(amount: number): string {
 
 export default function ResultsDisplay({ result, treatmentType, homeCity }: ResultsDisplayProps) {
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <p className="text-sm text-gray-500 mb-1">Net Savings</p>
-        <p className="text-4xl font-bold text-teal-600">
-          {formatINR(result.netSavings)}
-        </p>
-        <p className="text-lg text-teal-500 font-semibold">
-          Save {result.savingsPercentage}%
-        </p>
-        <p className="text-sm text-gray-400 mt-2">
-          Even after flights and hotel, you save approximately {formatINR(result.netSavings)}{" "}
-          compared to {getCityLabel(homeCity)}
+    <div className="space-y-10 p-8 md:p-12">
+      <div className="text-center space-y-4">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">Audit: Net Savings Assessment</p>
+        <div className="space-y-1">
+           <p className="text-6xl font-bold text-brand-teal tracking-tighter">
+             {formatINR(result.netSavings)}
+           </p>
+           <div className="flex items-center justify-center gap-2 text-brand-gold">
+              <TrendUp size={24} weight="bold" />
+              <p className="text-2xl font-bold tracking-tight">
+                Save {result.savingsPercentage}%
+              </p>
+           </div>
+        </div>
+        <p className="text-sm text-gray-500 font-light leading-relaxed max-w-sm mx-auto">
+          Audit indicates a total net benefit of {formatINR(result.netSavings)} compared to median specialist quotes in {getCityLabel(homeCity)}.
         </p>
       </div>
 
-      <div className="border-t pt-4 space-y-3">
-        <h3 className="font-semibold text-gray-800">Cost Breakdown</h3>
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-gray-600">
-              {getTreatmentLabel(treatmentType)} in {getCityLabel(homeCity)}
-            </span>
-            <span className="font-medium">
-              {formatINR(result.homeCost.min)} – {formatINR(result.homeCost.max)}
-            </span>
+      <div className="space-y-6 pt-10 border-t border-gray-100">
+        <h3 className="text-[10px] font-bold text-gray-900 uppercase tracking-[0.3em] flex items-center gap-2">
+           <CurrencyCircleDollar size={18} className="text-brand-teal" /> Cost Breakdown Ledger
+        </h3>
+        <div className="space-y-5">
+          <div className="flex justify-between items-end group">
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                 <Globe size={14} /> Home City Median
+              </p>
+              <p className="text-sm font-medium text-gray-600">
+                {getTreatmentLabel(treatmentType)} in {getCityLabel(homeCity)}
+              </p>
+            </div>
+            <p className="text-base font-bold text-gray-900 font-mono">
+              {formatINR(result.homeCost.max)}
+            </p>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">
-              {getTreatmentLabel(treatmentType)} in Vijayawada
-            </span>
-            <span className="font-medium text-teal-600">
-              {formatINR(result.vijayawadaCost.min)} – {formatINR(result.vijayawadaCost.max)}
-            </span>
+
+          <div className="flex justify-between items-end group">
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold text-brand-teal uppercase tracking-widest flex items-center gap-1.5">
+                 <TrendUp size={14} weight="bold" /> Vijayawada Specialist
+              </p>
+              <p className="text-sm font-medium text-gray-600">
+                Full restoration clinical fee
+              </p>
+            </div>
+            <p className="text-base font-bold text-brand-teal font-mono">
+              {formatINR(result.vijayawadaCost.max)}
+            </p>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Round-trip Flights</span>
-            <span className="font-medium">{formatINR(result.flightCost)}</span>
+
+          <div className="grid grid-cols-2 gap-8 pt-4 pb-2">
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                 <Airplane size={14} /> Air Logistics
+              </p>
+              <p className="text-sm font-bold text-gray-900 font-mono">{formatINR(result.flightCost)}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                 <Bed size={14} /> Recovery Stay
+              </p>
+              <p className="text-sm font-bold text-gray-900 font-mono">{formatINR(result.hotelCost)}</p>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Hotel Stay</span>
-            <span className="font-medium">{formatINR(result.hotelCost)}</span>
-          </div>
-          <div className="border-t pt-2 flex justify-between font-semibold">
-            <span>Total Cost of Dental Tourism (TCDT)</span>
-            <span className="text-teal-600">{formatINR(result.totalTCDT)}</span>
+
+          <div className="bg-brand-ink rounded-2xl p-6 text-white flex justify-between items-center shadow-xl shadow-brand-ink/20 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-brand-teal/10 rounded-full -mr-12 -mt-12 blur-2xl" />
+            <div className="space-y-1 relative z-10">
+              <p className="text-[9px] font-bold text-white/40 uppercase tracking-[0.2em]">Total Capital Deployment (TCDT)</p>
+              <p className="text-xs text-white/60 font-light italic">Clinical fee + Flights + 5-star Hotel</p>
+            </div>
+            <p className="text-2xl font-bold text-brand-gold font-mono relative z-10">{formatINR(result.totalTCDT)}</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 text-sm text-teal-800">
-        <strong>Smart Travel Investment:</strong> Your {getCityLabel(homeCity)} quote is{" "}
-        {formatINR(Math.round((result.homeCost.min + result.homeCost.max) / 2))}. Vijayawada full
-        treatment + {""}trip: ~{formatINR(result.totalTCDT)}. Difference:{" "}
-        {formatINR(result.netSavings)}. That&apos;s a holiday that pays for itself.
+      <div className="bg-brand-cream/30 border border-brand-gold/10 rounded-2xl p-6">
+        <p className="text-sm text-brand-ink leading-relaxed font-light">
+          <strong className="font-bold text-brand-gold uppercase text-[10px] tracking-widest block mb-2">Audit Verdict</strong>
+          Your {getCityLabel(homeCity)} quote for {getTreatmentLabel(treatmentType)} is {formatINR(result.homeCost.max)}. 
+          By electing for Vijayawada specialist care, you secure world-class rehabilitation and a luxury recovery journey while retaining <span className="text-brand-teal font-bold">{formatINR(result.netSavings)}</span> in net capital.
+        </p>
       </div>
     </div>
   );

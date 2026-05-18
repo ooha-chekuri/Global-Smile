@@ -127,7 +127,7 @@ export async function generateReport(
               mimeType: contentType,
             },
           };
-        } catch (e) {
+        } catch (_e) {
           console.warn("[Gemini] Failed to fetch image for processing:", url);
           return null;
         }

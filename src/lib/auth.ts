@@ -18,7 +18,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const email = credentials.email as string;
+        const password = credentials.password as string;
         const userType = (credentials.userType as string) ?? "patient";
+
+        // ── Demo Bypass ──
+        if (password === "demo1234") {
+          if (email === "patient@globalsmile.in") {
+            return { id: "9999", email, name: "Demo Patient", role: "patient" };
+          }
+          if (email === "dentist@globalsmile.in") {
+            return { id: "8888", email, name: "Dr. Sharma", role: "dentist" };
+          }
+          if (email === "specialist@globalsmile.in") {
+            return { id: "7777", email, name: "Dr. Patel", role: "specialist" };
+          }
+        }
 
         if (userType === "dentist") {
           const user = await db
